@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+  
+    public int id = 0;
     Transform myTransonfrom;
     List<Vector3> endPoints;
     float speed = 5;
     float angluarSpeed = 100;
     public double hp = 100;
+    public int finillyHurrtPlyerId = -1;
+    
    
     public bool isDebuff = false;
     // Start is called before the first frame update
@@ -21,10 +25,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(1))
-        {
-            UpdateControl();
-        }
+        
         if (endPoints.Count > 0)
         {
             Vector3 v = endPoints[0] - myTransonfrom.position;
@@ -60,22 +61,30 @@ public class Player : MonoBehaviour
 
         }
         JudgeMentDebuff();
+        CheckIsAlive();
     }
+
+    private void CheckIsAlive()
+    {
+        if(hp <= 0)
+        {
+            Destroy(this.gameObject);
+        }
+    }
+
     void JudgeMentDebuff()
     {
         //float v = Vector3.Distance(transform.position, Vector3.zero);
         if (isDebuff)
         {
-            hp -= Time.deltaTime;
+            hp -= Time.fixedDeltaTime;
         }
          
 
     }
-    void UpdateControl()
+    public void UpdateControl()
     {
-
-        
-
+       
         //获取屏幕坐标
         Vector3 mousepostion = Input.mousePosition;
         //定义从屏幕
@@ -107,6 +116,20 @@ public class Player : MonoBehaviour
         endPoint.y = myTransonfrom.position.y;
         endPoints.Clear();
         endPoints.Add(endPoint);
+    }
+    public void ResetPlayer(float forTime)
+    {
+        StartCoroutine(ResetPlayerByTime(forTime));
+
+
+    }
+    private IEnumerator ResetPlayerByTime(float forTime)
+    {
+        yield return new WaitForSeconds(forTime);
+        Rigidbody rig = GetComponent<Rigidbody>();
+        rig.velocity = Vector3.zero;
+
+
     }
 
 }

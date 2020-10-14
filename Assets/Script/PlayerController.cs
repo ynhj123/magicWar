@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public GameObject prefabBullet;
+    public Player player;
     // Start is called before the first frame update
     void Start()
     {
@@ -14,13 +15,22 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (player != null)
         {
-            
-            GameObject bullet = Instantiate(prefabBullet, transform.position + transform.forward*2, Quaternion.identity);
-            bullet.transform.up = transform.forward;
-            
-           
+            if (Input.GetMouseButtonDown(1))
+            {
+                player.UpdateControl();
+            }
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+
+                GameObject bullet = Instantiate(prefabBullet, player.transform.position + player.transform.forward * 2, Quaternion.identity);
+                bullet.transform.up = player.transform.forward;
+                Skill skill = bullet.GetComponent<Skill>();
+                skill.playerId = player.id;
+
+            }
         }
+        
     }
 }

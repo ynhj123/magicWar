@@ -19,7 +19,7 @@ public class TimerController : MonoBehaviour
         Vector3 tmp = games[0].transform.localScale * 0.1f;
         while (true)
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(15f);
             if (games[0].transform.localScale.x > 5)
             {
                 games[0].transform.localScale -= tmp;

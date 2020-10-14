@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class Skill : MonoBehaviour
 {
-    public float speed = 1.5f;
+    public float speed = 5f;
     public float force = 10;
+    public float forPlayerTime = 1f;
+    public int playerId;
     
     // Start is called before the first frame update
     void Start()
@@ -22,12 +24,20 @@ public class Skill : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        
+       
         Player player = other.GetComponent<Player>();
-        player.hp -= 10;
-        Vector3 direct = player.transform.position - this.transform.position;
-        Rigidbody rig = player.GetComponent<Rigidbody>();
-        rig.velocity = direct * force;
-        Destroy(gameObject);
+        if (playerId != player.id)
+        {
+            player.hp -= 10;
+            Vector3 direct = player.transform.position - this.transform.position;
+            Rigidbody rig = player.GetComponent<Rigidbody>();
+            rig.velocity = direct * force;
+            player.finillyHurrtPlyerId = this.playerId;
+            player.ResetPlayer(forPlayerTime);
+            Destroy(gameObject);
+        }
+            
     }
+     
+
 }

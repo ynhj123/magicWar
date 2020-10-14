@@ -10,13 +10,13 @@ public class Scene : MonoBehaviour
     {
         Player player = other.GetComponent<Player>();
         player.isDebuff = false;
-        Debug.Log("enter");
+      
     }
     private void OnTriggerExit(Collider other)
     {
         Player player = other.GetComponent<Player>();
         player.isDebuff = true;
-        Debug.Log("exit");
+       
     }
 
    
