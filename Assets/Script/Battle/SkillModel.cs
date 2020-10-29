@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Skill : MonoBehaviour
+public class SkillModel : MonoBehaviour
 {
     public float speed = 5f;
     public float force = 10;
     public float forPlayerTime = 1f;
     public int playerId;
+   
     
     // Start is called before the first frame update
     void Start()
@@ -34,6 +35,7 @@ public class Skill : MonoBehaviour
             rig.velocity = direct * force;
             player.finillyHurrtPlyerId = this.playerId;
             player.ResetPlayer(forPlayerTime);
+            //显示特效
             Destroy(gameObject);
         }
             

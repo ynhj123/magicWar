@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public GameObject prefabBullet;
+    
+    
     public Player player;
     // Start is called before the first frame update
     void Start()
     {
-        
+        player.GetComponent<Player>();
     }
 
     // Update is called once per frame
@@ -23,14 +24,13 @@ public class PlayerController : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.Q))
             {
-
-                GameObject bullet = Instantiate(prefabBullet, player.transform.position + player.transform.forward * 2, Quaternion.identity);
-                bullet.transform.up = player.transform.forward;
-                Skill skill = bullet.GetComponent<Skill>();
-                skill.playerId = player.id;
+                player.FireQSkill(KeyCode.Q);
+                
 
             }
         }
         
+
+
     }
 }
