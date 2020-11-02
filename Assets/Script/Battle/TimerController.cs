@@ -17,10 +17,11 @@ public class TimerController : MonoBehaviour
     IEnumerator Timer()
     {
         Vector3 tmp = games[0].transform.localScale * 0.1f;
+       
         while (true)
         {
             yield return new WaitForSeconds(15f);
-            if (games[0].transform.localScale.x > 5)
+            if (games[0].transform.localScale.x > 8)
             {
                 games[0].transform.localScale -= tmp;
             }

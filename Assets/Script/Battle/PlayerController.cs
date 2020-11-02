@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     
+
     
     public Player player;
     // Start is called before the first frame update
@@ -24,7 +25,7 @@ public class PlayerController : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                player.FireQSkill(KeyCode.Q);
+                player.FireQSkill();
                 
 
             }

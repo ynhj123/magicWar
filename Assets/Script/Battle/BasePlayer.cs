@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,17 +7,23 @@ public class BasePlayer : MonoBehaviour
 {
     //玩家model
     private GameObject skin;
+    [HideInInspector]
     public int id = 0;
     Transform myTransonfrom;
     List<Vector3> endPoints;
     float speed = 5;
     //float angluarSpeed = 100;
+    [HideInInspector]
     public double hp = 100;
+    [HideInInspector]
     public int finillyHurrtPlyerId = -1;
+    [HideInInspector]
+    public Rigidbody rigidBody;
     // Start is called before the first frame update
     public virtual void Init(string skinPath)
     {
         GameObject skinRes = ResManger.LoadPrefab(skinPath);
+        rigidBody = gameObject.AddComponent<Rigidbody>();
         skin = Instantiate<GameObject>(skinRes);
         skin.transform.parent = transform;
         skin.transform.localPosition = Vector3.zero;
@@ -35,7 +42,7 @@ public class BasePlayer : MonoBehaviour
         endPoints = new List<Vector3>();
     }
 
-    internal void FireQSkill(KeyCode key)
+     public void FireQSkill()
     {
         //Skill skill = SkillManger.Instance.Get(key);
         string path = "Battle/Skill";
@@ -46,9 +53,13 @@ public class BasePlayer : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    public void Update()
     {
+        
+    }
 
+    public void MoveUpdate()
+    {
         if (endPoints.Count > 0)
         {
             Vector3 v = endPoints[0] - myTransonfrom.position;
@@ -66,11 +77,10 @@ public class BasePlayer : MonoBehaviour
             }
 
         }
-        JudgeMentDebuff();
-        CheckIsAlive();
     }
 
-    private void CheckIsAlive()
+    public bool IsAlive => hp > 0;
+    public void CheckIsAlive()
     {
         if (hp <= 0)
         {
@@ -78,7 +88,7 @@ public class BasePlayer : MonoBehaviour
         }
     }
 
-    void JudgeMentDebuff()
+    public void JudgeMentDebuff()
     {
         //float v = Vector3.Distance(transform.position, Vector3.zero);
         if (isDebuff)

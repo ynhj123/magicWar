@@ -7,9 +7,15 @@ public class CameraContoller : MonoBehaviour
     // Start is called before the first frame update
     public Transform playTransform;
     Vector3 offset;
+    public float high;
+    
     void Start()
     {
+        
          offset = transform.position - playTransform.position;
+      
+
+     
     }
 
     // Update is called once per frame
