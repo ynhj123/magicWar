@@ -1,7 +1,7 @@
 
 //坦克信息
 [System.Serializable]
-public class TankInfo{
+public class PlayerInfo{
 	public string id = "";	//玩家id
 	public int camp = 0;	//阵营
 	public int hp = 0;		//生命值
@@ -12,6 +12,16 @@ public class TankInfo{
 	public float ex = 0;	//旋转
 	public float ey = 0;
 	public float ez = 0;
+
+}
+//坦克rank信息
+[System.Serializable]
+public class PlayerRank
+{
+	public string id = "";  //玩家id
+	public int rank = 0;
+	public int killNum;
+
 }
 
 
@@ -19,7 +29,7 @@ public class TankInfo{
 public class MsgEnterBattle:MsgBase {
 	public MsgEnterBattle() {protoName = "MsgEnterBattle";}
 	//服务端回
-	public TankInfo[] tanks;
+	public PlayerInfo[] players;
 	public int mapId = 1;	//地图，只有一张
 }
 
@@ -27,7 +37,8 @@ public class MsgEnterBattle:MsgBase {
 public class MsgBattleResult:MsgBase {
 	public MsgBattleResult() {protoName = "MsgBattleResult";}
 	//服务端回
-	public int winCamp = 0;	 //获胜的阵营
+	//public int winCamp = 0;	 //获胜的阵营
+	public PlayerRank[] players;
 }
 
 //玩家退出（服务端推送）

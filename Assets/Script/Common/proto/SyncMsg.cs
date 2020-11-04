@@ -24,6 +24,8 @@ public class MsgFire:MsgBase {
 	public float ex = 0f;
 	public float ey = 0f;
 	public float ez = 0f;
+	//技能id
+	public int skillId = 0;
 	//服务端补充
 	public string id = "";      //哪个玩家
 }
@@ -41,4 +43,13 @@ public class MsgHit:MsgBase {
 	public string id = "";		//哪个玩家
 	public int hp = 0;			//被击中玩家血量
 	public int damage = 0;		//受到的伤害
+}
+public class MsgDebuff : MsgBase
+{
+	public MsgDebuff() { protoName = "MsgDebuff"; }
+	
+	public string id = "";      //哪个玩家
+	public int hp = 0;          //被击中玩家血量
+	public int damage = 0;      //受到的伤害
+	public int debuffSpeed = 0; //减速影响
 }

@@ -9,7 +9,8 @@ public class MsgGetAchieve:MsgBase {
 //房间信息
 [System.Serializable]
 public class RoomInfo{
-	public int id = 0;		//房间id
+	public int id = 0;      //房间id
+	public int maxCount = 0; // 房间最大人数
 	public int count = 0;	//人数
 	public int status = 0;	//状态0-准备中 1-战斗中
 }
@@ -40,19 +41,21 @@ public class MsgEnterRoom:MsgBase {
 
 //玩家信息
 [System.Serializable]
-public class PlayerInfo{
+public class PlayerRoom{
 	public string id = "lpy";	//账号
 	public int camp = 0;		//阵营
 	public int win = 0;			//胜利数
-	public int lost = 0;		//失败数
+	public int lost = 0;        //失败数
+	public int score = 0;       //积分
 	public int isOwner = 0;		//是否是房主
 }
+
 
 //获取房间信息
 public class MsgGetRoomInfo:MsgBase {
 	public MsgGetRoomInfo() {protoName = "MsgGetRoomInfo";}
 	//服务端回
-	public PlayerInfo[] players;
+	public PlayerRoom[] players;
 }
 
 //离开房间

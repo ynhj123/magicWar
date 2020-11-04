@@ -11,7 +11,7 @@ public class Player : BasePlayer
 	//同步帧率
 	public static float syncInterval = 0.05f;
 
-    public void Update()
+    public override void Update()
     {
 		base.Update();
 		MoveUpdate();

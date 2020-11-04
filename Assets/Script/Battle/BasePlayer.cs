@@ -53,7 +53,7 @@ public class BasePlayer : MonoBehaviour
     }
 
     // Update is called once per frame
-    public void Update()
+    public virtual void Update()
     {
         
     }
@@ -126,7 +126,7 @@ public class BasePlayer : MonoBehaviour
         endPoint.y = myTransonfrom.position.y;
         endPoints.Add(endPoint);
     }
-    void ReSetEndPoint(Vector3 endPoint)
+    public void ReSetEndPoint(Vector3 endPoint)
     {
         endPoint.y = myTransonfrom.position.y;
         endPoints.Clear();

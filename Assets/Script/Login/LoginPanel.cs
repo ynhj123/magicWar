@@ -29,7 +29,7 @@ public class LoginPanel:BasePanel
         Debug.Log("login");
         /*  PanelManger.Open<Buttons>();
           PanelManger.Close<LoginPanel>();*/
-        SceneManager.LoadScene("BattleScene");
+        SceneManager.LoadScene("MainScene");
     }
 
     public override void OnClose()
