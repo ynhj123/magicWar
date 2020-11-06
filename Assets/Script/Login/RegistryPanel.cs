@@ -8,6 +8,8 @@ public class RegistryPanel : BasePanel
     InputField username;
     InputField password;
     InputField rePassword;
+    InputField nickName;
+   
     Button registryBtn;
 
     public override void OnInit()
@@ -21,6 +23,8 @@ public class RegistryPanel : BasePanel
         username = skin.transform.Find("Username/InputField").GetComponent<InputField>();
         password = skin.transform.Find("Password/InputField").GetComponent<InputField>();
         rePassword = skin.transform.Find("RePassword/InputField").GetComponent<InputField>();
+        nickName = skin.transform.Find("NickName/InputField").GetComponent<InputField>();
+
         registryBtn = skin.transform.Find("Btn/Button").GetComponent<Button>();
         registryBtn.onClick.AddListener(OnRegistry);
     }

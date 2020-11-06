@@ -33,8 +33,10 @@ public class Buttons : BasePanel
     private void OnLogin()
     {
         Debug.Log("openlogin");
-        PanelManger.Open<LoginPanel>();
-        Close();
+        Application.OpenURL("http://www.baidu.com");
+
+       /* PanelManger.Open<LoginPanel>();
+        Close();*/
     }
 
     public override void OnClose()
