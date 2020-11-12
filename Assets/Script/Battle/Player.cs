@@ -10,10 +10,12 @@ public class Player : BasePlayer
 	private float lastSendSyncTime = 0;
 	//同步帧率
 	public static float syncInterval = 0.05f;
+	Animator animator;
 
-    public override void Update()
+    
+	public override void Update()
     {
-		base.Update();
+		//base.Update();
 		MoveUpdate();
 		JudgeMentDebuff();
 		CheckIsAlive();

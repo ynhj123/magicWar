@@ -109,4 +109,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 7.5
   force: 10
+  forPlayerTime: 1
   playerId: 0

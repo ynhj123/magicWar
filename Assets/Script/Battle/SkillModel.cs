@@ -25,14 +25,17 @@ public class SkillModel : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-       
+        
         Player player = other.GetComponent<Player>();
         if (playerId != player.id)
         {
+            
             player.hp -= 10;
             Vector3 direct = player.transform.position - this.transform.position;
+            direct.y = 0;
             Rigidbody rig = player.GetComponent<Rigidbody>();
             rig.velocity = direct * force;
+           
             player.finillyHurrtPlyerId = this.playerId;
             player.ResetPlayer(forPlayerTime);
             //显示特效

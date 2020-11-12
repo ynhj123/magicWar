@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
             if (Input.GetMouseButtonDown(1))
             {
                 player.UpdateControl();
+                
             }
             if (Input.GetKeyDown(KeyCode.Q))
             {

@@ -7,18 +7,15 @@ public class BasePlayer : MonoBehaviour
 {
     //玩家model
     private GameObject skin;
-    [HideInInspector]
     public int id = 0;
     Transform myTransonfrom;
     List<Vector3> endPoints;
     float speed = 5;
     //float angluarSpeed = 100;
-    [HideInInspector]
     public double hp = 100;
-    [HideInInspector]
     public int finillyHurrtPlyerId = -1;
-    [HideInInspector]
     public Rigidbody rigidBody;
+    public Animator animator;
     // Start is called before the first frame update
     public virtual void Init(string skinPath)
     {
@@ -28,6 +25,7 @@ public class BasePlayer : MonoBehaviour
         skin.transform.parent = transform;
         skin.transform.localPosition = Vector3.zero;
         skin.transform.localEulerAngles = Vector3.zero;
+        
     }
 
 
@@ -36,17 +34,19 @@ public class BasePlayer : MonoBehaviour
 
     public bool isDebuff = false;
     // Start is called before the first frame update
-    void Start()
+    public void Start()
     {
         myTransonfrom = GetComponent<Transform>();
+        animator = GetComponent<Animator>();
         endPoints = new List<Vector3>();
+
     }
 
      public void FireQSkill()
     {
         //Skill skill = SkillManger.Instance.Get(key);
         string path = "Battle/Skill";
-        GameObject bullet = Instantiate(ResManger.LoadPrefab(path), transform.position + transform.forward * 2, Quaternion.identity);
+        GameObject bullet = Instantiate(ResManger.LoadPrefab(path), transform.position + transform.forward * 2 + new Vector3(0,1,0), Quaternion.identity);
         bullet.transform.up = transform.forward;
         SkillModel skillModel = bullet.GetComponent<SkillModel>();
         skillModel.playerId = id;
@@ -62,6 +62,7 @@ public class BasePlayer : MonoBehaviour
     {
         if (endPoints.Count > 0)
         {
+            animator.SetBool("IsMove", true);
             Vector3 v = endPoints[0] - myTransonfrom.position;
             var dot = Vector3.Dot(v, myTransonfrom.right);
             Vector3 next = v.normalized * speed * Time.deltaTime;
@@ -70,12 +71,17 @@ public class BasePlayer : MonoBehaviour
             {
                 myTransonfrom.LookAt(endPoints[0]);
                 myTransonfrom.position += next;
+                
             }
             else
             {
                 endPoints.RemoveAt(0);
             }
 
+        }
+        else
+        {
+            animator.SetBool("IsMove", false);
         }
     }
 
@@ -128,6 +134,7 @@ public class BasePlayer : MonoBehaviour
     }
     public void ReSetEndPoint(Vector3 endPoint)
     {
+        
         endPoint.y = myTransonfrom.position.y;
         endPoints.Clear();
         endPoints.Add(endPoint);

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-
+using UnityEngine.UI;
 
 public class AiController : MonoBehaviour
 {
@@ -33,6 +33,7 @@ public class AiController : MonoBehaviour
     //扇形区域
     public float viewMinAngle = 30;
     public float trunSpeed = 100;
+    public LayerMask layerMask;
     [SerializeField]
     float attackInterval = 1;
     Player player;
@@ -44,7 +45,11 @@ public class AiController : MonoBehaviour
     AttackState attackState;
     float attchTime = 1;
     Transform targetTansform;
-    Transform orginTransform;
+    Transform orginTansform;
+    Vector3 orginPosition;
+    Vector3 orginForward;
+    
+    Animator animator;
 
 
    
@@ -53,11 +58,14 @@ public class AiController : MonoBehaviour
     {
         
         player = GetComponent<Player>();
-        orginTransform = transform;
+        animator = GetComponent<Animator>();
+        orginPosition = new Vector3(transform.position.x,transform.position.y,transform.position.z);
+        orginForward = transform.forward;
+        orginTansform = transform;
         curState = AIState.Idle;
         trunState = TrunState.Left;
         attackInterval = 1;
-
+        player.id = 1;
     }
 
 
@@ -90,12 +98,14 @@ public class AiController : MonoBehaviour
     private void HandleBack()
     {
         //回到原位
-        player.ReSetEndPoint(orginTransform.position);
-        if((orginTransform.position - transform.position).sqrMagnitude < 1)
+        player.ReSetEndPoint(orginPosition);
+    
+        if ((orginPosition - transform.position).sqrMagnitude < 0.1f)
         {
-            transform.position = orginTransform.position;
-            transform.forward = orginTransform.forward;
+            transform.position = orginPosition;
+            transform.forward = orginForward;
             curState = AIState.Idle;
+            animator.SetBool("IsMove", false);
         }
     }
 
@@ -127,9 +137,7 @@ public class AiController : MonoBehaviour
         {
             attchTime += Time.fixedDeltaTime;
         }
-        
-       
-       
+             
     }
 
 
@@ -144,10 +152,12 @@ public class AiController : MonoBehaviour
         Vector3 target = targetTansform.position;
         //在攻击范围和视野范围之间移动
         //在攻击范围攻击
+    
         if ((target - transform.position).sqrMagnitude > AttachRadius * AttachRadius)
         {
            attackState  =  AttackState.Move;
-          
+           animator.SetBool("IsMove", true);
+
         }
         else
         {
@@ -176,7 +186,7 @@ public class AiController : MonoBehaviour
     private void HandleTurn(TrunState newState, Vector3 target)
     {
         //站在原地来回旋转
-        float angle = Vector3.Angle(target, orginTransform.forward);
+        float angle = Vector3.Angle(target, orginTansform.forward);
         //如果夹角大于0.5f先旋转到小于0.5f再移动
         if (angle > 0.5f)
         {
@@ -184,7 +194,7 @@ public class AiController : MonoBehaviour
             float minAngle = Mathf.Min(angle, trunSpeed * Time.deltaTime);
 
             //差积做法
-            orginTransform.Rotate(Vector3.Cross(transform.forward, target), minAngle);
+            orginTansform.Rotate(Vector3.Cross(transform.forward, target), minAngle);
         }
         else
         {
@@ -195,10 +205,11 @@ public class AiController : MonoBehaviour
 
     void DrawFieldOfView()
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position,viewRadius);
+        Collider[] colliders = Physics.OverlapSphere(transform.position,viewRadius, layerMask);
       
         //检测
         Collider playerCollider = colliders.Where(collider => collider.CompareTag("Player") && Vector3.Angle(transform.forward, collider.transform.position - transform.position) < viewMinAngle).FirstOrDefault();
+      
         if(playerCollider != null)
         {
             //player.ReSetEndPoint(playerCollider.transform.position);
@@ -211,6 +222,7 @@ public class AiController : MonoBehaviour
             if(curState == AIState.Attack)
             {
                 curState = AIState.Back;
+                animator.SetBool("IsMove", true);
             }
         }
     }
