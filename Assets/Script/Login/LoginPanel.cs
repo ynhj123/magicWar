@@ -27,9 +27,17 @@ public class LoginPanel:BasePanel
     private void OnLogin()
     {
         Debug.Log("login");
-        /*  PanelManger.Open<Buttons>();
-          PanelManger.Close<LoginPanel>();*/
-        SceneManager.LoadScene("MainScene");
+ 
+        Dictionary<string, string> postParam = new Dictionary<string, string>();
+        postParam.Add("username", username.text);
+        postParam.Add("password", password.text);
+        HttpUtils.instance.Post("/auth/login", postParam, (result) =>
+        {
+            Debug.Log(result);
+            HttpUtils.instance.headers.Add("Authorization", result);
+            SceneManager.LoadScene("MainScene");
+        });
+
     }
 
     public override void OnClose()

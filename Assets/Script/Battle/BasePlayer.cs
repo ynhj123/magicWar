@@ -16,6 +16,7 @@ public class BasePlayer : MonoBehaviour
     public int finillyHurrtPlyerId = -1;
     public Rigidbody rigidBody;
     public Animator animator;
+    public Transform bookTranform;
     // Start is called before the first frame update
     public virtual void Init(string skinPath)
     {
@@ -29,7 +30,11 @@ public class BasePlayer : MonoBehaviour
     }
 
 
-    
+    protected virtual void OnAnimatorIK(int layerIndex)
+    {
+        animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1);
+        animator.SetIKPosition(AvatarIKGoal.LeftHand, bookTranform.position);
+    }
 
 
     public bool isDebuff = false;
@@ -38,6 +43,7 @@ public class BasePlayer : MonoBehaviour
     {
         myTransonfrom = GetComponent<Transform>();
         animator = GetComponent<Animator>();
+        
         endPoints = new List<Vector3>();
 
     }
@@ -60,9 +66,10 @@ public class BasePlayer : MonoBehaviour
 
     public void MoveUpdate()
     {
+        animator.SetFloat("Speed", speed);
         if (endPoints.Count > 0)
         {
-            animator.SetBool("IsMove", true);
+            //animator.SetBool("IsMove", true);
             Vector3 v = endPoints[0] - myTransonfrom.position;
             var dot = Vector3.Dot(v, myTransonfrom.right);
             Vector3 next = v.normalized * speed * Time.deltaTime;
@@ -81,7 +88,8 @@ public class BasePlayer : MonoBehaviour
         }
         else
         {
-            animator.SetBool("IsMove", false);
+            animator.SetFloat("Speed", 0);
+            // animator.SetBool("IsMove", false);
         }
     }
 
@@ -100,6 +108,11 @@ public class BasePlayer : MonoBehaviour
         if (isDebuff)
         {
             hp -= Time.fixedDeltaTime;
+            speed = 3;
+        }
+        else
+        {
+            speed = 5;
         }
 
 

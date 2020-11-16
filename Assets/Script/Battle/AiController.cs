@@ -186,7 +186,7 @@ public class AiController : MonoBehaviour
     private void HandleTurn(TrunState newState, Vector3 target)
     {
         //站在原地来回旋转
-        float angle = Vector3.Angle(target, orginTansform.forward);
+        float angle = Vector3.Angle(target, transform.forward);
         //如果夹角大于0.5f先旋转到小于0.5f再移动
         if (angle > 0.5f)
         {

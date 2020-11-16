@@ -32,9 +32,25 @@ public class RegistryPanel : BasePanel
     private void OnRegistry()
     {
         Debug.Log("registry");
-        PanelManger.Open<SystemTipPanel>(" Close();");
-        PanelManger.Open<Buttons>();
-        Close();
+        if(password != rePassword)
+        {
+            PanelManger.Open<SystemTipPanel>("2次密码不一致");
+            return;
+        }
+
+        Dictionary<string, string> postParam = new Dictionary<string, string>();
+        postParam.Add("username", username.text);
+        postParam.Add("password", password.text);
+        postParam.Add("nickName", nickName.text);
+        HttpUtils.instance.Post("/auth/register",postParam,(result)=>
+        {
+            PanelManger.Open<SystemTipPanel>("注册成功！");
+            PanelManger.Open<Buttons>();
+            Close();
+
+        });
+
+        
     }
 
     public override void OnClose()

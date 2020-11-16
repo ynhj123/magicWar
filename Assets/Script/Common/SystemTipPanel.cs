@@ -28,6 +28,7 @@ public class SystemTipPanel : BasePanel
 
     private void OnClosePanel()
     {
+        Debug.Log("closeTip");
         Close();
     }
 
