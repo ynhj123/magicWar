@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class PanelManger : MonoBehaviour
@@ -13,9 +12,11 @@ public class PanelManger : MonoBehaviour
     public static Dictionary<string, BasePanel> panels = new Dictionary<string, BasePanel>();
     public static Transform root;
     public static Transform canvas;
-   
+
     public static void Init()
     {
+        layers.Clear();
+        panels.Clear();
         root = GameObject.Find("Root").transform;
         canvas = root.Find("Canvas");
         Transform panel = canvas.Find("Panel");
@@ -24,7 +25,7 @@ public class PanelManger : MonoBehaviour
         layers.Add(Layer.Tip, tip);
     }
 
-    public static void Open<T> (params object[] objects) where T : BasePanel
+    public static void Open<T>(params object[] objects) where T : BasePanel
     {
         string name = typeof(T).ToString();
         if (panels.ContainsKey(name))
@@ -48,7 +49,7 @@ public class PanelManger : MonoBehaviour
         BasePanel panel = panels[name];
         panel.OnClose();
         panels.Remove(name);
-        Debug.Log(panel);
+        Debug.Log("Close " + name + " " + panel);
         GameObject.Destroy(panel.skin);
         Component.Destroy(panel);
     }

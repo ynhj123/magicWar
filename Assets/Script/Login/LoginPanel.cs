@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class LoginPanel:BasePanel
+public class LoginPanel : BasePanel
 {
     InputField username;
     InputField password;
@@ -27,15 +25,22 @@ public class LoginPanel:BasePanel
     private void OnLogin()
     {
         Debug.Log("login");
- 
+
         Dictionary<string, string> postParam = new Dictionary<string, string>();
         postParam.Add("username", username.text);
         postParam.Add("password", password.text);
         HttpUtils.instance.Post("/auth/login", postParam, (result) =>
         {
-            Debug.Log(result);
+
             HttpUtils.instance.headers.Add("Authorization", result);
-            SceneManager.LoadScene("MainScene");
+            HttpUtils.instance.Get<UserInfo>("/user/info", (response) =>
+            {
+
+                MainController.user = response;
+                MainController.user.Token = result;
+                SceneManager.LoadScene("MainScene");
+
+            });
         });
 
     }

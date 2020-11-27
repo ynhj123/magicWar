@@ -1,9 +1,8 @@
 ﻿
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class JoinRoomPanel:BasePanel
+public class JoinRoomPanel : BasePanel
 {
     InputField roomId;
     Button closeBtn;
@@ -26,11 +25,14 @@ public class JoinRoomPanel:BasePanel
 
     private void OnJoin()
     {
-        Debug.Log("Join:"+roomId.text);
-        
+        Debug.Log("Join:" + roomId.text);
+
         /*  PanelManger.Open<Buttons>();
           PanelManger.Close<LoginPanel>();*/
-        SceneManager.LoadScene("RoomScene");
+        EnterRoomMsg msg = new EnterRoomMsg();
+        msg.roomId = roomId.text;
+        NetManager.Send(msg);
+        //SceneManager.LoadScene("RoomScene");
     }
     void OnCloseBtn()
     {

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CameraContoller : MonoBehaviour
 {
@@ -8,14 +6,14 @@ public class CameraContoller : MonoBehaviour
     public Transform playTransform;
     Vector3 offset;
     public float high;
-    
+
     void Start()
     {
-        
-         offset = transform.position - playTransform.position;
-      
 
-     
+        offset = transform.position - playTransform.position;
+
+
+
     }
 
     // Update is called once per frame

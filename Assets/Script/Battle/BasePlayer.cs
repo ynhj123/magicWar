@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -26,7 +25,7 @@ public class BasePlayer : MonoBehaviour
         skin.transform.parent = transform;
         skin.transform.localPosition = Vector3.zero;
         skin.transform.localEulerAngles = Vector3.zero;
-        
+
     }
 
 
@@ -43,16 +42,16 @@ public class BasePlayer : MonoBehaviour
     {
         myTransonfrom = GetComponent<Transform>();
         animator = GetComponent<Animator>();
-        
+
         endPoints = new List<Vector3>();
 
     }
 
-     public void FireQSkill()
+    public void FireQSkill()
     {
         //Skill skill = SkillManger.Instance.Get(key);
         string path = "Battle/Skill";
-        GameObject bullet = Instantiate(ResManger.LoadPrefab(path), transform.position + transform.forward * 2 + new Vector3(0,1,0), Quaternion.identity);
+        GameObject bullet = Instantiate(ResManger.LoadPrefab(path), transform.position + transform.forward * 2 + new Vector3(0, 1, 0), Quaternion.identity);
         bullet.transform.up = transform.forward;
         SkillModel skillModel = bullet.GetComponent<SkillModel>();
         skillModel.playerId = id;
@@ -61,7 +60,7 @@ public class BasePlayer : MonoBehaviour
     // Update is called once per frame
     public virtual void Update()
     {
-        
+
     }
 
     public void MoveUpdate()
@@ -78,7 +77,7 @@ public class BasePlayer : MonoBehaviour
             {
                 myTransonfrom.LookAt(endPoints[0]);
                 myTransonfrom.position += next;
-                
+
             }
             else
             {
@@ -136,7 +135,7 @@ public class BasePlayer : MonoBehaviour
             {
                 ReSetEndPoint(hitInfo.point);
             }
-    
+
         }
 
     }
@@ -147,7 +146,7 @@ public class BasePlayer : MonoBehaviour
     }
     public void ReSetEndPoint(Vector3 endPoint)
     {
-        
+
         endPoint.y = myTransonfrom.position.y;
         endPoints.Clear();
         endPoints.Add(endPoint);

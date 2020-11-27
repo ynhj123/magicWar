@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class Buttons : BasePanel
 {
-   
+
     Button loginBtn;
     Button RegistryBtn;
     public override void OnInit()
@@ -16,7 +14,7 @@ public class Buttons : BasePanel
 
     public override void OnShow(params object[] objects)
     {
-      
+
         loginBtn = skin.transform.Find("Login").GetComponent<Button>();
         loginBtn.onClick.AddListener(OnLogin);
         RegistryBtn = skin.transform.Find("Registory").GetComponent<Button>();
@@ -41,6 +39,6 @@ public class Buttons : BasePanel
 
     public override void OnClose()
     {
-      
+
     }
 }

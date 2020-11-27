@@ -1,73 +1,133 @@
 ﻿//查询成绩
-public class MsgGetAchieve:MsgBase {
-	public MsgGetAchieve() {protoName = "MsgGetAchieve";}
-	//服务端回
-	public int win = 0;
-	public int lost = 0;
+public class MsgGetAchieve : MsgBase
+{
+    public MsgGetAchieve() { protoName = "MsgGetAchieve"; }
+    //服务端回
+    public int win = 0;
+    public int lost = 0;
 }
 
 //房间信息
 [System.Serializable]
-public class RoomInfo{
-	public int id = 0;      //房间id
-	public int maxCount = 0; // 房间最大人数
-	public int count = 0;	//人数
-	public int status = 0;	//状态0-准备中 1-战斗中
+public class RoomInfo
+{
+    public string id;      //房间id
+    public int maxCount = 0; // 房间最大人数
+    public int count = 0;   //人数
+    public int status = 0;	//状态0-准备中 1-战斗中
 }
 
 //请求房间列表
-public class MsgGetRoomList:MsgBase {
-	public MsgGetRoomList() {protoName = "MsgGetRoomList";}
-	//服务端回
-	public RoomInfo[] rooms;
+public class RoomListMsg : MsgBase
+{
+    public RoomListMsg() { protoName = "RoomListMsg"; }
+    public int curPage;
+    public int pageSize;
+
+    //服务端回
+    public int size;
+    public RoomInfo[] rooms;
+    public string code;
+    public string msg;
 }
 
 //创建房间
-public class MsgCreateRoom:MsgBase {
-	public MsgCreateRoom() {protoName = "MsgCreateRoom";}
-	//服务端回
-	public int result = 0;
+public class CreateRoomMsg : MsgBase
+{
+    public CreateRoomMsg() { protoName = "CreateRoomMsg"; }
+    //服务端回
+    public string roomId = "";
+    public string code = "";
+    public string msg = "";
 }
 
 //进入房间
-public class MsgEnterRoom:MsgBase {
-	public MsgEnterRoom() {protoName = "MsgEnterRoom";}
-	//客户端发
-	public int id = 0;
-	//服务端回
-	public int result = 0;
+public class EnterRoomMsg : MsgBase
+{
+    public EnterRoomMsg() { protoName = "EnterRoomMsg"; }
+    public string roomId = "";
+    public string code = "";
+
+    public string msg = "";
 }
 
 
 //玩家信息
 [System.Serializable]
-public class PlayerRoom{
-	public string id = "lpy";	//账号
-	public int camp = 0;		//阵营
-	public int win = 0;			//胜利数
-	public int lost = 0;        //失败数
-	public int score = 0;       //积分
-	public int isOwner = 0;		//是否是房主
+public class PlayerRoom
+{
+    public string uid = "lpy";  //id
+    public string username = "";  //用户名
+    public string nickname = "";  //名称
+    public int degree;      //位置 0房主
+    public int score = 0;       //积分
+    public int roomStatus; //0待准备 1准备
+
 }
 
 
 //获取房间信息
-public class MsgGetRoomInfo:MsgBase {
-	public MsgGetRoomInfo() {protoName = "MsgGetRoomInfo";}
-	//服务端回
-	public PlayerRoom[] players;
+public class GetRoomInfoMsg : MsgBase
+{
+    public GetRoomInfoMsg() { protoName = "GetRoomInfoMsg"; }
+    //服务端回
+    public string code;
+    public string msg;
+    public PlayerRoom[] players;
 }
 
 //离开房间
-public class MsgLeaveRoom:MsgBase {
-	public MsgLeaveRoom() {protoName = "MsgLeaveRoom";}
-	//服务端回
-	public int result = 0;
+public class LeaveRoomMsg : MsgBase
+{
+    public LeaveRoomMsg() { protoName = "LeaveRoomMsg"; }
+    //服务端回
+    public string code;
+    public string msg;
+}
+[System.Serializable]
+public class InitPlayer
+{
+    public string uid = "lpy";  //id
+    public float x;
+    public float z;
+    public float ey;
+    public float hp;
+    public float nickname;
+    public float attach;
+    public float defense;
+    public float speed;
+    public int killNum;
+
+}
+//开战
+public class StartMsg : MsgBase
+{
+    public StartMsg() { protoName = "StartMsg"; }
+    //服务端回
+    public string code = "";
+    public string msg;
+    public InitPlayer[] players;
+}
+//准备
+public class ReadyStartMsg : MsgBase
+{
+    public ReadyStartMsg() { protoName = "ReadyStartMsg"; }
+
 }
 
-//开战
-public class MsgStartBattle:MsgBase {
-	public MsgStartBattle() {protoName = "MsgStartBattle";}
-	//服务端回
-	public int result = 0;
+//取消准备
+public class UnreadyStartMsg : MsgBase
+{
+    public UnreadyStartMsg() { protoName = "UnreadyStartMsg"; }
+
+
+
+}
+public class KickRoomMsg : MsgBase
+{
+    public KickRoomMsg() { protoName = "KickRoomMsg"; }
+    public string uid = "";
+    public string code = "";
+    public string msg;
+
 }

@@ -208,6 +208,7 @@ GameObject:
   - component: {fileID: 1260550855596573286}
   - component: {fileID: 1260550855596573280}
   - component: {fileID: 1260550855596573287}
+  - component: {fileID: 4911130825464539105}
   m_Layer: 5
   m_Name: JoinRoomPanel
   m_TagString: Untagged
@@ -272,6 +273,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4911130825464539105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1260550855596573285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abb851933f2983f498b9fce409443eaf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  skinPath: 
+  skin: {fileID: 0}
+  layer: 0
 --- !u!1 &1260550855616453620
 GameObject:
   m_ObjectHideFlags: 0

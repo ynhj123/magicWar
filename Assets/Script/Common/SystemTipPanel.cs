@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class SystemTipPanel : BasePanel
@@ -21,7 +19,7 @@ public class SystemTipPanel : BasePanel
         Debug.Log(objects[0]);
         if (objects.Length == 1)
         {
-           
+
             text.text = (string)objects[0];
         }
     }

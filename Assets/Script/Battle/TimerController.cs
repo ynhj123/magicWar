@@ -12,12 +12,12 @@ public class TimerController : MonoBehaviour
     }
 
     // Update is called once per frame
- 
+
 
     IEnumerator Timer()
     {
         Vector3 tmp = games[0].transform.localScale * 0.1f;
-       
+
         while (true)
         {
             yield return new WaitForSeconds(15f);
@@ -25,7 +25,7 @@ public class TimerController : MonoBehaviour
             {
                 games[0].transform.localScale -= tmp;
             }
-            
+
         }
     }
 }

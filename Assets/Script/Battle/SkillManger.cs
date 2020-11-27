@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Windows;
 
-public class SkillManger 
+public class SkillManger
 {
     private static SkillManger instance = null;
 
@@ -24,7 +22,7 @@ public class SkillManger
         }
     }
 
-    public void Add(KeyCode key, Skill  skill)
+    public void Add(KeyCode key, Skill skill)
     {
         skills.Add(key, skill);
     }

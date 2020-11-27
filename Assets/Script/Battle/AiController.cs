@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class AiController : MonoBehaviour
 {
@@ -12,7 +8,7 @@ public class AiController : MonoBehaviour
         Idle,   // 待命状态
         Attack, // 进攻敌方
         Back,   // 回归原位
-    
+
     }
     public enum TrunState
     {
@@ -48,18 +44,18 @@ public class AiController : MonoBehaviour
     Transform orginTansform;
     Vector3 orginPosition;
     Vector3 orginForward;
-    
+
     Animator animator;
 
 
-   
+
     // Start is called before the first frame update
     void Start()
     {
-        
+
         player = GetComponent<Player>();
         animator = GetComponent<Animator>();
-        orginPosition = new Vector3(transform.position.x,transform.position.y,transform.position.z);
+        orginPosition = new Vector3(transform.position.x, transform.position.y, transform.position.z);
         orginForward = transform.forward;
         orginTansform = transform;
         curState = AIState.Idle;
@@ -89,7 +85,7 @@ public class AiController : MonoBehaviour
             case AIState.Back:
                 HandleBack();
                 break;
-        
+
             default:
                 break;
         }
@@ -99,7 +95,7 @@ public class AiController : MonoBehaviour
     {
         //回到原位
         player.ReSetEndPoint(orginPosition);
-    
+
         if ((orginPosition - transform.position).sqrMagnitude < 0.1f)
         {
             transform.position = orginPosition;
@@ -127,7 +123,7 @@ public class AiController : MonoBehaviour
     private void HandleTurnAttach()
     {
         transform.LookAt(targetTansform.position);
-       
+
         if (attchTime >= attackInterval)
         {
             player.FireQSkill();
@@ -137,14 +133,14 @@ public class AiController : MonoBehaviour
         {
             attchTime += Time.fixedDeltaTime;
         }
-             
+
     }
 
 
 
     private void HandleAttachMove()
     {
-        player.ReSetEndPoint(targetTansform.position) ;
+        player.ReSetEndPoint(targetTansform.position);
     }
 
     private void JudgeAttach()
@@ -152,11 +148,11 @@ public class AiController : MonoBehaviour
         Vector3 target = targetTansform.position;
         //在攻击范围和视野范围之间移动
         //在攻击范围攻击
-    
+
         if ((target - transform.position).sqrMagnitude > AttachRadius * AttachRadius)
         {
-           attackState  =  AttackState.Move;
-           animator.SetBool("IsMove", true);
+            attackState = AttackState.Move;
+            animator.SetBool("IsMove", true);
 
         }
         else
@@ -180,7 +176,7 @@ public class AiController : MonoBehaviour
             default:
                 break;
         }
-       
+
     }
 
     private void HandleTurn(TrunState newState, Vector3 target)
@@ -205,12 +201,12 @@ public class AiController : MonoBehaviour
 
     void DrawFieldOfView()
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position,viewRadius, layerMask);
-      
+        Collider[] colliders = Physics.OverlapSphere(transform.position, viewRadius, layerMask);
+
         //检测
         Collider playerCollider = colliders.Where(collider => collider.CompareTag("Player") && Vector3.Angle(transform.forward, collider.transform.position - transform.position) < viewMinAngle).FirstOrDefault();
-      
-        if(playerCollider != null)
+
+        if (playerCollider != null)
         {
             //player.ReSetEndPoint(playerCollider.transform.position);
             curState = AIState.Attack;
@@ -219,12 +215,12 @@ public class AiController : MonoBehaviour
         }
         else
         {
-            if(curState == AIState.Attack)
+            if (curState == AIState.Attack)
             {
                 curState = AIState.Back;
                 animator.SetBool("IsMove", true);
             }
         }
     }
-   
+
 }

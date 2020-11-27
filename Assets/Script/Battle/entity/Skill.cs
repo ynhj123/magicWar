@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class Skill {
+﻿public class Skill
+{
     //法术接口：编号，名称，动画，施法时间，冷却时间，耗蓝，伤害，图标，施法距离，作用范围，法术属性，描述；
     int id;
     string skinPath;

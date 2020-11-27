@@ -2,13 +2,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Net.Http;
 using System.Text;
 using UnityEngine;
-using UnityEngine.Assertions.Must;
 using UnityEngine.Networking;
 
-public class HttpUtils: MonoBehaviour {
+public class HttpUtils : MonoBehaviour
+{
     public string baseUrl = "";
     public Dictionary<string, string> headers = new Dictionary<string, string>();
     // Start is called before the first frame update
@@ -20,8 +19,12 @@ public class HttpUtils: MonoBehaviour {
         instance = this;
 
     }
-   
-    public void Get(string method ,Action<string> action)
+
+    public void Get<T>(string method, Action<T> action)
+    {
+        StartCoroutine(_Get(SetUrl(method), action));
+    }
+    public void Get(string method, Action<string> action)
     {
         StartCoroutine(_Get(SetUrl(method), action));
     }
@@ -31,13 +34,13 @@ public class HttpUtils: MonoBehaviour {
     }
     public void Put(string method, Dictionary<string, string> formFields, Action<string> action)
     {
-        StartCoroutine(_Put(SetUrl(method), formFields,action));
+        StartCoroutine(_Put(SetUrl(method), formFields, action));
     }
     public void Post(string method, Dictionary<string, string> formFields, Action<string> action)
     {
         StartCoroutine(_Post(SetUrl(method), formFields, action));
     }
-  
+
 
 
 
@@ -55,6 +58,7 @@ public class HttpUtils: MonoBehaviour {
     //"http://www.my-server.com"
     IEnumerator _Get<T>(string url, Action<T> callback)
     {
+        Debug.Log(url);
         UnityWebRequest www = UnityWebRequest.Get(url);
         //www.SetRequestHeader("Content-Type", "application/json;charset=utf-8");
         SetHeaders(www);
@@ -62,16 +66,16 @@ public class HttpUtils: MonoBehaviour {
 
         HandleResult(callback, www);
     }
-    IEnumerator _Get(string method, Action<string> callback)
-    {
-   
-        UnityWebRequest www = UnityWebRequest.Get(method);
-        //www.SetRequestHeader("Content-Type", "application/json;charset=utf-8");
-        SetHeaders(www);
-        yield return www.SendWebRequest();
+    /*  IEnumerator _Get(string method, Action<string> callback)
+      {
 
-        HandleResult(callback, www);
-    }
+          UnityWebRequest www = UnityWebRequest.Get(method);
+          //www.SetRequestHeader("Content-Type", "application/json;charset=utf-8");
+          SetHeaders(www);
+          yield return www.SendWebRequest();
+
+          HandleResult(callback, www);
+      }*/
     //"http://www.my-server.com"
     IEnumerator _Delete(string url, Action<bool> callback)
     {
@@ -82,7 +86,7 @@ public class HttpUtils: MonoBehaviour {
     }
 
     //"http://www.my-server.com/image.png"
-    IEnumerator _GetTexture(string url,Action<Texture> callback)
+    IEnumerator _GetTexture(string url, Action<Texture> callback)
     {
         UnityWebRequest www = UnityWebRequestTexture.GetTexture(url);
         SetHeaders(www);
@@ -96,11 +100,11 @@ public class HttpUtils: MonoBehaviour {
         {
             Texture myTexture = DownloadHandlerTexture.GetContent(www);
             callback(myTexture);
-           
+
         }
     }
     //"http://www.my-server.com/myform"
-     IEnumerator UploadFile<T>(string url, byte[] bytes, Action<T> callback)
+    IEnumerator UploadFile<T>(string url, byte[] bytes, Action<T> callback)
     {
         UnityWebRequest www = new UnityWebRequest(url, "POST");
         www.uploadHandler = (UploadHandler)new UploadHandlerRaw(bytes);
@@ -116,7 +120,7 @@ public class HttpUtils: MonoBehaviour {
         }
     }
 
-    
+
 
     IEnumerator _Post<T>(string url, Dictionary<string, string> formFields, Action<T> callback)
     {
@@ -130,18 +134,19 @@ public class HttpUtils: MonoBehaviour {
         SetHeaders(www);
         yield return www.SendWebRequest();
         HandleResult(callback, www);
-   
+
     }
     void HandleResult<T>(Action<T> callback, UnityWebRequest www)
     {
         if (www.isNetworkError || www.isHttpError)
         {
-            Debug.Log(www.error);
+
             PanelManger.Open<SystemTipPanel>("网络异常！");
         }
         else
         {
             string result = www.downloadHandler.text;
+            Debug.Log(result);
             HttpResponse<T> response = JsonConvert.DeserializeObject<HttpResponse<T>>(result);
             if ("200".Equals(response.Code))
             {
@@ -153,7 +158,7 @@ public class HttpUtils: MonoBehaviour {
             }
         }
     }
-    
+
     //"http://www.my-server.com/upload"
     IEnumerator _Put(string url, Dictionary<string, string> formFields, Action<string> callback)
     {
@@ -170,12 +175,12 @@ public class HttpUtils: MonoBehaviour {
     {
         string code;
         string mesg;
-        string time;
+        DateTime time;
         T data;
 
         public string Code { get => code; set => code = value; }
         public string Mesg { get => mesg; set => mesg = value; }
-        public string Time { get => time; set => time = value; }
+        public DateTime Time { get => time; set => time = value; }
         public T Data { get => data; set => data = value; }
     }
 }

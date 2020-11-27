@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +8,7 @@ public class RegistryPanel : BasePanel
     InputField password;
     InputField rePassword;
     InputField nickName;
-   
+
     Button registryBtn;
 
     public override void OnInit()
@@ -32,7 +31,7 @@ public class RegistryPanel : BasePanel
     private void OnRegistry()
     {
         Debug.Log("registry");
-        if(password != rePassword)
+        if (!password.text.Equals(rePassword.text))
         {
             PanelManger.Open<SystemTipPanel>("2次密码不一致");
             return;
@@ -42,15 +41,15 @@ public class RegistryPanel : BasePanel
         postParam.Add("username", username.text);
         postParam.Add("password", password.text);
         postParam.Add("nickName", nickName.text);
-        HttpUtils.instance.Post("/auth/register",postParam,(result)=>
-        {
-            PanelManger.Open<SystemTipPanel>("注册成功！");
-            PanelManger.Open<Buttons>();
-            Close();
+        HttpUtils.instance.Post("/auth/register", postParam, (result) =>
+          {
+              PanelManger.Open<SystemTipPanel>("注册成功！");
+              PanelManger.Open<Buttons>();
+              Close();
 
-        });
+          });
 
-        
+
     }
 
     public override void OnClose()
