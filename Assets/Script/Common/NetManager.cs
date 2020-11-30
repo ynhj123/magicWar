@@ -359,6 +359,8 @@ public static class NetManager
         //添加到消息队列
         lock (msgList)
         {
+            Debug.Log(msgBase.protoName);
+
             msgList.Add(msgBase);
             msgCount++;
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class RoomPanel : BasePanel
@@ -62,8 +63,22 @@ public class RoomPanel : BasePanel
         NetManager.AddMsgListener("GetRoomInfoMsg", OnGetRoomInfoMsg);
         NetManager.AddMsgListener("LeaveRoomMsg", OnLeaveRoomMsg);
         NetManager.AddMsgListener("ChatRoomMsg", OnChatRoomMsg);
+        NetManager.AddMsgListener("StartMsg",OnStartMsg);
         GetRoomInfoMsg getRoomInfoMsg = new GetRoomInfoMsg();
         NetManager.Send(getRoomInfoMsg);
+    }
+
+    private void OnStartMsg(MsgBase msgBase)
+    {
+        StartMsg msg = (StartMsg)msgBase;
+        if (msg.code == "200")
+        {
+            SceneManager.LoadScene("LoadScene");
+        }
+        else
+        {
+            PanelManger.Open<SystemTipPanel>(msg.msg);
+        }
     }
 
     private void OnSendChatMsg()
@@ -91,6 +106,7 @@ public class RoomPanel : BasePanel
         NetManager.RemoveMsgListener("GetRoomInfoMsg", OnGetRoomInfoMsg);
         NetManager.RemoveMsgListener("LeaveRoomMsg", OnLeaveRoomMsg);
         NetManager.RemoveMsgListener("ChatRoomMsg", OnChatRoomMsg);
+        NetManager.RemoveMsgListener("StartMsg", OnStartMsg);
     }
 
     public override void OnShow(params object[] objs)

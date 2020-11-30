@@ -84,21 +84,7 @@ public class LeaveRoomMsg : MsgBase
     public string code;
     public string msg;
 }
-[System.Serializable]
-public class InitPlayer
-{
-    public string uid = "lpy";  //id
-    public float x;
-    public float z;
-    public float ey;
-    public float hp;
-    public float nickname;
-    public float attach;
-    public float defense;
-    public float speed;
-    public int killNum;
 
-}
 //开战
 public class StartMsg : MsgBase
 {
@@ -106,7 +92,7 @@ public class StartMsg : MsgBase
     //服务端回
     public string code = "";
     public string msg;
-    public InitPlayer[] players;
+    
 }
 //准备
 public class ReadyStartMsg : MsgBase

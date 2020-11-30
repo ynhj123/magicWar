@@ -2,7 +2,7 @@
 public class MsgSyncPlayer : MsgBase
 {
     public MsgSyncPlayer() { protoName = "MsgSyncPlayer"; }
-    //位置、旋转、炮塔旋转
+    //位置、旋转
     public float x = 0f;
     public float y = 0f;
     public float z = 0f;

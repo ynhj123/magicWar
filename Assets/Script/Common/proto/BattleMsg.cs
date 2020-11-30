@@ -1,34 +1,44 @@
 
-//坦克信息
+//玩家信息
 [System.Serializable]
 public class PlayerInfo
 {
-    public string id = "";  //玩家id
-    public int camp = 0;    //阵营
-    public int hp = 0;      //生命值
+    public string uid = "";  //玩家id
+    public string nickname = "";
 
+    public int degree = 0;    //阵营
+    public int hp = 0;      //生命值
+    
     public float x = 0;     //位置
     public float z = 0;
     public float ey = 0;
 
+    public float attach;
+    public float defense;
+    public float speed;
+
+    public int killNum;
+
 
 }
-//坦克rank信息
+//玩家rank信息
 [System.Serializable]
 public class PlayerRank
 {
     public string id = "";  //玩家id
-    public int rank = 0;
+    public int socre = 0;
     public int killNum;
 
 }
 
 
 //进入战场（服务端推送）
-public class MsgEnterBattle : MsgBase
+public class LoadFinishMsg : MsgBase
 {
-    public MsgEnterBattle() { protoName = "MsgEnterBattle"; }
+    public LoadFinishMsg() { protoName = "LoadFinishMsg"; }
     //服务端回
+    public string code;
+    public string msg;
     public PlayerInfo[] players;
     public int mapId = 1;	//地图，只有一张
 }
