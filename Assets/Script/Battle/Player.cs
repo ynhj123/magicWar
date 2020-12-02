@@ -13,7 +13,7 @@ public class Player : BasePlayer
     {
         //base.Update();
         MoveUpdate();
-        JudgeMentDebuff();
+        //JudgeMentDebuff();
         CheckIsAlive();
         SyncUpdate();
 
@@ -28,14 +28,13 @@ public class Player : BasePlayer
         }
         lastSendSyncTime = Time.time;
         //发送同步协议
-        MsgSyncPlayer msg = new MsgSyncPlayer();
+        SyncPlayerMsg msg = new SyncPlayerMsg();
         msg.x = transform.position.x;
-        msg.y = transform.position.y;
         msg.z = transform.position.z;
-        msg.ex = transform.eulerAngles.x;
         msg.ey = transform.eulerAngles.y;
-        msg.ez = transform.eulerAngles.z;
-
+        msg.hp = hp;
+        msg.speed = speed;
+        
         NetManager.Send(msg);
     }
 }

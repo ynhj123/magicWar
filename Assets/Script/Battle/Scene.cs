@@ -6,14 +6,24 @@ public class Scene : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Player player = other.GetComponent<Player>();
-        player.isDebuff = false;
+      
+        BasePlayer[] players = other.GetComponents<BasePlayer>();
+        foreach (var player in players)
+        {
+            player.isDebuff = false;
+
+        }
+        Debug.Log("SAFE");
 
     }
     private void OnTriggerExit(Collider other)
     {
-        Player player = other.GetComponent<Player>();
-        player.isDebuff = true;
+        BasePlayer[] players = other.GetComponents<BasePlayer>();
+        foreach (var player in players)
+        {
+            player.isDebuff = true;
+        }
+        Debug.Log("NOSAFE");
 
     }
 

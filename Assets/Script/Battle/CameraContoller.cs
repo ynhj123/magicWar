@@ -9,11 +9,7 @@ public class CameraContoller : MonoBehaviour
 
     void Start()
     {
-
         offset = transform.position - playTransform.position;
-
-
-
     }
 
     // Update is called once per frame

@@ -5,7 +5,7 @@ public class SkillModel : MonoBehaviour
     public float speed = 5f;
     public float force = 10;
     public float forPlayerTime = 1f;
-    public int playerId;
+    public string playerId;
 
 
     // Start is called before the first frame update

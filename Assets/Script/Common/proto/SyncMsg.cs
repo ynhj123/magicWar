@@ -1,24 +1,22 @@
 ﻿//同步坦克信息
-public class MsgSyncPlayer : MsgBase
+public class SyncPlayerMsg : MsgBase
 {
-    public MsgSyncPlayer() { protoName = "MsgSyncPlayer"; }
+    public SyncPlayerMsg() { protoName = "SyncPlayerMsg"; }
     //位置、旋转
     public float x = 0f;
-    public float y = 0f;
     public float z = 0f;
-    public float ex = 0f;
     public float ey = 0f;
-    public float ez = 0f;
 
+    public float speed;
     public float hp = 0;
     //服务端补充
-    public string id = "";		//哪个玩家
+    public string uid = "";		//哪个玩家
 }
 
 //开火
-public class MsgFire : MsgBase
+public class SkillMsg : MsgBase
 {
-    public MsgFire() { protoName = "MsgFire"; }
+    public SkillMsg() { protoName = "SkillMsg"; }
     //技能初始位置、旋转
     public float x = 0f;
     public float y = 0f;
@@ -29,7 +27,7 @@ public class MsgFire : MsgBase
     //技能id
     public int skillId = 0;
     //服务端补充
-    public string id = "";      //哪个玩家
+    public string uid = "";      //哪个玩家
 }
 
 //击中

@@ -6,16 +6,17 @@ public class BasePlayer : MonoBehaviour
 {
     //玩家model
     private GameObject skin;
-    public int id = 0;
-    Transform myTransonfrom;
+    public string id = "";
+    public Transform myTransonfrom;
     List<Vector3> endPoints;
-    float speed = 5;
+    public float speed = 5;
     //float angluarSpeed = 100;
-    public double hp = 100;
-    public int finillyHurrtPlyerId = -1;
+    public float hp = 100;
+    public string finillyHurrtPlyerId = "";
+   
     public Rigidbody rigidBody;
     public Animator animator;
-    public Transform bookTranform;
+    Transform bookTranform;
     // Start is called before the first frame update
     public virtual void Init(string skinPath)
     {
@@ -42,7 +43,8 @@ public class BasePlayer : MonoBehaviour
     {
         myTransonfrom = GetComponent<Transform>();
         animator = GetComponent<Animator>();
-
+        bookTranform = transform
+            .Find("ybot/mixamorig:Hips/mixamorig:Spine/mixamorig:Spine1/mixamorig:Spine2/mixamorig:LeftShoulder/mixamorig:LeftArm/mixamorig:LeftForeArm/mixamorig:LeftHand/WeaponSocket");
         endPoints = new List<Vector3>();
 
     }
@@ -50,22 +52,28 @@ public class BasePlayer : MonoBehaviour
     public void FireQSkill()
     {
         //Skill skill = SkillManger.Instance.Get(key);
+        Vector3 pos = transform.position + transform.forward * 2 + new Vector3(0, 1, 0);
+        SkillMsg skillMsg = new SkillMsg();
+        skillMsg.x = pos.x;
+        skillMsg.y = pos.y;
+        skillMsg.z = pos.z;
+        
+        NetManager.Send(skillMsg);
         string path = "Battle/Skill";
-        GameObject bullet = Instantiate(ResManger.LoadPrefab(path), transform.position + transform.forward * 2 + new Vector3(0, 1, 0), Quaternion.identity);
+        GameObject bullet = Instantiate(ResManger.LoadPrefab(path), pos, Quaternion.identity);
         bullet.transform.up = transform.forward;
         SkillModel skillModel = bullet.GetComponent<SkillModel>();
         skillModel.playerId = id;
+       
     }
 
     // Update is called once per frame
     public virtual void Update()
     {
-
     }
-
+    
     public void MoveUpdate()
     {
-        animator.SetFloat("Speed", speed);
         if (endPoints.Count > 0)
         {
             //animator.SetBool("IsMove", true);
@@ -73,8 +81,19 @@ public class BasePlayer : MonoBehaviour
             var dot = Vector3.Dot(v, myTransonfrom.right);
             Vector3 next = v.normalized * speed * Time.deltaTime;
             float angle = Vector3.Angle(v, myTransonfrom.forward);
-            if (Vector3.SqrMagnitude(v) > 0.01f)
+            
+            if (Vector3.SqrMagnitude(v) > 0.2f)
             {
+                /* if (id != MainController.user.Uid)
+                 {
+                    
+
+                     Debug.Log(id + ":" + myTransonfrom.position);
+                     Debug.Log(id + ":" + endPoints[0]);
+                     *//*
+                     Debug.Log(id + ":" + Vector3.SqrMagnitude(v));*//*
+                 }*/
+                JudgeMentDebuff();
                 myTransonfrom.LookAt(endPoints[0]);
                 myTransonfrom.position += next;
 
@@ -87,9 +106,10 @@ public class BasePlayer : MonoBehaviour
         }
         else
         {
-            animator.SetFloat("Speed", 0);
+            speed = 0;
             // animator.SetBool("IsMove", false);
         }
+        animator.SetFloat("Speed", speed);
     }
 
     public bool IsAlive => hp > 0;

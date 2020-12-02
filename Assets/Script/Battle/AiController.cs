@@ -61,7 +61,7 @@ public class AiController : MonoBehaviour
         curState = AIState.Idle;
         trunState = TrunState.Left;
         attackInterval = 1;
-        player.id = 1;
+        player.id = "1";
     }
 
 

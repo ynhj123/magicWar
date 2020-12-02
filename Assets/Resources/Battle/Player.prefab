@@ -153,7 +153,6 @@ GameObject:
   - component: {fileID: 6830819097366136180}
   - component: {fileID: 6830819097366136183}
   - component: {fileID: 6830819097366136182}
-  - component: {fileID: 6830819097366136181}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -169,7 +168,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6830819097366136170}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6431501707251695953}
@@ -189,7 +188,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: d2d166694cf995a4e9d834cae468e341, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -225,25 +224,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 84
   m_CollisionDetection: 0
---- !u!114 &6830819097366136181
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6830819097366136170}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 650ad7cf16e4b404ca1d1d88c119e4a6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  id: 0
-  hp: 100
-  finillyHurrtPlyerId: -1
-  rigidBody: {fileID: 0}
-  animator: {fileID: 0}
-  bookTranform: {fileID: 7556444141734408862}
-  isDebuff: 0
 --- !u!1 &8970560541663090975
 GameObject:
   m_ObjectHideFlags: 0

@@ -30,12 +30,12 @@ public class LoadAsyncScene : MonoBehaviour
     private void OnLoadFinish(MsgBase msgBase)
     {
         LoadFinishMsg msg = (LoadFinishMsg)msgBase;
-        BattleMain.players.Clear();
+        BattleMain.playerDatas.Clear();
         PlayerInfo[] players = msg.players;
         for (int i = 0; i < players.Length; i++) { 
 
             PlayerInfo playerInfo = players[i];
-            BattleMain.players.Add(playerInfo.uid, playerInfo);
+            BattleMain.playerDatas.Add(playerInfo.uid, playerInfo);
 
         }
         async.allowSceneActivation = true;

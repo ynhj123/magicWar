@@ -26,28 +26,33 @@ public class SyncPlayer : BasePlayer
         forecastTime = Time.time;
     }
 
-    new void Update()
+    public override void Update()
     {
-        base.Update();
+        //base.Update();
         //更新位置
         ForecastUpdate();
+        //Debug.Log(id + ":" + myTransonfrom.position);
+        //MoveUpdate();
     }
 
     //移动同步
-    public void SyncPos(MsgSyncPlayer msg)
+    public void SyncPos(SyncPlayerMsg msg)
     {
+        //Debug.Log(msg.uid +":" +id);
         //预测位置
-        Vector3 pos = new Vector3(msg.x, msg.y, msg.z);
-        Vector3 rot = new Vector3(msg.ex, msg.ey, msg.ez);
-        //forecastPos = pos + 2*(pos - lastPos);
-        //forecastRot = rot + 2*(rot - lastRot);
+        Vector3 pos = new Vector3(msg.x, 0, msg.z);
+        Vector3 rot = new Vector3(0, msg.ey, 0);
+        /*forecastPos = pos + 1f * (pos - lastPos);
+        forecastRot = rot + 1f * (rot - lastRot);*/
         forecastPos = pos;  //跟随不预测
         forecastRot = rot;
 
         //更新
-        lastPos = pos;
-        lastRot = rot;
-
+     /*   lastPos = pos;
+        lastRot = rot;*/
+        // ReSetEndPoint(pos);
+        hp = msg.hp;
+        speed = msg.speed;
         forecastTime = Time.time;
     }
 
@@ -60,25 +65,30 @@ public class SyncPlayer : BasePlayer
         t = Mathf.Clamp(t, 0f, 1f);
         //位置
         Vector3 pos = transform.position;
-        pos = Vector3.Lerp(pos, forecastPos, t);
-        transform.position = pos;
+        /* 
+         pos = Vector3.Lerp(pos, forecastPos, t);
+         transform.position = pos;*/
+        Vector3 v = forecastPos - pos;
+        Vector3 next = v.normalized * speed * Time.deltaTime;
+        transform.position += next;
         //旋转
-        Quaternion quat = transform.rotation;
-        Quaternion forcastQuat = Quaternion.Euler(forecastRot);
-        quat = Quaternion.Lerp(quat, forcastQuat, t);
-        transform.rotation = quat;
-
+        myTransonfrom.eulerAngles = forecastRot;
+        //myTransonfrom.LookAt(forecastPos);
+        // 动画
+        animator.SetFloat("Speed", speed);
+       
     }
 
     //开火
-    public void SyncFire(MsgFire msg)
+    public void SyncFire(SkillMsg msg)
     {
-        /*	Bullet bullet = Fire();
-            //更新坐标
-            Vector3 pos = new Vector3(msg.x, msg.y, msg.z);
-            Vector3 rot = new Vector3(msg.ex, msg.ey, msg.ez);
-            bullet.transform.position = pos;
-            bullet.transform.eulerAngles = rot;*/
+        string path = "Battle/Skill";
+       /* GameObject bullet = Instantiate(ResManger.LoadPrefab(path), transform.position + transform.forward * 2 + new Vector3(0, 1, 0), Quaternion.identity);*/
+        GameObject bullet = Instantiate(ResManger.LoadPrefab(path), new Vector3(msg.x,msg.y,msg.z), Quaternion.identity);
+        bullet.transform.up = transform.forward;
+        SkillModel skillModel = bullet.GetComponent<SkillModel>();
+        skillModel.playerId = msg.uid;
+       
     }
 
 }
