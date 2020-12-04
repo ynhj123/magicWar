@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class RoomListController : MonoBehaviour
 {
+ 
     Button createRoomBtn; //创建房间
     Button joinRoomBtn; //加入房间
     Button getLastBtn;  //获取上一页房间
@@ -50,6 +52,7 @@ public class RoomListController : MonoBehaviour
         RoomListMsg roomListMsg = new RoomListMsg();
         roomListMsg.curPage = curPage;
         roomListMsg.pageSize = pageSize;
+        Debug.Log("GetRoomList");
         NetManager.Send(roomListMsg);
     }
     void GetLast()
@@ -72,8 +75,9 @@ public class RoomListController : MonoBehaviour
     }
     void Start()
     {
+        
         PanelManger.Init();
-
+        
         roomItemScripts = new List<RoomItemScript>();
         Transform roomParents = transform.Find("Canvas/Content/RoomList/Viewport/Content");
         foreach (Transform room in roomParents)
@@ -92,52 +96,59 @@ public class RoomListController : MonoBehaviour
         getNextBtn.onClick.AddListener(GetNext);
         getRoomList.onClick.AddListener(GetRoomList);
         joinRoomBtn.onClick.AddListener(ShowJoinRoom);
-        NetManager.AddMsgListener("CreateRoomMsg", (msgBase) =>
-        {
-            CreateRoomMsg msg = (CreateRoomMsg)msgBase;
-            if (msg.code == "200")
-            {
-                PanelManger.Open<RoomPanel>(msg.roomId);
-            }
-            else
-            {
-                PanelManger.Open<SystemTipPanel>(msg.msg);
-            }
-
-        });
-        NetManager.AddMsgListener("RoomListMsg", (msgBase) =>
-        {
-            RoomListMsg msg = (RoomListMsg)msgBase;
-
-            if (msg.code == "200")
-            {
-                rooms = msg.rooms;
-                size = msg.size;
-                FlushRoomList();
-            }
-            else
-            {
-                PanelManger.Open<SystemTipPanel>(msg.msg);
-            }
-
-        });
-        NetManager.AddMsgListener("EnterRoomMsg", (msgBase) =>
-        {
-            Debug.Log("enterroom");
-            EnterRoomMsg msg = (EnterRoomMsg)msgBase;
-            Debug.Log(msg);
-            if (msg.code == "200")
-            {
-                PanelManger.Open<RoomPanel>(msg.roomId);
-            }
-            else
-            {
-                PanelManger.Open<SystemTipPanel>(msg.msg);
-            }
-        });
+        NetManager.AddMsgListener("CreateRoomMsg", OnCreateRoom) ;
+        NetManager.AddMsgListener("RoomListMsg", OnRoomList) ;
+        NetManager.AddMsgListener("EnterRoomMsg", OnEnterRoom);
         //DontDestroyOnLoad(transform);
         GetRoomList();
     }
+
+    private void OnEnterRoom(MsgBase msgBase)
+    {
+        Debug.Log("enterroom");
+        EnterRoomMsg msg = (EnterRoomMsg)msgBase;
+        Debug.Log(msg);
+        if (msg.code == "200")
+        {
+            PanelManger.Open<RoomPanel>(msg.roomId);
+        }
+        else
+        {
+            PanelManger.Open<SystemTipPanel>(msg.msg);
+        }
+    }
+
+    private void OnRoomList(MsgBase msgBase)
+    {
+        RoomListMsg msg = (RoomListMsg)msgBase;
+
+        if (msg.code == "200")
+        {
+            rooms = msg.rooms;
+            size = msg.size;
+            FlushRoomList();
+        }
+        
+        else
+        {
+            PanelManger.Open<SystemTipPanel>(msg.msg);
+        }
+
+    }
+
+    private void OnCreateRoom(MsgBase msgBase)
+    {
+        CreateRoomMsg msg = (CreateRoomMsg)msgBase;
+        if (msg.code == "200")
+        {
+            PanelManger.Open<RoomPanel>(msg.roomId);
+        }
+        else
+        {
+            PanelManger.Open<SystemTipPanel>(msg.msg);
+        }
+    }
+
     void CreateRoom()
     {
         CreateRoomMsg createRoomMsg = new CreateRoomMsg();
@@ -146,7 +157,15 @@ public class RoomListController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         NetManager.Update();
+    }
+    private void OnDestroy()
+    {
+        NetManager.RemoveMsgListener("CreateRoomMsg", OnCreateRoom);
+        NetManager.RemoveMsgListener("RoomListMsg", OnRoomList);
+        NetManager.RemoveMsgListener("EnterRoomMsg", OnEnterRoom);
+        
     }
 
 }

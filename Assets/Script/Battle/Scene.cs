@@ -6,7 +6,7 @@ public class Scene : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-      
+
         BasePlayer[] players = other.GetComponents<BasePlayer>();
         foreach (var player in players)
         {

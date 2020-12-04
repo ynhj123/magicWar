@@ -9,6 +9,7 @@ public class SyncPlayerMsg : MsgBase
 
     public float speed;
     public float hp = 0;
+    public int killNum;
     //服务端补充
     public string uid = "";		//哪个玩家
 }
@@ -31,20 +32,20 @@ public class SkillMsg : MsgBase
 }
 
 //击中
-public class MsgHit : MsgBase
+public class HitMsg : MsgBase
 {
-    public MsgHit() { protoName = "MsgHit"; }
+    public HitMsg() { protoName = "HitMsg"; }
     //击中谁
     public string targetId = "";
+    public int skillId;
     //击中点	
     public float x = 0f;
     public float y = 0f;
     public float z = 0f;
     //服务端补充
-    public string id = "";      //哪个玩家
-    public int hp = 0;          //被击中玩家血量
-    public int damage = 0;		//受到的伤害
+    public string uid = "";      //哪个玩家
 }
+
 public class MsgDebuff : MsgBase
 {
     public MsgDebuff() { protoName = "MsgDebuff"; }

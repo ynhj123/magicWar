@@ -92,7 +92,7 @@ public class StartMsg : MsgBase
     //服务端回
     public string code = "";
     public string msg;
-    
+
 }
 //准备
 public class ReadyStartMsg : MsgBase

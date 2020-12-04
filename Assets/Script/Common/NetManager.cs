@@ -103,7 +103,7 @@ public static class NetManager
     private static void FireMsg(string msgName, MsgBase msgBase)
     {
         if (msgListeners.ContainsKey(msgName))
-        {          
+        {
             msgListeners[msgName](msgBase);
         }
     }
@@ -255,7 +255,6 @@ public static class NetManager
                 0, SendCallback, socket);
         }
     }
-
     //Send回调
     public static void SendCallback(IAsyncResult ar)
     {
@@ -283,9 +282,10 @@ public static class NetManager
             {
 
                 writeQueue.Dequeue();
-                ba = writeQueue.FirstOrDefault();
+                ba = writeQueue.First();
             }
         }
+        Debug.Log(writeQueue.Count);
         //继续发送
         if (ba != null)
         {

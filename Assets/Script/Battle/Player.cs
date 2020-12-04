@@ -6,14 +6,14 @@ public class Player : BasePlayer
     //上一次发送同步信息的时间
     private float lastSendSyncTime = 0;
     //同步帧率
-    public static float syncInterval = 0.05f;
+    public static float syncInterval = 0.02f;
 
 
     public override void Update()
     {
         //base.Update();
         MoveUpdate();
-        //JudgeMentDebuff();
+        JudgeMentDebuff();
         CheckIsAlive();
         SyncUpdate();
 
@@ -34,7 +34,18 @@ public class Player : BasePlayer
         msg.ey = transform.eulerAngles.y;
         msg.hp = hp;
         msg.speed = speed;
-        
+
+        NetManager.Send(msg);
+    }
+    private void OnDestroy()
+    {
+        SyncPlayerMsg msg = new SyncPlayerMsg();
+        msg.x = transform.position.x;
+        msg.z = transform.position.z;
+        msg.ey = transform.eulerAngles.y;
+        msg.hp = 0;
+        msg.speed = speed;
+      
         NetManager.Send(msg);
     }
 }

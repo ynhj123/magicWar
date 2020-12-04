@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -20,19 +18,26 @@ public class LoadAsyncScene : MonoBehaviour
 
     private void Start()
     {
-        progress = transform.Find("Canvas/Slider/Text").GetComponent<Text>() ;
+        progress = transform.Find("Canvas/Slider/Text").GetComponent<Text>();
         slider = transform.Find("Canvas/Slider").GetComponent<Slider>();
         NetManager.AddMsgListener("LoadFinishMsg", OnLoadFinish);
 
         StartCoroutine("LoadScene");
     }
 
+    private void OnDestroy()
+    {
+        NetManager.RemoveMsgListener("LoadFinishMsg", OnLoadFinish);
+        async = null;
+    }
     private void OnLoadFinish(MsgBase msgBase)
     {
+        Debug.Log("OnLoadFinish:"+nextSceneName);
         LoadFinishMsg msg = (LoadFinishMsg)msgBase;
         BattleMain.playerDatas.Clear();
         PlayerInfo[] players = msg.players;
-        for (int i = 0; i < players.Length; i++) { 
+        for (int i = 0; i < players.Length; i++)
+        {
 
             PlayerInfo playerInfo = players[i];
             BattleMain.playerDatas.Add(playerInfo.uid, playerInfo);
@@ -47,6 +52,7 @@ public class LoadAsyncScene : MonoBehaviour
 
     IEnumerator LoadScene()
     {
+        Debug.Log("load Scene");
         async = SceneManager.LoadSceneAsync(nextSceneName);
         async.allowSceneActivation = false;
         while (!async.isDone)
@@ -61,7 +67,7 @@ public class LoadAsyncScene : MonoBehaviour
 
             if (progressValue >= 0.9)
             {
-                progress.text = "按任意键继续";
+                //progress.text = "按任意键继续";
                 //获取用户信息
                 //获取完成后发送发成信息
                 //先拉取技能列表

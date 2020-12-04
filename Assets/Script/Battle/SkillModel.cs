@@ -7,10 +7,13 @@ public class SkillModel : MonoBehaviour
     public float forPlayerTime = 1f;
     public string playerId;
 
+    public Skill skill;
+
 
     // Start is called before the first frame update
     void Start()
     {
+
         Destroy(this.gameObject, 1);
     }
 
@@ -23,19 +26,30 @@ public class SkillModel : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-
-        Player player = other.GetComponent<Player>();
-        if (playerId != player.id)
+        BasePlayer player;
+        bool v = other.TryGetComponent<BasePlayer>(out player);
+        //other.GetComponent<Player>();
+        if (v && playerId != player.id && player.id == MainController.user.Uid)
         {
-
-            player.hp -= 10;
             Vector3 direct = player.transform.position - this.transform.position;
+            HitMsg hitMsg = new HitMsg();
+            hitMsg.x = direct.x;
+            hitMsg.y = 0;
+            hitMsg.z = direct.z;
+            hitMsg.targetId = player.id;
+            NetManager.Send(hitMsg);
+            player.animator.Play("IsHurrt");
+            player.hp -= 10;
             direct.y = 0;
             Rigidbody rig = player.GetComponent<Rigidbody>();
             rig.velocity = direct * force;
 
             player.finillyHurrtPlyerId = this.playerId;
             player.ResetPlayer(forPlayerTime);
+           
+        }
+        if(v && playerId != player.id)
+        {
             //显示特效
             Destroy(gameObject);
         }

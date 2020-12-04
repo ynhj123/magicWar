@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class RoomPlayerScript : MonoBehaviour
@@ -101,9 +100,10 @@ public class RoomPlayerScript : MonoBehaviour
     {
         HideIcon();
         HideName();
-        HideKick();
         HideOwn();
         HideReady();
+        HideKick();
+
     }
     void ShowName()
     {
@@ -167,5 +167,9 @@ public class RoomPlayerScript : MonoBehaviour
         canvasGroup.alpha = 0;
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
+    }
+    private void OnDestroy()
+    {
+        kick.onClick.RemoveAllListeners(); ;
     }
 }

@@ -6,10 +6,10 @@ public class PlayerInfo
     public string uid = "";  //玩家id
     public string nickname = "";
 
-    public int degree = 0;    //阵营
+    public int degree = 0;    //位置
     public int hp = 0;      //生命值
-    
-    public float x = 0;     //位置
+
+    public float x = 0;     //
     public float z = 0;
     public float ey = 0;
 
@@ -26,6 +26,7 @@ public class PlayerInfo
 public class PlayerRank
 {
     public string id = "";  //玩家id
+    public string nickname = "";
     public int socre = 0;
     public int killNum;
 
@@ -42,11 +43,18 @@ public class LoadFinishMsg : MsgBase
     public PlayerInfo[] players;
     public int mapId = 1;	//地图，只有一张
 }
+public class EndMsg : MsgBase
+{
+    public EndMsg() { protoName = "EndMsg"; }
+    //服务端回
+    public PlayerInfo[] players;
+
+}
 
 //战斗结果（服务端推送）
-public class MsgBattleResult : MsgBase
+public class BattleResultMsg : MsgBase
 {
-    public MsgBattleResult() { protoName = "MsgBattleResult"; }
+    public BattleResultMsg() { protoName = "BattleResultMsg"; }
     //服务端回
     //public int winCamp = 0;	 //获胜的阵营
     public PlayerRank[] players;

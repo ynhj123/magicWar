@@ -13,7 +13,7 @@ public class BasePlayer : MonoBehaviour
     //float angluarSpeed = 100;
     public float hp = 100;
     public string finillyHurrtPlyerId = "";
-   
+
     public Rigidbody rigidBody;
     public Animator animator;
     Transform bookTranform;
@@ -57,21 +57,24 @@ public class BasePlayer : MonoBehaviour
         skillMsg.x = pos.x;
         skillMsg.y = pos.y;
         skillMsg.z = pos.z;
-        
+        Vector3 forward = transform.forward;
+        skillMsg.ex = forward.x;
+        skillMsg.ey = forward.y;
+        skillMsg.ez = forward.z;
         NetManager.Send(skillMsg);
         string path = "Battle/Skill";
         GameObject bullet = Instantiate(ResManger.LoadPrefab(path), pos, Quaternion.identity);
-        bullet.transform.up = transform.forward;
+        bullet.transform.up = forward;
         SkillModel skillModel = bullet.GetComponent<SkillModel>();
         skillModel.playerId = id;
-       
+
     }
 
     // Update is called once per frame
     public virtual void Update()
     {
     }
-    
+
     public void MoveUpdate()
     {
         if (endPoints.Count > 0)
@@ -81,7 +84,7 @@ public class BasePlayer : MonoBehaviour
             var dot = Vector3.Dot(v, myTransonfrom.right);
             Vector3 next = v.normalized * speed * Time.deltaTime;
             float angle = Vector3.Angle(v, myTransonfrom.forward);
-            
+
             if (Vector3.SqrMagnitude(v) > 0.2f)
             {
                 /* if (id != MainController.user.Uid)
@@ -93,7 +96,15 @@ public class BasePlayer : MonoBehaviour
                      *//*
                      Debug.Log(id + ":" + Vector3.SqrMagnitude(v));*//*
                  }*/
-                JudgeMentDebuff();
+                if (isDebuff)
+                {
+                    speed = 3;
+                }
+                else
+                {
+                    speed = 5;
+                }
+
                 myTransonfrom.LookAt(endPoints[0]);
                 myTransonfrom.position += next;
 
@@ -117,6 +128,7 @@ public class BasePlayer : MonoBehaviour
     {
         if (hp <= 0)
         {
+            BattleMain.players.Remove(this.id);
             Destroy(this.gameObject);
         }
     }
@@ -127,13 +139,10 @@ public class BasePlayer : MonoBehaviour
         if (isDebuff)
         {
             hp -= Time.fixedDeltaTime;
-            speed = 3;
-        }
-        else
-        {
-            speed = 5;
         }
 
+
+       
 
     }
     public void UpdateControl()

@@ -30,9 +30,14 @@ public class SyncPlayer : BasePlayer
     {
         //base.Update();
         //更新位置
-        ForecastUpdate();
+        //ForecastUpdate();
+        CheckIsAlive();
         //Debug.Log(id + ":" + myTransonfrom.position);
         //MoveUpdate();
+    }
+    private void FixedUpdate()
+    {
+        ForecastUpdate();
     }
 
     //移动同步
@@ -48,8 +53,8 @@ public class SyncPlayer : BasePlayer
         forecastRot = rot;
 
         //更新
-     /*   lastPos = pos;
-        lastRot = rot;*/
+        /*   lastPos = pos;
+           lastRot = rot;*/
         // ReSetEndPoint(pos);
         hp = msg.hp;
         speed = msg.speed;
@@ -60,35 +65,52 @@ public class SyncPlayer : BasePlayer
     //更新位置
     public void ForecastUpdate()
     {
+      
         //时间
-        float t = (Time.time - forecastTime) / Player.syncInterval;
+        float deltaT = Time.time - forecastTime;
+        if (Mathf.Abs(deltaT) < 0.01)
+        {
+            return;
+        }
+        float t = deltaT / Player.syncInterval;
         t = Mathf.Clamp(t, 0f, 1f);
         //位置
         Vector3 pos = transform.position;
-        /* 
-         pos = Vector3.Lerp(pos, forecastPos, t);
-         transform.position = pos;*/
+   
         Vector3 v = forecastPos - pos;
-        Vector3 next = v.normalized * speed * Time.deltaTime;
+        float dis = v.magnitude;
+      
+        Vector3 next = v.normalized * (dis / t) * Time.deltaTime;
         transform.position += next;
+        //Debug.Log(forecastPos + ":" + pos + ":" + t + ":" + dis+":"+(dis / t));
+
+
+
+        //myTransonfrom.LookAt(forecastPos);
         //旋转
         myTransonfrom.eulerAngles = forecastRot;
-        //myTransonfrom.LookAt(forecastPos);
         // 动画
         animator.SetFloat("Speed", speed);
-       
+
+    }
+
+    internal void SyncHit(HitMsg msg)
+    {
+        animator.Play("IsHurrt");
+
     }
 
     //开火
     public void SyncFire(SkillMsg msg)
     {
         string path = "Battle/Skill";
-       /* GameObject bullet = Instantiate(ResManger.LoadPrefab(path), transform.position + transform.forward * 2 + new Vector3(0, 1, 0), Quaternion.identity);*/
-        GameObject bullet = Instantiate(ResManger.LoadPrefab(path), new Vector3(msg.x,msg.y,msg.z), Quaternion.identity);
-        bullet.transform.up = transform.forward;
+        /* GameObject bullet = Instantiate(ResManger.LoadPrefab(path), transform.position + transform.forward * 2 + new Vector3(0, 1, 0), Quaternion.identity);*/
+        GameObject bullet = Instantiate(ResManger.LoadPrefab(path), new Vector3(msg.x, msg.y, msg.z), Quaternion.identity);
+        bullet.transform.up = new Vector3(msg.ex,msg.ey,msg.ez);
         SkillModel skillModel = bullet.GetComponent<SkillModel>();
+
         skillModel.playerId = msg.uid;
-       
+
     }
 
 }

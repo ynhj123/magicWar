@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class RoomPanel : BasePanel
 {
+    
+
     string roomId;
     bool isOwn;
     PlayerRoom mySelf;
@@ -28,52 +29,19 @@ public class RoomPanel : BasePanel
         layer = PanelManger.Layer.Panel;
     }
 
-    object[] objects;
+   
 
-    private void Start()
-    {
-        roomPlayerScripts = new List<RoomPlayerScript>();
-        Transform roomPlayers = skin.transform.Find("Right/Content/RoomPlayers/Viewport/Content");
-        foreach (Transform roomPlayer in roomPlayers)
-        {
-            RoomPlayerScript roomPlayerScript = roomPlayer.GetComponent<RoomPlayerScript>();
-            //roomPlayerScript.Init();
-            //Debug.Log(roomPlayerScript.gameObject);
-
-            roomPlayerScripts.Add(roomPlayerScript);
-        }
-
-        roomIdVo = skin.transform.Find("Header/RoomId").GetComponent<Text>();
-        roomId = objects[0].ToString();
-        roomIdVo.text = "房间号：" + roomId;
-        startGame = skin.transform.Find("Right/Bottom/Start").GetComponent<Button>();
-        readyStart = skin.transform.Find("Right/Bottom/Prepare").GetComponent<Button>();
-        unreadyStart = skin.transform.Find("Right/Bottom/Unprepare").GetComponent<Button>();
-        quit = skin.transform.Find("Right/Bottom/Quit").GetComponent<Button>();
-        sendBtn = skin.transform.Find("Left/Bottom/Send").GetComponent<Button>();
-        sendContent = skin.transform.Find("Left/Bottom/SendContent").GetComponent<InputField>();
-        chatContent = skin.transform.Find("Left/Chat/ChatView/Viewport/Content").GetComponent<Text>();
-        scrollRect = skin.transform.Find("Left/Chat/ChatView").GetComponent<ScrollRect>();
-        
-        startGame.onClick.AddListener(StartGame);
-        readyStart.onClick.AddListener(ReadyStart);
-        unreadyStart.onClick.AddListener(UnreadyStart);
-        quit.onClick.AddListener(OnQuit);
-        sendBtn.onClick.AddListener(OnSendChatMsg);
-        NetManager.AddMsgListener("GetRoomInfoMsg", OnGetRoomInfoMsg);
-        NetManager.AddMsgListener("LeaveRoomMsg", OnLeaveRoomMsg);
-        NetManager.AddMsgListener("ChatRoomMsg", OnChatRoomMsg);
-        NetManager.AddMsgListener("StartMsg",OnStartMsg);
-        GetRoomInfoMsg getRoomInfoMsg = new GetRoomInfoMsg();
-        NetManager.Send(getRoomInfoMsg);
-    }
+ 
 
     private void OnStartMsg(MsgBase msgBase)
     {
         StartMsg msg = (StartMsg)msgBase;
         if (msg.code == "200")
         {
+            Close();
             SceneManager.LoadScene("LoadScene");
+
+
         }
         else
         {
@@ -111,7 +79,41 @@ public class RoomPanel : BasePanel
 
     public override void OnShow(params object[] objs)
     {
-        objects = objs;
+        object[] objects = objs;
+        roomPlayerScripts = new List<RoomPlayerScript>();
+        Transform roomPlayers = skin.transform.Find("Right/Content/RoomPlayers/Viewport/Content");
+        foreach (Transform roomPlayer in roomPlayers)
+        {
+            RoomPlayerScript roomPlayerScript = roomPlayer.GetComponent<RoomPlayerScript>();
+            //roomPlayerScript.Init();
+            //Debug.Log(roomPlayerScript.gameObject);
+
+            roomPlayerScripts.Add(roomPlayerScript);
+        }
+
+        roomIdVo = skin.transform.Find("Header/RoomId").GetComponent<Text>();
+        roomId = objects[0].ToString();
+        roomIdVo.text = "房间号：" + roomId;
+        startGame = skin.transform.Find("Right/Bottom/Start").GetComponent<Button>();
+        readyStart = skin.transform.Find("Right/Bottom/Prepare").GetComponent<Button>();
+        unreadyStart = skin.transform.Find("Right/Bottom/Unprepare").GetComponent<Button>();
+        quit = skin.transform.Find("Right/Bottom/Quit").GetComponent<Button>();
+        sendBtn = skin.transform.Find("Left/Bottom/Send").GetComponent<Button>();
+        sendContent = skin.transform.Find("Left/Bottom/SendContent").GetComponent<InputField>();
+        chatContent = skin.transform.Find("Left/Chat/ChatView/Viewport/Content").GetComponent<Text>();
+        scrollRect = skin.transform.Find("Left/Chat/ChatView").GetComponent<ScrollRect>();
+
+        startGame.onClick.AddListener(StartGame);
+        readyStart.onClick.AddListener(ReadyStart);
+        unreadyStart.onClick.AddListener(UnreadyStart);
+        quit.onClick.AddListener(OnQuit);
+        sendBtn.onClick.AddListener(OnSendChatMsg);
+        NetManager.AddMsgListener("GetRoomInfoMsg", OnGetRoomInfoMsg);
+        NetManager.AddMsgListener("LeaveRoomMsg", OnLeaveRoomMsg);
+        NetManager.AddMsgListener("ChatRoomMsg", OnChatRoomMsg);
+        NetManager.AddMsgListener("StartMsg", OnStartMsg);
+        GetRoomInfoMsg getRoomInfoMsg = new GetRoomInfoMsg();
+        NetManager.Send(getRoomInfoMsg);
     }
 
     private void FlushView()
@@ -260,7 +262,7 @@ public class RoomPanel : BasePanel
     void OnLeaveRoomMsg(MsgBase msgBase)
     {
         LeaveRoomMsg msg = (LeaveRoomMsg)msgBase;
-        if(msg.code == "200")
+        if (msg.code == "200")
         {
             Close();
         }
@@ -269,15 +271,15 @@ public class RoomPanel : BasePanel
     {
         ChatRoomMsg msg = (ChatRoomMsg)msgBase;
 
-        chatContent.text += GetPlayerRoomByUid(msg.fromId).nickname + ":" + msg.content+"\n";
+        chatContent.text += GetPlayerRoomByUid(msg.fromId).nickname + ":" + msg.content + "\n";
         scrollRect.verticalNormalizedPosition = 0;
         sendContent.text = "";
     }
     PlayerRoom GetPlayerRoomByUid(string uid)
     {
-        for (int i = 0; i <playerRooms.Length; i++)
+        for (int i = 0; i < playerRooms.Length; i++)
         {
-            if(playerRooms[i].uid == uid)
+            if (playerRooms[i].uid == uid)
             {
                 return playerRooms[i];
             }

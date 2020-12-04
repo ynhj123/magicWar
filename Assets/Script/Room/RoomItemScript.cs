@@ -19,7 +19,7 @@ public class RoomItemScript : MonoBehaviour
         joinBtn = transform.Find("Join").GetComponent<Button>();
         image = GetComponent<Image>();
         joinBtn.onClick.AddListener(OnJoin);
-        
+
     }
     public void UpdateContent(string newRoomId, string newNum, int status)
     {
@@ -46,7 +46,7 @@ public class RoomItemScript : MonoBehaviour
         canvasGroup.interactable = true;
         canvasGroup.blocksRaycasts = true;
     }
-     void OnJoin()
+    void OnJoin()
     {
         //SceneManager.LoadScene("RoomScene");
         EnterRoomMsg msg = new EnterRoomMsg();
