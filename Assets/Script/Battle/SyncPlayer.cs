@@ -107,7 +107,7 @@ public class SyncPlayer : BasePlayer
         /* GameObject bullet = Instantiate(ResManger.LoadPrefab(path), transform.position + transform.forward * 2 + new Vector3(0, 1, 0), Quaternion.identity);*/
         GameObject bullet = Instantiate(ResManger.LoadPrefab(path), new Vector3(msg.x, msg.y, msg.z), Quaternion.identity);
         bullet.transform.up = new Vector3(msg.ex,msg.ey,msg.ez);
-        SkillModel skillModel = bullet.GetComponent<SkillModel>();
+        FireBallModel skillModel = bullet.GetComponent<FireBallModel>();
 
         skillModel.playerId = msg.uid;
 

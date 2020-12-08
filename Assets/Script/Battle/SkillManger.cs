@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SkillManger
 {
     private static SkillManger instance = null;
 
-    Dictionary<KeyCode, Skill> skills = new Dictionary<KeyCode, Skill>();
+    Dictionary<string, Skill> skills = new Dictionary<string, Skill>();
     private SkillManger() { }
 
     public static SkillManger Instance
@@ -22,13 +23,17 @@ public class SkillManger
         }
     }
 
-    public void Add(KeyCode key, Skill skill)
+    public void Add(string id, Skill skill)
     {
-        skills.Add(key, skill);
+        skills.Add(id, skill);
     }
-    public Skill Get(KeyCode key)
+    public Skill Get(string id)
     {
-        return skills[key];
+        return skills[id];
     }
+  /*  public Skill Get(KeyCode code)
+    {
+       
+    }*/
 
 }

@@ -1,0 +1,49 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class RangeFireModel : MonoBehaviour
+{
+    public float force = 10;
+    public float forPlayerTime = 1f;
+    public string playerId;
+    // Start is called before the first frame update
+    void Start()
+    {
+        Destroy(this.gameObject, 5);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        Vector3 down = -transform.up;
+        transform.position += down * Time.deltaTime * 5;
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        BasePlayer player;
+        bool v = other.TryGetComponent<BasePlayer>(out player);
+        //other.GetComponent<Player>();
+        if (v && playerId != player.id && player.id == MainController.user.Uid)
+        {
+            Vector3 direct = player.transform.position - this.transform.position;
+            HitMsg hitMsg = new HitMsg();
+            hitMsg.x = direct.x;
+            hitMsg.y = 0;
+            hitMsg.z = direct.z;
+            hitMsg.targetId = player.id;
+            NetManager.Send(hitMsg);
+            player.animator.Play("IsHurrt");
+            player.hp -= 10;
+            direct.y = 0;
+            Rigidbody rig = player.GetComponent<Rigidbody>();
+            rig.velocity = direct * force;
+
+            player.finillyHurrtPlyerId = this.playerId;
+            player.ResetPlayer(forPlayerTime);
+
+        }
+       
+
+    }
+}

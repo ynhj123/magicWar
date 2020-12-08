@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class Player : BasePlayer
 {
@@ -37,6 +38,9 @@ public class Player : BasePlayer
 
         NetManager.Send(msg);
     }
+
+   
+
     private void OnDestroy()
     {
         SyncPlayerMsg msg = new SyncPlayerMsg();

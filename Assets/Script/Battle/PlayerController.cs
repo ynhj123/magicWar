@@ -28,6 +28,18 @@ public class PlayerController : MonoBehaviour
 
 
             }
+            if (Input.GetKeyDown(KeyCode.W))
+            {
+                player.FireWSkill();
+
+
+            }
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                player.FireESkill();
+
+
+            }
         }
 
 
