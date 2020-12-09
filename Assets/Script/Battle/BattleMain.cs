@@ -124,5 +124,7 @@ public class BattleMain : MonoBehaviour
         NetManager.RemoveMsgListener("SkillMsg", OnSynSkill);
         NetManager.RemoveMsgListener("HitMsg", OnSynHit);
         NetManager.RemoveMsgListener("EndMsg", OnEnd);
+        players.Clear();
+        playerDatas.Clear();
     }
 }

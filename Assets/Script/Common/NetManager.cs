@@ -102,6 +102,7 @@ public static class NetManager
     //分发消息
     private static void FireMsg(string msgName, MsgBase msgBase)
     {
+        Debug.Log(msgName);
         if (msgListeners.ContainsKey(msgName))
         {
             msgListeners[msgName](msgBase);

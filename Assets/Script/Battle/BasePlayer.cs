@@ -62,7 +62,9 @@ public class BasePlayer : MonoBehaviour
         skillMsg.ex = forward.x;
         skillMsg.ey = forward.y;
         skillMsg.ez = forward.z;
+        skillMsg.skillId = 1;
         NetManager.Send(skillMsg);
+
         string path = "Battle/FireBall";
         GameObject bullet = Instantiate(ResManger.LoadPrefab(path), pos, Quaternion.identity);
         bullet.transform.up = forward;
@@ -74,6 +76,9 @@ public class BasePlayer : MonoBehaviour
     {
         //Skill skill = SkillManger.Instance.Get(key);
         endPoints.Clear();
+        string path = "Battle/Flash";
+        Vector3 vector3 = new Vector3(transform.position.x, 1, transform.position.z);
+        GameObject bullet = Instantiate(ResManger.LoadPrefab(path), vector3, Quaternion.identity);
         Vector3 pos = transform.position + transform.forward * 5;
         Vector3 eulerAngles = transform.eulerAngles;
         SkillMsg skillMsg = new SkillMsg();
@@ -84,13 +89,13 @@ public class BasePlayer : MonoBehaviour
         skillMsg.ex = eulerAngles.x;
         skillMsg.ey = eulerAngles.y;
         skillMsg.ez = eulerAngles.z;
+        skillMsg.skillId = 3;
         NetManager.Send(skillMsg);
         transform.position = pos;
         transform.eulerAngles = eulerAngles;
     }
     public void FireWSkill()
     {
-    
         //获取屏幕坐标
         Vector3 mousepostion = Input.mousePosition;
         //定义从屏幕
@@ -107,6 +112,8 @@ public class BasePlayer : MonoBehaviour
         //Skill skill = SkillManger.Instance.Get(key);
         Vector3 pos = new Vector3(point.x, 5, point.z);
         SkillMsg skillMsg = new SkillMsg();
+        skillMsg.skillId = 2;
+
         skillMsg.x = pos.x;
         skillMsg.y = pos.y;
         skillMsg.z = pos.z;

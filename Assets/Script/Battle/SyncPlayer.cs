@@ -43,7 +43,7 @@ public class SyncPlayer : BasePlayer
     //移动同步
     public void SyncPos(SyncPlayerMsg msg)
     {
-        //Debug.Log(msg.uid +":" +id);
+        Debug.Log(msg.uid +":" +id+":"+msg.x + ":"+msg.z+":"+msg.hp);
         //预测位置
         Vector3 pos = new Vector3(msg.x, 0, msg.z);
         Vector3 rot = new Vector3(0, msg.ey, 0);
@@ -103,13 +103,42 @@ public class SyncPlayer : BasePlayer
     //开火
     public void SyncFire(SkillMsg msg)
     {
-        string path = "Battle/Skill";
+       
         /* GameObject bullet = Instantiate(ResManger.LoadPrefab(path), transform.position + transform.forward * 2 + new Vector3(0, 1, 0), Quaternion.identity);*/
-        GameObject bullet = Instantiate(ResManger.LoadPrefab(path), new Vector3(msg.x, msg.y, msg.z), Quaternion.identity);
-        bullet.transform.up = new Vector3(msg.ex,msg.ey,msg.ez);
-        FireBallModel skillModel = bullet.GetComponent<FireBallModel>();
+        if(msg.skillId == 1)
+        {
+            string path = "Battle/FireBall";
 
-        skillModel.playerId = msg.uid;
+            GameObject bullet = Instantiate(ResManger.LoadPrefab(path), new Vector3(msg.x, msg.y, msg.z), Quaternion.identity);
+            bullet.transform.up = new Vector3(msg.ex, msg.ey, msg.ez);
+            FireBallModel skillModel = bullet.GetComponent<FireBallModel>();
+
+            skillModel.playerId = msg.uid;
+            return;
+        }
+        if (msg.skillId == 2)
+        {
+            string path = "Battle/RangeFireBall";
+            GameObject bullet = Instantiate(ResManger.LoadPrefab(path), new Vector3(msg.x, msg.y, msg.z), Quaternion.identity);
+            // bullet.transform.up = forward;
+            RangeFireModel skillModel = bullet.GetComponent<RangeFireModel>();
+
+            skillModel.playerId = msg.uid;
+            return;
+        }
+        if (msg.skillId == 3)
+        {
+            string path = "Battle/Flash"; 
+            GameObject bullet = Instantiate(ResManger.LoadPrefab(path), new Vector3(transform.position.x, 1, transform.position.z), Quaternion.identity);
+            Vector3 pos = new Vector3(msg.x, msg.y, msg.z);
+            Vector3 eulerAngles = new Vector3(msg.ex, msg.ey, msg.ez);
+            transform.position = pos;
+            transform.eulerAngles = eulerAngles;
+
+
+            return;
+        }
+
 
     }
 
