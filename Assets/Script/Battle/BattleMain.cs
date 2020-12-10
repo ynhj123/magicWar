@@ -10,6 +10,7 @@ public class BattleMain : MonoBehaviour
     public static Dictionary<string, PlayerInfo> playerDatas = new Dictionary<string, PlayerInfo>();
     //实体
     public static Dictionary<string, BasePlayer> players = new Dictionary<string, BasePlayer>();
+    public static BasePlayer self;
     // Start is called before the first frame update
     void Start()
     {
@@ -33,6 +34,7 @@ public class BattleMain : MonoBehaviour
             {
                 PlayerController playerController = GetComponent<PlayerController>();
                 player = playerController.player;
+                self = player;
 
             }
             else
@@ -55,8 +57,11 @@ public class BattleMain : MonoBehaviour
             player.transform.position = pos;
             player.transform.eulerAngles = rot;
             //init
-
-
+            GameObject canvas = GameObject.Find("Root/Canvas");
+            GameObject hpRes = ResManger.LoadPrefab("Battle/HpHead");
+            GameObject hpObj = Instantiate<GameObject>(hpRes, canvas.transform);
+            HpScript hpScript = hpObj.GetComponent<HpScript>();
+            hpScript.Init(player);
             //列表
             AddPlayer(playerinfo.uid, player);
 
@@ -126,5 +131,6 @@ public class BattleMain : MonoBehaviour
         NetManager.RemoveMsgListener("EndMsg", OnEnd);
         players.Clear();
         playerDatas.Clear();
+        self = null;
     }
 }
