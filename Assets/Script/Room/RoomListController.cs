@@ -5,7 +5,11 @@ using UnityEngine.UI;
 
 public class RoomListController : MonoBehaviour
 {
- 
+    public static RoomListController instance;
+    private void Awake()
+    {
+        instance = this;
+    }
     Button createRoomBtn; //创建房间
     Button joinRoomBtn; //加入房间
     Button getLastBtn;  //获取上一页房间
@@ -26,7 +30,7 @@ public class RoomListController : MonoBehaviour
         PanelManger.Open<JoinRoomPanel>();
     }
 
-    void FlushRoomList()
+    public void FlushRoomList()
     {
 
 

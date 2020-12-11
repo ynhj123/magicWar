@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -8,6 +9,7 @@ public class LoginPanel : BasePanel
     InputField username;
     InputField password;
     Button loginBtn;
+    Button quitBtn;
     public override void OnInit()
     {
         skinPath = "Panel/LoginPanel";
@@ -19,7 +21,15 @@ public class LoginPanel : BasePanel
         username = skin.transform.Find("Username/InputField").GetComponent<InputField>();
         password = skin.transform.Find("Password/InputField").GetComponent<InputField>();
         loginBtn = skin.transform.Find("Btn/Button").GetComponent<Button>();
+        quitBtn = skin.transform.Find("Quit").GetComponent<Button>();
         loginBtn.onClick.AddListener(OnLogin);
+        quitBtn.onClick.AddListener(OnQuit);
+    }
+
+    private void OnQuit()
+    {
+        PanelManger.Open<Buttons>();
+        Close();
     }
 
     private void OnLogin()
@@ -47,5 +57,7 @@ public class LoginPanel : BasePanel
 
     public override void OnClose()
     {
+        loginBtn.onClick.RemoveAllListeners();
+        quitBtn.onClick.RemoveAllListeners();
     }
 }

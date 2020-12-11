@@ -10,14 +10,7 @@ public class MainController : MonoBehaviour
     void Start()
     {
         //网络协议监听
-        /* NetManager.AddMsgListener("EnterMsg", OnMsgEnter);
-         //room
-         NetManager.AddMsgListener("MsgGetRoomList", NetRoomHandler.OnMsgGetRoomList);
-         NetManager.AddMsgListener("MsgCreateRoom", NetRoomHandler.OnMsgCreateRoom);
-         NetManager.AddMsgListener("MsgEnterRoom", NetRoomHandler.OnMsgEnterRoom);
-         NetManager.AddMsgListener("MsgGetRoomInfo", NetRoomHandler.OnMsgGetRoomInfo);
-         NetManager.AddMsgListener("MsgLeaveRoom", NetRoomHandler.OnMsgLeaveRoom);
-         NetManager.AddMsgListener("MsgLeaveGame", NetRoomHandler.OnMsgLeaveGame);*/
+       
         //网络事件监听
         NetManager.AddEventListener(NetManager.NetEvent.ConnectSucc, OnConnectSucc);
         NetManager.AddEventListener(NetManager.NetEvent.ConnectFail, OnConnectFail);

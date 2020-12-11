@@ -10,6 +10,7 @@ public class SyncPlayerMsg : MsgBase
     public float speed;
     public float hp = 0;
     public int killNum;
+    
     //服务端补充
     public string uid = "";		//哪个玩家
 }
@@ -35,7 +36,7 @@ public class SkillMsg : MsgBase
 public class HitMsg : MsgBase
 {
     public HitMsg() { protoName = "HitMsg"; }
-    //击中谁
+    //谁打了我
     public string targetId = "";
     public int skillId;
     //击中点	
@@ -43,7 +44,7 @@ public class HitMsg : MsgBase
     public float y = 0f;
     public float z = 0f;
     //服务端补充
-    public string uid = "";      //哪个玩家
+    public string uid = "";      //哪个玩家被打
 }
 
 public class MsgDebuff : MsgBase

@@ -39,6 +39,7 @@ public class Buttons : BasePanel
 
     public override void OnClose()
     {
-
+        loginBtn.onClick.RemoveAllListeners();
+        RegistryBtn.onClick.RemoveAllListeners();
     }
 }

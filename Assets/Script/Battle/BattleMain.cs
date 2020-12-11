@@ -23,7 +23,7 @@ public class BattleMain : MonoBehaviour
         //
 
 
-        //PanelManger.Init();
+        PanelManger.Init();
         foreach (var playerinfo in playerDatas.Values)
         {
             //string objName = "player_" + playerinfo.degree;
@@ -72,7 +72,8 @@ public class BattleMain : MonoBehaviour
 
     private void OnEnd(MsgBase msgBase)
     {
-        SceneManager.LoadScene("RoomScene");
+        EndMsg msg = (EndMsg)msgBase;
+        PanelManger.Open<BattleResultPanel>(msg.playerInfos);
     }
 
     private void OnSynHit(MsgBase msgBase)

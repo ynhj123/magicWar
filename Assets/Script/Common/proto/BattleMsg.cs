@@ -18,19 +18,11 @@ public class PlayerInfo
     public float speed;
 
     public int killNum;
+    public int rank;
 
 
 }
-//玩家rank信息
-[System.Serializable]
-public class PlayerRank
-{
-    public string id = "";  //玩家id
-    public string nickname = "";
-    public int socre = 0;
-    public int killNum;
 
-}
 
 
 //进入战场（服务端推送）
@@ -47,18 +39,11 @@ public class EndMsg : MsgBase
 {
     public EndMsg() { protoName = "EndMsg"; }
     //服务端回
-    public PlayerInfo[] players;
+    public PlayerInfo[] playerInfos;
 
 }
 
-//战斗结果（服务端推送）
-public class BattleResultMsg : MsgBase
-{
-    public BattleResultMsg() { protoName = "BattleResultMsg"; }
-    //服务端回
-    //public int winCamp = 0;	 //获胜的阵营
-    public PlayerRank[] players;
-}
+
 
 //玩家退出（服务端推送）
 public class MsgLeaveBattle : MsgBase

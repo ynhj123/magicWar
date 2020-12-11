@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
@@ -141,7 +142,7 @@ public static class NetManager
         socket = new Socket(AddressFamily.InterNetwork,
             SocketType.Stream, ProtocolType.Tcp);
         //接收缓冲区
-        readBuff = new ByteArray();
+        readBuff = new ByteArray(4096);
         //写入队列
         writeQueue = new Queue<ByteArray>();
         //是否正在连接
@@ -283,10 +284,10 @@ public static class NetManager
             {
 
                 writeQueue.Dequeue();
-                ba = writeQueue.First();
+                ba = writeQueue.FirstOrDefault();
             }
         }
-        Debug.Log(writeQueue.Count);
+        //Debug.Log(writeQueue.Count);
         //继续发送
         if (ba != null)
         {

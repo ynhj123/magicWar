@@ -31,7 +31,7 @@ public class RangeFireModel : MonoBehaviour
             hitMsg.x = direct.x;
             hitMsg.y = 0;
             hitMsg.z = direct.z;
-            hitMsg.targetId = player.id;
+            hitMsg.targetId = playerId;
             NetManager.Send(hitMsg);
             player.animator.Play("IsHurrt");
             player.hp -= 10;
@@ -39,7 +39,7 @@ public class RangeFireModel : MonoBehaviour
             Rigidbody rig = player.GetComponent<Rigidbody>();
             rig.velocity = direct * force;
 
-            player.finillyHurrtPlyerId = this.playerId;
+            player.finillyHurrtPlyerId = playerId;
             player.ResetPlayer(forPlayerTime);
 
         }

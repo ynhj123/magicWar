@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +11,7 @@ public class RegistryPanel : BasePanel
     InputField nickName;
 
     Button registryBtn;
+    Button quitBtn;
 
     public override void OnInit()
     {
@@ -26,6 +28,14 @@ public class RegistryPanel : BasePanel
 
         registryBtn = skin.transform.Find("Btn/Button").GetComponent<Button>();
         registryBtn.onClick.AddListener(OnRegistry);
+        quitBtn = skin.transform.Find("Quit").GetComponent<Button>();
+        quitBtn.onClick.AddListener(OnQuit);
+    }
+
+    private void OnQuit()
+    {
+        PanelManger.Open<Buttons>();
+        Close();
     }
 
     private void OnRegistry()
@@ -54,5 +64,7 @@ public class RegistryPanel : BasePanel
 
     public override void OnClose()
     {
+        registryBtn.onClick.RemoveAllListeners();
+        quitBtn.onClick.RemoveAllListeners();
     }
 }

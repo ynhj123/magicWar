@@ -43,7 +43,7 @@ public class SyncPlayer : BasePlayer
     //移动同步
     public void SyncPos(SyncPlayerMsg msg)
     {
-        Debug.Log(msg.uid +":" +id+":"+msg.x + ":"+msg.z+":"+msg.hp);
+       // Debug.Log(msg.uid +":" +id+":"+msg.x + ":"+msg.z+":"+msg.hp);
         //预测位置
         Vector3 pos = new Vector3(msg.x, 0, msg.z);
         Vector3 rot = new Vector3(0, msg.ey, 0);
@@ -97,6 +97,7 @@ public class SyncPlayer : BasePlayer
     internal void SyncHit(HitMsg msg)
     {
         animator.Play("IsHurrt");
+        finillyHurrtPlyerId = msg.targetId;
 
     }
 

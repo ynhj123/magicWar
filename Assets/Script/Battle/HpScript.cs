@@ -29,7 +29,6 @@ public class HpScript : MonoBehaviour
         player = initPlayer;
         maxValue = player.hp;
         Dictionary<string, PlayerInfo> playerDatas = BattleMain.playerDatas;
-
         nickName = transform.GetChild(1).GetComponent<Text>();
 
       
