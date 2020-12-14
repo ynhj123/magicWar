@@ -265,7 +265,7 @@ public class RoomPanel : BasePanel
         if (msg.code == "200")
         {
             Close();
-            RoomListController.instance.FlushRoomList();
+            RoomListController.instance.GetRoomList();
         }
     }
     void OnChatRoomMsg(MsgBase msgBase)

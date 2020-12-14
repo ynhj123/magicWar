@@ -51,7 +51,7 @@ public class RoomListController : MonoBehaviour
             }
         }
     }
-    void GetRoomList()
+    public void GetRoomList()
     {
         RoomListMsg roomListMsg = new RoomListMsg();
         roomListMsg.curPage = curPage;
