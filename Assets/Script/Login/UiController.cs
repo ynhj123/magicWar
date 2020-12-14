@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using IngameDebugConsole;
+using UnityEngine;
 
 public class UiController : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class UiController : MonoBehaviour
 
         PanelManger.Init();
         PanelManger.Open<Buttons>();
+        
     }
 
 

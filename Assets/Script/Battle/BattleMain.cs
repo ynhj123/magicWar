@@ -10,6 +10,8 @@ public class BattleMain : MonoBehaviour
     public static Dictionary<string, PlayerInfo> playerDatas = new Dictionary<string, PlayerInfo>();
     //实体
     public static Dictionary<string, BasePlayer> players = new Dictionary<string, BasePlayer>();
+    //ui
+    //public static Dictionary<string, HpScript> playerUis = new Dictionary<string, HpScript>();
     public static BasePlayer self;
     // Start is called before the first frame update
     void Start()
@@ -62,6 +64,7 @@ public class BattleMain : MonoBehaviour
             GameObject hpObj = Instantiate<GameObject>(hpRes, canvas.transform);
             HpScript hpScript = hpObj.GetComponent<HpScript>();
             hpScript.Init(player);
+            //playerUis.Add(playerinfo.uid, hpScript);
             //列表
             AddPlayer(playerinfo.uid, player);
 

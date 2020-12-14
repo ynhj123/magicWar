@@ -8,7 +8,7 @@ public class Player : BasePlayer
     private float lastSendSyncTime = 0;
     //同步帧率
     public static float syncInterval = 0.02f;
-
+    private long frame = 0;
 
     public override void Update()
     {
@@ -16,6 +16,10 @@ public class Player : BasePlayer
         MoveUpdate();
         JudgeMentDebuff();
         CheckIsAlive();
+
+    }
+    private void FixedUpdate()
+    {
         SyncUpdate();
 
     }
@@ -35,7 +39,9 @@ public class Player : BasePlayer
         msg.ey = transform.eulerAngles.y;
         msg.hp = hp;
         msg.speed = speed;
-
+        msg.frame = frame++;
+        Debug.Log("time="+Time.time+"send=" + msg.x+":"+msg.z+":"+msg.frame);
+    
         NetManager.Send(msg);
     }
 

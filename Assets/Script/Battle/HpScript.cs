@@ -57,6 +57,10 @@ public class HpScript : MonoBehaviour
             rectTrans.position = pos + offset;
             image.fillAmount = player.hp / maxValue;
             hpValue.text = Convert.ToInt32(player.hp).ToString();
+            if(player.hp == 0)
+            {
+                Destroy(this.gameObject);
+            }
         }
        
 

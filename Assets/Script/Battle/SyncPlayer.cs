@@ -9,6 +9,7 @@ public class SyncPlayer : BasePlayer
     private Vector3 forecastRot;
 
     private float forecastTime;
+    private long frame;
 
     //重写Init
     public override void Init(string skinPath)
@@ -43,7 +44,6 @@ public class SyncPlayer : BasePlayer
     //移动同步
     public void SyncPos(SyncPlayerMsg msg)
     {
-       // Debug.Log(msg.uid +":" +id+":"+msg.x + ":"+msg.z+":"+msg.hp);
         //预测位置
         Vector3 pos = new Vector3(msg.x, 0, msg.z);
         Vector3 rot = new Vector3(0, msg.ey, 0);
@@ -59,6 +59,9 @@ public class SyncPlayer : BasePlayer
         hp = msg.hp;
         speed = msg.speed;
         forecastTime = Time.time;
+        frame = msg.frame;
+        //Debug.Log("Time="+Time.time+";receive:Id="+msg.uid + ":" + id + ":" + msg.x + ":" + msg.z + ":" + msg.frame);
+
     }
 
 
@@ -78,12 +81,24 @@ public class SyncPlayer : BasePlayer
         Vector3 pos = transform.position;
    
         Vector3 v = forecastPos - pos;
-        float dis = v.magnitude;
-      
-        Vector3 next = v.normalized * (dis / t) * Time.deltaTime;
-        transform.position += next;
-        //Debug.Log(forecastPos + ":" + pos + ":" + t + ":" + dis+":"+(dis / t));
 
+      /*  if (Vector3.SqrMagnitude(v) > 0.2f)
+        {
+            float dis = v.magnitude;
+            float curSpeed = dis / t;
+            Vector3 next = v.normalized * (curSpeed) * Time.deltaTime;
+            transform.position += next;
+            Debug.Log(forecastPos + ":" + pos + ":" + t + ":" + dis + ":"+ curSpeed + ":" + deltaT+":"+speed);
+            if(speed == 0)
+            {
+                Debug.Log(frame);
+            }
+        }
+        else
+        {
+            
+        }*/
+        transform.position = forecastPos;
 
 
         //myTransonfrom.LookAt(forecastPos);

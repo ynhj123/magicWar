@@ -188,6 +188,14 @@ public class BasePlayer : MonoBehaviour
     {
         if (hp <= 0)
         {
+            /*HpScript hpScript;
+            if(BattleMain.playerUis.TryGetValue(this.id, out hpScript))
+            {
+                GameObject.Destroy(hpScript);
+                BattleMain.playerUis.Remove(this.id);
+
+            }*/
+
             BattleMain.players.Remove(this.id);
             Destroy(this.gameObject);
         }

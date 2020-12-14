@@ -10,6 +10,7 @@ public class SyncPlayerMsg : MsgBase
     public float speed;
     public float hp = 0;
     public int killNum;
+    public long frame;
     
     //服务端补充
     public string uid = "";		//哪个玩家
