@@ -66,6 +66,7 @@ public class BattleMain : MonoBehaviour
             hpScript.Init(player);
             //playerUis.Add(playerinfo.uid, hpScript);
             //列表
+            player.UpdateJointColor(playerinfo.degree);
             AddPlayer(playerinfo.uid, player);
 
         }

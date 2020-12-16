@@ -61,33 +61,7 @@ public class RoomPlayerScript : MonoBehaviour
 
     private void SwitchDegreeColor(int degree)
     {
-        switch (degree)
-        {
-            case 0:
-                icon.color = Color.red;
-                break;
-            case 1:
-                icon.color = Color.green;
-                break;
-            case 2:
-                icon.color = Color.yellow;
-                break;
-            case 3:
-                icon.color = Color.blue;
-                break;
-            case 4:
-                icon.color = Color.gray;
-                break;
-            case 5:
-                icon.color = Color.grey;
-                break;
-            case 6:
-                icon.color = Color.cyan;
-                break;
-            case 7:
-                icon.color = Color.black;
-                break;
-        }
+        icon.color = Utils.SwitchColor(degree);
     }
 
 

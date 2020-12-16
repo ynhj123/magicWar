@@ -17,6 +17,7 @@ public class BasePlayer : MonoBehaviour
     public Rigidbody rigidBody;
     public Animator animator;
     Transform bookTranform;
+    Renderer bodyJointRener;
     // Start is called before the first frame update
     public virtual void Init(string skinPath)
     {
@@ -46,7 +47,13 @@ public class BasePlayer : MonoBehaviour
         bookTranform = transform
             .Find("ybot/mixamorig:Hips/mixamorig:Spine/mixamorig:Spine1/mixamorig:Spine2/mixamorig:LeftShoulder/mixamorig:LeftArm/mixamorig:LeftForeArm/mixamorig:LeftHand/WeaponSocket");
         endPoints = new List<Vector3>();
+        bodyJointRener = transform.Find("ybot/Alpha_Joints").GetComponent<Renderer>();
 
+    }
+
+    public void UpdateJointColor(int degree)
+    {
+        bodyJointRener.material.color = Utils.SwitchColor(degree);
     }
 
     public void FireQSkill()
