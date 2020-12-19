@@ -17,7 +17,7 @@ public class BasePlayer : MonoBehaviour
     public Rigidbody rigidBody;
     public Animator animator;
     Transform bookTranform;
-    Renderer bodyJointRener;
+    SkinnedMeshRenderer bodyJointRener;
     // Start is called before the first frame update
     public virtual void Init(string skinPath)
     {
@@ -47,15 +47,103 @@ public class BasePlayer : MonoBehaviour
         bookTranform = transform
             .Find("ybot/mixamorig:Hips/mixamorig:Spine/mixamorig:Spine1/mixamorig:Spine2/mixamorig:LeftShoulder/mixamorig:LeftArm/mixamorig:LeftForeArm/mixamorig:LeftHand/WeaponSocket");
         endPoints = new List<Vector3>();
-        bodyJointRener = transform.Find("ybot/Alpha_Joints").GetComponent<Renderer>();
+        bodyJointRener = transform
+            .Find("ybot/Alpha_Joints").GetComponent<SkinnedMeshRenderer>();
 
     }
 
     public void UpdateJointColor(int degree)
     {
-        bodyJointRener.material.color = Utils.SwitchColor(degree);
+        transform
+            .Find("ybot/Alpha_Joints").GetComponent<SkinnedMeshRenderer>().material.color = Utils.SwitchColor(degree);
+    }
+    internal void FireRSkill()
+    {
+        Vector3 pos = transform.position+new Vector3(0,1,0)+transform.forward * 2;
+        string path = "Battle/FireJet";
+        GameObject bullet = Instantiate(ResManger.LoadPrefab(path), pos, Quaternion.identity);
+        FireJetModel skillModel = bullet.GetComponent<FireJetModel>();
+        bullet.transform.forward = transform.forward;
+        skillModel.playerId = id;
     }
 
+    internal void FireASkill()
+    {
+        Vector3 pos = transform.position+new Vector3(0, 1, 0) + transform.forward * 2;
+        string path = "Battle/Gravitation";
+        GameObject bullet = Instantiate(ResManger.LoadPrefab(path), pos, Quaternion.identity);
+        GravitationModel skillModel = bullet.GetComponent<GravitationModel>();
+        bullet.transform.forward = transform.forward;
+        skillModel.playerId = id;
+    }
+
+    internal void FireSSkill()
+    {
+        Vector3 pos = transform.position+new Vector3(0, 1, 0) + transform.forward * 1;
+        string path = "Battle/MagicShield";
+        GameObject bullet = Instantiate(ResManger.LoadPrefab(path), pos, Quaternion.identity);
+        MagicShield skillModel = bullet.GetComponent<MagicShield>();
+        bullet.transform.forward = transform.right;
+       
+    }
+
+    internal void FireDSkill()
+    {
+        //获取屏幕坐标
+        Vector3 mousepostion = Input.mousePosition;
+        //定义从屏幕
+        Ray ray = Camera.main.ScreenPointToRay(mousepostion);
+        RaycastHit hitInfo;
+        if (!Physics.Raycast(ray, out hitInfo))
+        {
+
+            return;
+
+        }
+        //获取鼠标在场景中坐标
+        Vector3 point = hitInfo.point;
+        //Skill skill = SkillManger.Instance.Get(key);
+        Vector3 pos = new Vector3(point.x, 5, point.z);
+       /* SkillMsg skillMsg = new SkillMsg();
+        skillMsg.skillId = 2;
+
+        skillMsg.x = pos.x;
+        skillMsg.y = pos.y;
+        skillMsg.z = pos.z;*/
+        Vector3 forward = transform.forward;
+        /*skillMsg.ex = forward.x;
+        skillMsg.ey = forward.y;
+        skillMsg.ez = forward.z;
+        NetManager.Send(skillMsg);*/
+        string path = "Battle/LightningTall";
+        GameObject bullet = Instantiate(ResManger.LoadPrefab(path), pos, Quaternion.identity);
+        // bullet.transform.up = forward;
+        LightningTallModel skillModel = bullet.GetComponent<LightningTallModel>();
+        skillModel.playerId = id;
+    }
+
+    internal void FireFSkill()
+    {
+        //获取屏幕坐标
+        Vector3 mousepostion = Input.mousePosition;
+        //定义从屏幕
+        Ray ray = Camera.main.ScreenPointToRay(mousepostion);
+        RaycastHit hitInfo;
+        if (!Physics.Raycast(ray, out hitInfo))
+        {
+
+            return;
+
+        }
+        //获取鼠标在场景中坐标
+        Vector3 point = hitInfo.point;
+        //Skill skill = SkillManger.Instance.Get(key);
+        Vector3 pos = new Vector3(point.x, 1, point.z);
+        string path = "Battle/MagicSphere";
+        GameObject bullet = Instantiate(ResManger.LoadPrefab(path), pos, Quaternion.identity);
+        MagicSphereModel skillModel = bullet.GetComponent<MagicSphereModel>();
+        skillModel.playerId = id;
+    }
     public void FireQSkill()
     {
         

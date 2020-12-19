@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Lightning : MonoBehaviour
+public class MagicSoftExplosionModel : MonoBehaviour
 {
+    public string playerId;
+
+    public Skill skill;
     // Start is called before the first frame update
     void Start()
     {
-        
+        Destroy(this.gameObject, 0.5f);
     }
 
     // Update is called once per frame

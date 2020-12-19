@@ -61,6 +61,36 @@ public class PlayerController : MonoBehaviour
 
                 ECd = EMCd;
             }
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                player.FireRSkill();
+
+               
+            }
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                player.FireASkill();
+
+
+            }
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                player.FireSSkill();
+
+
+            }
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                player.FireDSkill();
+
+
+            }
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                player.FireFSkill();
+
+
+            }
         }
 
 
