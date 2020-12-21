@@ -1,12 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class RangeFireModel : MonoBehaviour
+public class RangeFireModel : SkillModel
 {
     public float force = 10;
     public float forPlayerTime = 1f;
-    public string playerId;
     // Start is called before the first frame update
     void Start()
     {
@@ -43,7 +40,7 @@ public class RangeFireModel : MonoBehaviour
             player.ResetPlayer(forPlayerTime);
 
         }
-       
+
 
     }
 }

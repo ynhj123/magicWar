@@ -10,5 +10,5 @@ public class ResManger : MonoBehaviour
     {
         return Resources.Load<Sprite>(path);
     }
-    
+
 }

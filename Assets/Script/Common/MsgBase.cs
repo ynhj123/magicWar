@@ -7,7 +7,7 @@ public class MsgBase
     //编码
     public static byte[] Encode(MsgBase msgBase)
     {
-        
+
         string s = JsonUtility.ToJson(msgBase);
         return System.Text.Encoding.UTF8.GetBytes(s);
     }
@@ -16,7 +16,7 @@ public class MsgBase
     public static MsgBase Decode(string protoName, byte[] bytes, int offset, int count)
     {
         string s = System.Text.Encoding.UTF8.GetString(bytes, offset, count);
-        if(protoName == "EndMsg")
+        if (protoName == "EndMsg")
         {
             Debug.Log("Debug decode:" + s);
         }

@@ -1,17 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class MagicSphereModel : MonoBehaviour
+public class MagicSphereModel : SkillModel
 {
-   
-    public string playerId;
+
 
     public Skill skill;
     // Start is called before the first frame update
     void Start()
     {
-        Destroy(this.gameObject, 2f);
+        Destroy(this.gameObject, 1f);
     }
 
     private void OnDestroy()

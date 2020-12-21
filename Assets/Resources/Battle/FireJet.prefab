@@ -10,9 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1276662515675587644}
   - component: {fileID: -1958088688089619196}
+  - component: {fileID: 2546962463181666444}
   m_Layer: 0
   m_Name: FireJet
-  m_TagString: Untagged
+  m_TagString: FlySkill
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -48,6 +49,19 @@ MonoBehaviour:
   force: 10
   forPlayerTime: 1
   playerId: 
+--- !u!65 &2546962463181666444
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1276662515675587645}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 10}
+  m_Center: {x: 0, y: 0, z: 5}
 --- !u!1001 &1276662516128742629
 PrefabInstance:
   m_ObjectHideFlags: 0

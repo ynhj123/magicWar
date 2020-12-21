@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -79,9 +78,9 @@ public class RoomListController : MonoBehaviour
     }
     void Start()
     {
-        
+
         PanelManger.Init();
-        
+
         roomItemScripts = new List<RoomItemScript>();
         Transform roomParents = transform.Find("Canvas/Content/RoomList/Viewport/Content");
         foreach (Transform room in roomParents)
@@ -100,8 +99,8 @@ public class RoomListController : MonoBehaviour
         getNextBtn.onClick.AddListener(GetNext);
         getRoomList.onClick.AddListener(GetRoomList);
         joinRoomBtn.onClick.AddListener(ShowJoinRoom);
-        NetManager.AddMsgListener("CreateRoomMsg", OnCreateRoom) ;
-        NetManager.AddMsgListener("RoomListMsg", OnRoomList) ;
+        NetManager.AddMsgListener("CreateRoomMsg", OnCreateRoom);
+        NetManager.AddMsgListener("RoomListMsg", OnRoomList);
         NetManager.AddMsgListener("EnterRoomMsg", OnEnterRoom);
         //DontDestroyOnLoad(transform);
         GetRoomList();
@@ -132,7 +131,7 @@ public class RoomListController : MonoBehaviour
             size = msg.size;
             FlushRoomList();
         }
-        
+
         else
         {
             PanelManger.Open<SystemTipPanel>(msg.msg);
@@ -161,7 +160,7 @@ public class RoomListController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
         NetManager.Update();
     }
     private void OnDestroy()
@@ -169,7 +168,7 @@ public class RoomListController : MonoBehaviour
         NetManager.RemoveMsgListener("CreateRoomMsg", OnCreateRoom);
         NetManager.RemoveMsgListener("RoomListMsg", OnRoomList);
         NetManager.RemoveMsgListener("EnterRoomMsg", OnEnterRoom);
-        
+
     }
 
 }

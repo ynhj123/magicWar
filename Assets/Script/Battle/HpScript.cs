@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -31,7 +30,7 @@ public class HpScript : MonoBehaviour
         Dictionary<string, PlayerInfo> playerDatas = BattleMain.playerDatas;
         nickName = transform.GetChild(1).GetComponent<Text>();
 
-      
+
         if (playerDatas.ContainsKey(player.id))
         {
             PlayerInfo playerInfo;
@@ -39,7 +38,7 @@ public class HpScript : MonoBehaviour
             {
                 Debug.Log(playerInfo.uid + "," + playerInfo.nickname);
                 nickName.text = playerInfo.nickname;
-                
+
 
             }
         }
@@ -50,19 +49,19 @@ public class HpScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(player != null)
+        if (player != null)
         {
             Vector3 tarPos = player.transform.position;
             Vector2 pos = RectTransformUtility.WorldToScreenPoint(Camera.main, tarPos);
             rectTrans.position = pos + offset;
             image.fillAmount = player.hp / maxValue;
             hpValue.text = Convert.ToInt32(player.hp).ToString();
-            if(player.hp == 0)
+            if (player.hp == 0)
             {
                 Destroy(this.gameObject);
             }
         }
-       
+
 
     }
 }

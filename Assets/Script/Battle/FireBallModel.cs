@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
 
-public class FireBallModel : MonoBehaviour
+public class FireBallModel : SkillModel
 {
     public float speed = 5f;
     public float force = 10;
     public float forPlayerTime = 1f;
-    public string playerId;
 
     public Skill skill;
 
@@ -46,9 +45,9 @@ public class FireBallModel : MonoBehaviour
 
             player.finillyHurrtPlyerId = playerId;
             player.ResetPlayer(forPlayerTime);
-           
+
         }
-        if(v && playerId != player.id)
+        if (v && playerId != player.id)
         {
             //显示特效
             Destroy(gameObject);

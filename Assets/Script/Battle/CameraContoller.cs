@@ -19,9 +19,9 @@ public class CameraContoller : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
-        if(playTransform == null)
+        if (playTransform == null)
         {
-            return ;
+            return;
         }
         this.transform.position = playTransform.position + offset;
 

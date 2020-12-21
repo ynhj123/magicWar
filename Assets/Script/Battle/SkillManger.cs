@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
 
 public class SkillManger
 {
@@ -31,9 +29,9 @@ public class SkillManger
     {
         return skills[id];
     }
-  /*  public Skill Get(KeyCode code)
-    {
-       
-    }*/
+    /*  public Skill Get(KeyCode code)
+      {
+
+      }*/
 
 }

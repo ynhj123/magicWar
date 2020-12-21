@@ -32,7 +32,7 @@ public class LoadAsyncScene : MonoBehaviour
     }
     private void OnLoadFinish(MsgBase msgBase)
     {
-        Debug.Log("OnLoadFinish:"+nextSceneName);
+        Debug.Log("OnLoadFinish:" + nextSceneName);
         LoadFinishMsg msg = (LoadFinishMsg)msgBase;
         BattleMain.playerDatas.Clear();
         PlayerInfo[] players = msg.players;

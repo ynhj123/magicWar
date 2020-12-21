@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerScoreScript : MonoBehaviour
@@ -19,8 +17,8 @@ public class PlayerScoreScript : MonoBehaviour
         icon.sprite = ResManger.LoadSprite("Ui/mainIcon");
         nickname.text = player.nickname;
         killNum.text = player.killNum.ToString();
-        score.text = (player.rank+1).ToString();
-        
+        score.text = (player.rank + 1).ToString();
+
     }
-    
+
 }

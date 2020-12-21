@@ -8,10 +8,20 @@ public class PlayerController : MonoBehaviour
     float QCd = 0;
     float WCd = 0;
     float ECd = 0;
+    float RCd = 0;
+    float ACd = 0;
+    float SCd = 0;
+    float DCd = 0;
+    float FCd = 0;
 
     float QMCd = 4;
     float WMCd = 10;
     float EMCd = 18;
+    float RMCd = 12;
+    float AMCd = 20;
+    float SMCd = 8;
+    float DMCd = 5;
+    float FMCd = 16;
 
     GameObject SkillController;
     public Player player;
@@ -19,7 +29,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         player.GetComponent<Player>();
-        SkillController  = GameObject.Find("/Root/Canvas/Controller/SkillController");
+        SkillController = GameObject.Find("/Root/Canvas/Controller/SkillController");
     }
 
     // Update is called once per frame
@@ -46,7 +56,7 @@ public class PlayerController : MonoBehaviour
             {
                 player.FireQSkill();
                 QCd = QMCd;
-                
+
             }
             if (Input.GetKeyDown(KeyCode.W) && WCd <= 0)
             {
@@ -61,34 +71,34 @@ public class PlayerController : MonoBehaviour
 
                 ECd = EMCd;
             }
-            if (Input.GetKeyDown(KeyCode.R))
+            if (Input.GetKeyDown(KeyCode.R) && RCd <= 0)
             {
                 player.FireRSkill();
+                RCd = RMCd;
 
-               
             }
-            if (Input.GetKeyDown(KeyCode.A))
+            if (Input.GetKeyDown(KeyCode.A) && ACd <= 0)
             {
                 player.FireASkill();
-
+                ACd = AMCd;
 
             }
-            if (Input.GetKeyDown(KeyCode.S))
+            if (Input.GetKeyDown(KeyCode.S) && SCd <= 0)
             {
                 player.FireSSkill();
-
+                SCd = SMCd;
 
             }
-            if (Input.GetKeyDown(KeyCode.D))
+            if (Input.GetKeyDown(KeyCode.D) && DCd <= 0)
             {
                 player.FireDSkill();
-
+                DCd = DMCd;
 
             }
-            if (Input.GetKeyDown(KeyCode.F))
+            if (Input.GetKeyDown(KeyCode.F) && FCd <= 0)
             {
                 player.FireFSkill();
-
+                FCd = FMCd;
 
             }
         }
@@ -98,7 +108,7 @@ public class PlayerController : MonoBehaviour
     }
     private void LateUpdate()
     {
-        if(QCd > 0)
+        if (QCd > 0)
         {
             QCd -= Time.deltaTime;
         }
@@ -122,6 +132,46 @@ public class PlayerController : MonoBehaviour
         {
             ECd = 0;
         }
+        if (RCd > 0)
+        {
+            RCd -= Time.deltaTime;
+        }
+        else
+        {
+            RCd = 0;
+        }
+        if (ACd > 0)
+        {
+            ACd -= Time.deltaTime;
+        }
+        else
+        {
+            ACd = 0;
+        }
+        if (SCd > 0)
+        {
+            SCd -= Time.deltaTime;
+        }
+        else
+        {
+            SCd = 0;
+        }
+        if (DCd > 0)
+        {
+            DCd -= Time.deltaTime;
+        }
+        else
+        {
+            DCd = 0;
+        }
+        if (FCd > 0)
+        {
+            FCd -= Time.deltaTime;
+        }
+        else
+        {
+            FCd = 0;
+        }
         UpdateSkillUi();
     }
 
@@ -129,38 +179,47 @@ public class PlayerController : MonoBehaviour
     {
         Transform qCode = SkillController.transform.Find("QCode/Mask");
         qCode.GetComponent<Image>().fillAmount = QCd / QMCd;
-        int q = Convert.ToInt32(QCd);
-        if (q == 0)
-        {
-            qCode.Find("Text").GetComponent<Text>().text = "";
-        }
-        else
-        {
-            qCode.Find("Text").GetComponent<Text>().text = q.ToString() + "s";
+        HandleCDView(qCode,QCd);
 
-        }
         Transform wCode = SkillController.transform.Find("WCode/Mask");
         wCode.GetComponent<Image>().fillAmount = WCd / WMCd;
-        int w = Convert.ToInt32(WCd);
-        if (w == 0)
-        {
-            wCode.Find("Text").GetComponent<Text>().text = "";
-        }
-        else
-        {
-            wCode.Find("Text").GetComponent<Text>().text = w.ToString() + "s";
+        HandleCDView(wCode, WCd);
 
-        }
         Transform eCode = SkillController.transform.Find("ECode/Mask");
         eCode.GetComponent<Image>().fillAmount = ECd / EMCd;
-        int e = Convert.ToInt32(ECd);
-        if (e == 0)
+        HandleCDView(eCode, ECd);
+
+        Transform rCode = SkillController.transform.Find("RCode/Mask");
+        rCode.GetComponent<Image>().fillAmount = RCd / RMCd;
+        HandleCDView(rCode, RCd);
+
+        Transform aCode = SkillController.transform.Find("ACode/Mask");
+        aCode.GetComponent<Image>().fillAmount = ACd / AMCd;
+        HandleCDView(aCode, ACd);
+
+        Transform sCode = SkillController.transform.Find("SCode/Mask");
+        sCode.GetComponent<Image>().fillAmount = SCd / SMCd;
+        HandleCDView(sCode, SCd);
+
+        Transform dCode = SkillController.transform.Find("DCode/Mask");
+        dCode.GetComponent<Image>().fillAmount = DCd / DMCd;
+        HandleCDView(dCode, DCd);
+
+        Transform fCode = SkillController.transform.Find("FCode/Mask");
+        fCode.GetComponent<Image>().fillAmount = FCd / FMCd;
+        HandleCDView(fCode, FCd);
+    }
+
+    private void HandleCDView(Transform code, float  cd)
+    {
+        int cdVal = Convert.ToInt32(cd);
+        if (cdVal == 0)
         {
-            eCode.Find("Text").GetComponent<Text>().text = "";
+            code.Find("Text").GetComponent<Text>().text = "";
         }
         else
         {
-            eCode.Find("Text").GetComponent<Text>().text = e.ToString() + "s";
+            code.Find("Text").GetComponent<Text>().text = cdVal.ToString() + "s";
 
         }
     }

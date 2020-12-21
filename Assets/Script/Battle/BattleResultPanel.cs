@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -17,7 +14,7 @@ public class BattleResultPanel : BasePanel
 
     public override void OnShow(params object[] objects)
     {
-        PlayerInfo[] playerInfos =(PlayerInfo[])objects;
+        PlayerInfo[] playerInfos = (PlayerInfo[])objects;
         quitBtn = skin.transform.Find("Quit").GetComponent<Button>();
         quitBtn.onClick.AddListener(Quit);
         RectTransform rectTransform = skin.transform.Find("View/RankView/Viewport/Content").GetComponent<RectTransform>();

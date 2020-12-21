@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class RoomPanel : BasePanel
 {
-    
+
 
     string roomId;
     bool isOwn;
@@ -29,9 +29,9 @@ public class RoomPanel : BasePanel
         layer = PanelManger.Layer.Panel;
     }
 
-   
 
- 
+
+
 
     private void OnStartMsg(MsgBase msgBase)
     {

@@ -10,7 +10,7 @@ public class MainController : MonoBehaviour
     void Start()
     {
         //网络协议监听
-       
+
         //网络事件监听
         NetManager.AddEventListener(NetManager.NetEvent.ConnectSucc, OnConnectSucc);
         NetManager.AddEventListener(NetManager.NetEvent.ConnectFail, OnConnectFail);

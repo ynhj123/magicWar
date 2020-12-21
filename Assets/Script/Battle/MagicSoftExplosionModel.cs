@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class MagicSoftExplosionModel : MonoBehaviour
+public class MagicSoftExplosionModel : SkillModel
 {
-    public string playerId;
-
+    public float force = 10;
+    public float forPlayerTime = 1f;
     public Skill skill;
     // Start is called before the first frame update
     void Start()
@@ -14,8 +12,32 @@ public class MagicSoftExplosionModel : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+
+    private void OnTriggerEnter(Collider other)
     {
-        
+        BasePlayer player;
+        bool v = other.TryGetComponent<BasePlayer>(out player);
+        //other.GetComponent<Player>();
+        if (v && playerId != player.id && player.id == MainController.user.Uid)
+        {
+            Vector3 direct = (player.transform.position - this.transform.position).normalized;
+            HitMsg hitMsg = new HitMsg();
+            hitMsg.x = direct.x;
+            hitMsg.y = 0;
+            hitMsg.z = direct.z;
+            hitMsg.targetId = playerId;
+            NetManager.Send(hitMsg);
+            player.animator.Play("IsHurrt");
+            player.hp -= 10;
+            direct.y = 0;
+            Rigidbody rig = player.GetComponent<Rigidbody>();
+            rig.velocity = direct * force;
+
+            player.finillyHurrtPlyerId = playerId;
+            player.ResetPlayer(forPlayerTime);
+
+        }
+      
+
     }
 }

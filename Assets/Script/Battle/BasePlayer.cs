@@ -59,8 +59,19 @@ public class BasePlayer : MonoBehaviour
     }
     internal void FireRSkill()
     {
-        Vector3 pos = transform.position+new Vector3(0,1,0)+transform.forward * 2;
+        Vector3 pos = transform.position + new Vector3(0, 1, 0) + transform.forward * 2;
         string path = "Battle/FireJet";
+
+        SkillMsg skillMsg = new SkillMsg();
+        skillMsg.skillId = 4;
+        skillMsg.x = pos.x;
+        skillMsg.y = pos.y;
+        skillMsg.z = pos.z;
+        skillMsg.ex = transform.forward.x;
+        skillMsg.ey = transform.forward.y;
+        skillMsg.ez = transform.forward.z;
+        NetManager.Send(skillMsg);
+
         GameObject bullet = Instantiate(ResManger.LoadPrefab(path), pos, Quaternion.identity);
         FireJetModel skillModel = bullet.GetComponent<FireJetModel>();
         bullet.transform.forward = transform.forward;
@@ -69,8 +80,20 @@ public class BasePlayer : MonoBehaviour
 
     internal void FireASkill()
     {
-        Vector3 pos = transform.position+new Vector3(0, 1, 0) + transform.forward * 2;
+        Vector3 pos = transform.position + new Vector3(0, 1, 0) + transform.forward * 2;
         string path = "Battle/Gravitation";
+
+
+        SkillMsg skillMsg = new SkillMsg();
+        skillMsg.skillId = 5;
+        skillMsg.x = pos.x;
+        skillMsg.y = pos.y;
+        skillMsg.z = pos.z;
+        skillMsg.ex = transform.forward.x;
+        skillMsg.ey = transform.forward.y;
+        skillMsg.ez = transform.forward.z;
+        NetManager.Send(skillMsg);
+
         GameObject bullet = Instantiate(ResManger.LoadPrefab(path), pos, Quaternion.identity);
         GravitationModel skillModel = bullet.GetComponent<GravitationModel>();
         bullet.transform.forward = transform.forward;
@@ -79,12 +102,25 @@ public class BasePlayer : MonoBehaviour
 
     internal void FireSSkill()
     {
-        Vector3 pos = transform.position+new Vector3(0, 1, 0) + transform.forward * 1;
+        Vector3 pos = transform.position + new Vector3(0, 1, 0) + transform.forward * 1;
         string path = "Battle/MagicShield";
+       
+
+        SkillMsg skillMsg = new SkillMsg();
+        skillMsg.skillId = 6;
+        skillMsg.x = pos.x;
+        skillMsg.y = pos.y;
+        skillMsg.z = pos.z;
+        skillMsg.ex = transform.right.x;
+        skillMsg.ey = transform.right.y;
+        skillMsg.ez = transform.right.z;
+        NetManager.Send(skillMsg);
+
         GameObject bullet = Instantiate(ResManger.LoadPrefab(path), pos, Quaternion.identity);
         MagicShield skillModel = bullet.GetComponent<MagicShield>();
         bullet.transform.forward = transform.right;
-       
+        skillModel.playerId = id;
+
     }
 
     internal void FireDSkill()
@@ -102,19 +138,18 @@ public class BasePlayer : MonoBehaviour
         }
         //获取鼠标在场景中坐标
         Vector3 point = hitInfo.point;
+        Vector3 pos = new Vector3(point.x, 0, point.z);
+        Vector3 forward = transform.forward;
         //Skill skill = SkillManger.Instance.Get(key);
-        Vector3 pos = new Vector3(point.x, 5, point.z);
-       /* SkillMsg skillMsg = new SkillMsg();
-        skillMsg.skillId = 2;
+
+        SkillMsg skillMsg = new SkillMsg();
+        skillMsg.skillId = 7;
 
         skillMsg.x = pos.x;
         skillMsg.y = pos.y;
-        skillMsg.z = pos.z;*/
-        Vector3 forward = transform.forward;
-        /*skillMsg.ex = forward.x;
-        skillMsg.ey = forward.y;
-        skillMsg.ez = forward.z;
-        NetManager.Send(skillMsg);*/
+        skillMsg.z = pos.z;
+  
+        NetManager.Send(skillMsg);
         string path = "Battle/LightningTall";
         GameObject bullet = Instantiate(ResManger.LoadPrefab(path), pos, Quaternion.identity);
         // bullet.transform.up = forward;
@@ -140,13 +175,22 @@ public class BasePlayer : MonoBehaviour
         //Skill skill = SkillManger.Instance.Get(key);
         Vector3 pos = new Vector3(point.x, 1, point.z);
         string path = "Battle/MagicSphere";
+
+        SkillMsg skillMsg = new SkillMsg();
+        skillMsg.skillId = 8;
+        skillMsg.x = pos.x;
+        skillMsg.y = pos.y;
+        skillMsg.z = pos.z;
+    
+        NetManager.Send(skillMsg);
+
         GameObject bullet = Instantiate(ResManger.LoadPrefab(path), pos, Quaternion.identity);
         MagicSphereModel skillModel = bullet.GetComponent<MagicSphereModel>();
         skillModel.playerId = id;
     }
     public void FireQSkill()
     {
-        
+
         //Skill skill = SkillManger.Instance.Get(key);
         Vector3 pos = transform.position + transform.forward * 2 + new Vector3(0, 1, 0);
         SkillMsg skillMsg = new SkillMsg();
@@ -180,7 +224,7 @@ public class BasePlayer : MonoBehaviour
         skillMsg.x = pos.x;
         skillMsg.y = pos.y;
         skillMsg.z = pos.z;
-        
+
         skillMsg.ex = eulerAngles.x;
         skillMsg.ey = eulerAngles.y;
         skillMsg.ez = eulerAngles.z;
@@ -219,7 +263,7 @@ public class BasePlayer : MonoBehaviour
         NetManager.Send(skillMsg);
         string path = "Battle/RangeFireBall";
         GameObject bullet = Instantiate(ResManger.LoadPrefab(path), pos, Quaternion.identity);
-       // bullet.transform.up = forward;
+        // bullet.transform.up = forward;
         RangeFireModel skillModel = bullet.GetComponent<RangeFireModel>();
         skillModel.playerId = id;
 
@@ -305,7 +349,7 @@ public class BasePlayer : MonoBehaviour
         }
 
 
-       
+
 
     }
     public void UpdateControl()

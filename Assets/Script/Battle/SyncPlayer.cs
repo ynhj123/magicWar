@@ -68,7 +68,7 @@ public class SyncPlayer : BasePlayer
     //更新位置
     public void ForecastUpdate()
     {
-      
+
         //时间
         float deltaT = Time.time - forecastTime;
         if (Mathf.Abs(deltaT) < 0.01)
@@ -79,25 +79,25 @@ public class SyncPlayer : BasePlayer
         t = Mathf.Clamp(t, 0f, 1f);
         //位置
         Vector3 pos = transform.position;
-   
+
         Vector3 v = forecastPos - pos;
 
-      /*  if (Vector3.SqrMagnitude(v) > 0.2f)
-        {
-            float dis = v.magnitude;
-            float curSpeed = dis / t;
-            Vector3 next = v.normalized * (curSpeed) * Time.deltaTime;
-            transform.position += next;
-            Debug.Log(forecastPos + ":" + pos + ":" + t + ":" + dis + ":"+ curSpeed + ":" + deltaT+":"+speed);
-            if(speed == 0)
-            {
-                Debug.Log(frame);
-            }
-        }
-        else
-        {
-            
-        }*/
+        /*  if (Vector3.SqrMagnitude(v) > 0.2f)
+          {
+              float dis = v.magnitude;
+              float curSpeed = dis / t;
+              Vector3 next = v.normalized * (curSpeed) * Time.deltaTime;
+              transform.position += next;
+              Debug.Log(forecastPos + ":" + pos + ":" + t + ":" + dis + ":"+ curSpeed + ":" + deltaT+":"+speed);
+              if(speed == 0)
+              {
+                  Debug.Log(frame);
+              }
+          }
+          else
+          {
+
+          }*/
         transform.position = forecastPos;
 
 
@@ -119,9 +119,9 @@ public class SyncPlayer : BasePlayer
     //开火
     public void SyncFire(SkillMsg msg)
     {
-       
+
         /* GameObject bullet = Instantiate(ResManger.LoadPrefab(path), transform.position + transform.forward * 2 + new Vector3(0, 1, 0), Quaternion.identity);*/
-        if(msg.skillId == 1)
+        if (msg.skillId == 1)
         {
             string path = "Battle/FireBall";
 
@@ -144,7 +144,7 @@ public class SyncPlayer : BasePlayer
         }
         if (msg.skillId == 3)
         {
-            string path = "Battle/Flash"; 
+            string path = "Battle/Flash";
             GameObject bullet = Instantiate(ResManger.LoadPrefab(path), new Vector3(transform.position.x, 1, transform.position.z), Quaternion.identity);
             Vector3 pos = new Vector3(msg.x, msg.y, msg.z);
             Vector3 eulerAngles = new Vector3(msg.ex, msg.ey, msg.ez);
@@ -154,8 +154,69 @@ public class SyncPlayer : BasePlayer
 
             return;
         }
+        if (msg.skillId == 4)
+        {
+            string path = "Battle/FireJet";
+         
+            Vector3 pos = new Vector3(msg.x, msg.y, msg.z);
+            Vector3 eulerAngles = new Vector3(msg.ex, msg.ey, msg.ez);
+            GameObject bullet = Instantiate(ResManger.LoadPrefab(path), pos, Quaternion.identity);
+            FireJetModel skillModel = bullet.GetComponent<FireJetModel>();
+            bullet.transform.forward = eulerAngles;
+            skillModel.playerId = msg.uid;
+
+            return;
+        }
+        if (msg.skillId == 5)
+        {
+            string path = "Battle/Gravitation";
+         
+            Vector3 pos = new Vector3(msg.x, msg.y, msg.z);
+            Vector3 eulerAngles = new Vector3(msg.ex, msg.ey, msg.ez);
+     
+
+            GameObject bullet = Instantiate(ResManger.LoadPrefab(path), pos, Quaternion.identity);
+            GravitationModel skillModel = bullet.GetComponent<GravitationModel>();
+            bullet.transform.forward = eulerAngles;
+            skillModel.playerId = msg.uid;
 
 
+            return;
+        }
+        if (msg.skillId == 6)
+        {
+            string path = "Battle/MagicShield";
+           
+            Vector3 pos = new Vector3(msg.x, msg.y, msg.z);
+            Vector3 eulerAngles = new Vector3(msg.ex, msg.ey, msg.ez);
+         
+
+
+            GameObject bullet = Instantiate(ResManger.LoadPrefab(path), pos, Quaternion.identity);
+            MagicShield skillModel = bullet.GetComponent<MagicShield>();
+            bullet.transform.forward = eulerAngles;
+            skillModel.playerId = msg.uid;
+
+            return;
+        }
+        if (msg.skillId == 7)
+        {
+            string path = "Battle/LightningTall";
+            Vector3 pos = new Vector3(msg.x, msg.y, msg.z);
+            GameObject bullet = Instantiate(ResManger.LoadPrefab(path), pos, Quaternion.identity);
+            LightningTallModel skillModel = bullet.GetComponent<LightningTallModel>();
+            skillModel.playerId = id;
+            return;
+        }
+        if (msg.skillId == 8)
+        {
+            string path = "Battle/MagicSphere";
+            Vector3 pos = new Vector3(msg.x, msg.y, msg.z);
+            GameObject bullet = Instantiate(ResManger.LoadPrefab(path), pos, Quaternion.identity);
+            MagicSphereModel skillModel = bullet.GetComponent<MagicSphereModel>();
+            skillModel.playerId = id;
+            return;
+        }
     }
 
 }

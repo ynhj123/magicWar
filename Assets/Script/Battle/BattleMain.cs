@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class BattleMain : MonoBehaviour
 {
@@ -98,7 +96,7 @@ public class BattleMain : MonoBehaviour
         if (msg.uid != MainController.user.Uid && players.ContainsKey(msg.uid))
         {
             //Debug.Log(msg.uid + ":" + msg.x + "," +msg.z);
-            
+
             SyncPlayer basePlayer = (SyncPlayer)players[msg.uid];
             basePlayer.SyncPos(msg);
 

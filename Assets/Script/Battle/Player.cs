@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Player : BasePlayer
 {
@@ -40,12 +39,12 @@ public class Player : BasePlayer
         msg.hp = hp;
         msg.speed = speed;
         msg.frame = frame++;
-        Debug.Log("time="+Time.time+"send=" + msg.x+":"+msg.z+":"+msg.frame);
-    
+        //Debug.Log("time=" + Time.time + "send=" + msg.x + ":" + msg.z + ":" + msg.frame);
+
         NetManager.Send(msg);
     }
 
-   
+
 
     private void OnDestroy()
     {
@@ -55,9 +54,9 @@ public class Player : BasePlayer
         msg.ey = transform.eulerAngles.y;
         msg.hp = 0;
         msg.speed = speed;
-      
+
         NetManager.Send(msg);
     }
 
-   
+
 }
