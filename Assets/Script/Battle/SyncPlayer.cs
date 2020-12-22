@@ -157,7 +157,7 @@ public class SyncPlayer : BasePlayer
         if (msg.skillId == 4)
         {
             string path = "Battle/FireJet";
-         
+
             Vector3 pos = new Vector3(msg.x, msg.y, msg.z);
             Vector3 eulerAngles = new Vector3(msg.ex, msg.ey, msg.ez);
             GameObject bullet = Instantiate(ResManger.LoadPrefab(path), pos, Quaternion.identity);
@@ -170,10 +170,10 @@ public class SyncPlayer : BasePlayer
         if (msg.skillId == 5)
         {
             string path = "Battle/Gravitation";
-         
+
             Vector3 pos = new Vector3(msg.x, msg.y, msg.z);
             Vector3 eulerAngles = new Vector3(msg.ex, msg.ey, msg.ez);
-     
+
 
             GameObject bullet = Instantiate(ResManger.LoadPrefab(path), pos, Quaternion.identity);
             GravitationModel skillModel = bullet.GetComponent<GravitationModel>();
@@ -186,10 +186,10 @@ public class SyncPlayer : BasePlayer
         if (msg.skillId == 6)
         {
             string path = "Battle/MagicShield";
-           
+
             Vector3 pos = new Vector3(msg.x, msg.y, msg.z);
             Vector3 eulerAngles = new Vector3(msg.ex, msg.ey, msg.ez);
-         
+
 
 
             GameObject bullet = Instantiate(ResManger.LoadPrefab(path), pos, Quaternion.identity);

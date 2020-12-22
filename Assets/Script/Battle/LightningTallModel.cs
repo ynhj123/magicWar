@@ -5,7 +5,7 @@ public class LightningTallModel : SkillModel
 {
     public float force = 5;
     public float forPlayerTime = 0.5f;
-    Dictionary<string,BasePlayer> hurrtPlayers = new Dictionary<string, BasePlayer>();
+    Dictionary<string, BasePlayer> hurrtPlayers = new Dictionary<string, BasePlayer>();
     // Start is called before the first frame update
     void Start()
     {

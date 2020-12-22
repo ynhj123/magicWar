@@ -21,7 +21,6 @@ public class GravitationModel : SkillModel
     }
     private void OnTriggerStay(Collider other)
     {
-        Debug.Log("on graviation:" + this.transform.position);
         BasePlayer player;
         bool v = other.TryGetComponent<BasePlayer>(out player);
         //other.GetComponent<Player>();
@@ -30,12 +29,12 @@ public class GravitationModel : SkillModel
         {
             Vector3 direct = (this.transform.position + transform.forward * 3 - player.transform.position).normalized;
 
-            /* HitMsg hitMsg = new HitMsg();
-             hitMsg.x = direct.x;
-             hitMsg.y = 0;
-             hitMsg.z = direct.z;
-             hitMsg.targetId = playerId;
-             NetManager.Send(hitMsg);*/
+            HitMsg hitMsg = new HitMsg();
+            hitMsg.x = direct.x;
+            hitMsg.y = 0;
+            hitMsg.z = direct.z;
+            hitMsg.targetId = playerId;
+            NetManager.Send(hitMsg);
             player.animator.Play("IsHurrt");
             player.hp -= 0.1f;
             direct.y = 0;

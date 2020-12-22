@@ -29,12 +29,12 @@ public class FireJetModel : SkillModel
         {
             Vector3 direct = (player.transform.position - this.transform.position).normalized;
 
-            /* HitMsg hitMsg = new HitMsg();
-             hitMsg.x = direct.x;
-             hitMsg.y = 0;
-             hitMsg.z = direct.z;
-             hitMsg.targetId = playerId;
-             NetManager.Send(hitMsg);*/
+            HitMsg hitMsg = new HitMsg();
+            hitMsg.x = direct.x;
+            hitMsg.y = 0;
+            hitMsg.z = direct.z;
+            hitMsg.targetId = playerId;
+            NetManager.Send(hitMsg);
             player.animator.Play("IsHurrt");
             player.hp -= 10;
             direct.y = 0;
@@ -46,10 +46,10 @@ public class FireJetModel : SkillModel
 
         }
         //
-       /* if (v && playerId != player.id)
-        {
-            //显示特效
-            Destroy(gameObject);
-        }*/
+        /* if (v && playerId != player.id)
+         {
+             //显示特效
+             Destroy(gameObject);
+         }*/
     }
 }

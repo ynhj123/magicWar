@@ -22,31 +22,29 @@ public class PlayerController : MonoBehaviour
     float SMCd = 8;
     float DMCd = 5;
     float FMCd = 16;
+    bool isShowSkillRange = false;
 
     GameObject SkillController;
+    GameObject SkillRange;
+    GameObject SkillTip;
     public Player player;
+    float maxRange = 5;
     // Start is called before the first frame update
     void Start()
     {
         player.GetComponent<Player>();
         SkillController = GameObject.Find("/Root/Canvas/Controller/SkillController");
+        SkillRange = player.transform.Find("SkillRange").gameObject;
+        SkillTip = player.transform.Find("SkillTip").gameObject;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            Time.timeScale = 0;
 
-        }
-        if (Input.GetKeyDown(KeyCode.S))
+        if (player != null && !isShowSkillRange)
         {
-
-            Time.timeScale = 1;
-        }
-        if (player != null)
-        {
+            
             if (Input.GetMouseButtonDown(1))
             {
                 player.UpdateControl();
@@ -102,8 +100,43 @@ public class PlayerController : MonoBehaviour
 
             }
         }
+        else if (isShowSkillRange)
+        {
+            
+            //跟随鼠标
+            //获取屏幕坐标
+            Vector3 mousepostion = Input.mousePosition;
+            //定义从屏幕
+            Ray ray = Camera.main.ScreenPointToRay(mousepostion);
+            RaycastHit hitInfo;
+            if (!Physics.Raycast(ray, out hitInfo))
+            {
 
+                return;
 
+            }
+            //获取鼠标在场景中坐标
+            Vector3 point = hitInfo.point;
+            Vector3 pos = new Vector3(point.x, 0, point.z);
+            Vector3 direction =  pos - player.transform.position;
+            if (direction.sqrMagnitude > maxRange * maxRange)
+            {
+                pos = player.transform.position + direction.normalized * maxRange;
+            }
+            SkillTip.transform.position = pos;
+            SkillRange.transform.LookAt(pos);
+            if (Input.GetMouseButtonDown(0))
+            {
+                Debug.Log("释放");
+
+            }
+            if (Input.GetMouseButtonDown(1))
+            {
+                isShowSkillRange = false;
+            }
+        }
+        SkillRange.SetActive(isShowSkillRange);
+        SkillTip.SetActive(isShowSkillRange);
 
     }
     private void LateUpdate()
@@ -179,7 +212,7 @@ public class PlayerController : MonoBehaviour
     {
         Transform qCode = SkillController.transform.Find("QCode/Mask");
         qCode.GetComponent<Image>().fillAmount = QCd / QMCd;
-        HandleCDView(qCode,QCd);
+        HandleCDView(qCode, QCd);
 
         Transform wCode = SkillController.transform.Find("WCode/Mask");
         wCode.GetComponent<Image>().fillAmount = WCd / WMCd;
@@ -210,7 +243,7 @@ public class PlayerController : MonoBehaviour
         HandleCDView(fCode, FCd);
     }
 
-    private void HandleCDView(Transform code, float  cd)
+    private void HandleCDView(Transform code, float cd)
     {
         int cdVal = Convert.ToInt32(cd);
         if (cdVal == 0)

@@ -104,7 +104,7 @@ public class BasePlayer : MonoBehaviour
     {
         Vector3 pos = transform.position + new Vector3(0, 1, 0) + transform.forward * 1;
         string path = "Battle/MagicShield";
-       
+
 
         SkillMsg skillMsg = new SkillMsg();
         skillMsg.skillId = 6;
@@ -148,7 +148,7 @@ public class BasePlayer : MonoBehaviour
         skillMsg.x = pos.x;
         skillMsg.y = pos.y;
         skillMsg.z = pos.z;
-  
+
         NetManager.Send(skillMsg);
         string path = "Battle/LightningTall";
         GameObject bullet = Instantiate(ResManger.LoadPrefab(path), pos, Quaternion.identity);
@@ -181,7 +181,7 @@ public class BasePlayer : MonoBehaviour
         skillMsg.x = pos.x;
         skillMsg.y = pos.y;
         skillMsg.z = pos.z;
-    
+
         NetManager.Send(skillMsg);
 
         GameObject bullet = Instantiate(ResManger.LoadPrefab(path), pos, Quaternion.identity);

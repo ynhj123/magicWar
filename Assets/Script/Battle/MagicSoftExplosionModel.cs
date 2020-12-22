@@ -37,7 +37,7 @@ public class MagicSoftExplosionModel : SkillModel
             player.ResetPlayer(forPlayerTime);
 
         }
-      
+
 
     }
 }

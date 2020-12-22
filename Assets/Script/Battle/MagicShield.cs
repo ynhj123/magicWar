@@ -12,10 +12,10 @@ public class MagicShield : SkillModel
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log(other.gameObject.tag);
-        if(other.gameObject.tag == "FlySkill")
+        if (other.gameObject.tag == "FlySkill")
         {
             SkillModel skill = other.gameObject.GetComponent<SkillModel>();
-            if(skill.playerId != playerId)
+            if (skill.playerId != playerId)
             {
                 Destroy(other.gameObject);
             }
