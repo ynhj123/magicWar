@@ -46,10 +46,10 @@ public class FireJetModel : SkillModel
 
         }
         //
-        if (v && playerId != player.id)
+       /* if (v && playerId != player.id)
         {
             //显示特效
             Destroy(gameObject);
-        }
+        }*/
     }
 }
