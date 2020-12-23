@@ -39,6 +39,7 @@ public class PlayerController : MonoBehaviour
         SkillRange = player.transform.Find("SkillRange").gameObject;
         SkillTip = player.transform.Find("SkillTip").gameObject;
         SkillTipA = player.transform.Find("SkillTipAParent").gameObject;
+        isShowSkillRange = false;
     }
 
     // Update is called once per frame
@@ -131,13 +132,15 @@ public class PlayerController : MonoBehaviour
             {
                 isShowSkillRange = false;
             }
-        }else if (player != null)
+        }
+        if (player != null)
         {
+            
             SkillRange.SetActive(isShowSkillRange);
             SkillTip.SetActive(isShowSkillRange);
             SkillTipA.SetActive(isShowSkillRange);
         }
-       
+
     }
 
     private void HandleSkill(Vector3 pos, Vector3 direct)
