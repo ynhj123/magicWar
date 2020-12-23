@@ -192,23 +192,14 @@ public class BasePlayer : MonoBehaviour
     {
 
         //Skill skill = SkillManger.Instance.Get(key);
-        Vector3 pos = transform.position + transform.forward * 2 + new Vector3(0, 1, 0);
-        SkillMsg skillMsg = new SkillMsg();
-        skillMsg.x = pos.x;
-        skillMsg.y = pos.y;
-        skillMsg.z = pos.z;
-        Vector3 forward = transform.forward;
-        skillMsg.ex = forward.x;
-        skillMsg.ey = forward.y;
-        skillMsg.ez = forward.z;
-        skillMsg.skillId = 1;
-        NetManager.Send(skillMsg);
+        /*Vector3 pos = transform.position + transform.forward * 2 + new Vector3(0, 1, 0);
+        
 
         string path = "Battle/FireBall";
         GameObject bullet = Instantiate(ResManger.LoadPrefab(path), pos, Quaternion.identity);
         bullet.transform.up = forward;
         FireBallModel skillModel = bullet.GetComponent<FireBallModel>();
-        skillModel.playerId = id;
+        skillModel.playerId = id;*/
 
     }
     public void FireESkill()
@@ -389,6 +380,7 @@ public class BasePlayer : MonoBehaviour
     }
     public void ResetPlayer(float forTime)
     {
+        endPoints.Clear();
         StartCoroutine(ResetPlayerByTime(forTime));
 
 

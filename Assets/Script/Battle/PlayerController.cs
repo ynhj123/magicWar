@@ -27,8 +27,10 @@ public class PlayerController : MonoBehaviour
     GameObject SkillController;
     GameObject SkillRange;
     GameObject SkillTip;
+    GameObject SkillTipA;
     public Player player;
-    float maxRange = 5;
+    float maxRange = 10;
+    int skillId = 0;
     // Start is called before the first frame update
     void Start()
     {
@@ -36,6 +38,7 @@ public class PlayerController : MonoBehaviour
         SkillController = GameObject.Find("/Root/Canvas/Controller/SkillController");
         SkillRange = player.transform.Find("SkillRange").gameObject;
         SkillTip = player.transform.Find("SkillTip").gameObject;
+        SkillTipA = player.transform.Find("SkillTipAParent").gameObject;
     }
 
     // Update is called once per frame
@@ -44,7 +47,7 @@ public class PlayerController : MonoBehaviour
 
         if (player != null && !isShowSkillRange)
         {
-            
+
             if (Input.GetMouseButtonDown(1))
             {
                 player.UpdateControl();
@@ -52,57 +55,48 @@ public class PlayerController : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.Q) && QCd <= 0)
             {
-                player.FireQSkill();
-                QCd = QMCd;
-
+                isShowSkillRange = true;
+                skillId = 1;
             }
             if (Input.GetKeyDown(KeyCode.W) && WCd <= 0)
             {
-                player.FireWSkill();
-                WCd = WMCd;
-
-
+                isShowSkillRange = true;
+                skillId = 2;
             }
             if (Input.GetKeyDown(KeyCode.E) && ECd <= 0)
             {
-                player.FireESkill();
-
-                ECd = EMCd;
+                isShowSkillRange = true;
+                skillId = 3;
             }
             if (Input.GetKeyDown(KeyCode.R) && RCd <= 0)
             {
-                player.FireRSkill();
-                RCd = RMCd;
-
+                isShowSkillRange = true;
+                skillId = 4;
             }
             if (Input.GetKeyDown(KeyCode.A) && ACd <= 0)
             {
-                player.FireASkill();
-                ACd = AMCd;
-
+                isShowSkillRange = true;
+                skillId = 5;
             }
             if (Input.GetKeyDown(KeyCode.S) && SCd <= 0)
             {
-                player.FireSSkill();
-                SCd = SMCd;
-
+                isShowSkillRange = true;
+                skillId = 6;
             }
             if (Input.GetKeyDown(KeyCode.D) && DCd <= 0)
             {
-                player.FireDSkill();
-                DCd = DMCd;
-
+                isShowSkillRange = true;
+                skillId = 7;
             }
             if (Input.GetKeyDown(KeyCode.F) && FCd <= 0)
             {
-                player.FireFSkill();
-                FCd = FMCd;
-
+                isShowSkillRange = true;
+                skillId = 8;
             }
         }
         else if (isShowSkillRange)
         {
-            
+
             //跟随鼠标
             //获取屏幕坐标
             Vector3 mousepostion = Input.mousePosition;
@@ -118,17 +112,20 @@ public class PlayerController : MonoBehaviour
             //获取鼠标在场景中坐标
             Vector3 point = hitInfo.point;
             Vector3 pos = new Vector3(point.x, 0, point.z);
-            Vector3 direction =  pos - player.transform.position;
+            Vector3 direction = pos - player.transform.position;
             if (direction.sqrMagnitude > maxRange * maxRange)
             {
                 pos = player.transform.position + direction.normalized * maxRange;
             }
             SkillTip.transform.position = pos;
-            SkillRange.transform.LookAt(pos);
+            SkillTipA.transform.LookAt(pos);
             if (Input.GetMouseButtonDown(0))
             {
-                Debug.Log("释放");
-
+                player.transform.LookAt(pos);
+                player.ResetPlayer(0);
+                HandleSkill(pos, direction);
+                isShowSkillRange = false;
+                skillId = 0;
             }
             if (Input.GetMouseButtonDown(1))
             {
@@ -137,8 +134,61 @@ public class PlayerController : MonoBehaviour
         }
         SkillRange.SetActive(isShowSkillRange);
         SkillTip.SetActive(isShowSkillRange);
-
+        SkillTipA.SetActive(isShowSkillRange);
     }
+
+    private void HandleSkill(Vector3 pos, Vector3 direct)
+    {
+        SkillMsg skillMsg = new SkillMsg();
+        skillMsg.x = pos.x;
+        skillMsg.y = pos.y;
+        skillMsg.z = pos.z;
+        skillMsg.ex = direct.x;
+        skillMsg.ey = direct.y;
+        skillMsg.ez = direct.z;
+        skillMsg.skillId = skillId;
+        NetManager.Send(skillMsg);//广播
+        HandleCd(skillId);
+        SkillManger.Instance.Handle(player.transform, skillId, pos, direct, player.id);
+    }
+
+    private void HandleCd(int skillId)
+    {
+
+        if (skillId == 1)
+        {
+            QCd = QMCd;
+        }
+        if (skillId == 2)
+        {
+            WCd = WMCd;
+        }
+        if (skillId == 3)
+        {
+            ECd = EMCd;
+        }
+        if (skillId == 4)
+        {
+            RCd = RMCd;
+        }
+        if (skillId == 5)
+        {
+            ACd = AMCd;
+        }
+        if (skillId == 6)
+        {
+            SCd = SMCd;
+        }
+        if (skillId == 7)
+        {
+            DCd = DMCd;
+        }
+        if (skillId == 8)
+        {
+            FCd = FMCd;
+        }
+    }
+
     private void LateUpdate()
     {
         if (QCd > 0)

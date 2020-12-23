@@ -119,104 +119,10 @@ public class SyncPlayer : BasePlayer
     //开火
     public void SyncFire(SkillMsg msg)
     {
-
+        Vector3 pos = new Vector3(msg.x, msg.y, msg.z);
+        Vector3 eulerAngles = new Vector3(msg.ex, msg.ey, msg.ez);
         /* GameObject bullet = Instantiate(ResManger.LoadPrefab(path), transform.position + transform.forward * 2 + new Vector3(0, 1, 0), Quaternion.identity);*/
-        if (msg.skillId == 1)
-        {
-            string path = "Battle/FireBall";
-
-            GameObject bullet = Instantiate(ResManger.LoadPrefab(path), new Vector3(msg.x, msg.y, msg.z), Quaternion.identity);
-            bullet.transform.up = new Vector3(msg.ex, msg.ey, msg.ez);
-            FireBallModel skillModel = bullet.GetComponent<FireBallModel>();
-
-            skillModel.playerId = msg.uid;
-            return;
-        }
-        if (msg.skillId == 2)
-        {
-            string path = "Battle/RangeFireBall";
-            GameObject bullet = Instantiate(ResManger.LoadPrefab(path), new Vector3(msg.x, msg.y, msg.z), Quaternion.identity);
-            // bullet.transform.up = forward;
-            RangeFireModel skillModel = bullet.GetComponent<RangeFireModel>();
-
-            skillModel.playerId = msg.uid;
-            return;
-        }
-        if (msg.skillId == 3)
-        {
-            string path = "Battle/Flash";
-            GameObject bullet = Instantiate(ResManger.LoadPrefab(path), new Vector3(transform.position.x, 1, transform.position.z), Quaternion.identity);
-            Vector3 pos = new Vector3(msg.x, msg.y, msg.z);
-            Vector3 eulerAngles = new Vector3(msg.ex, msg.ey, msg.ez);
-            transform.position = pos;
-            transform.eulerAngles = eulerAngles;
-
-
-            return;
-        }
-        if (msg.skillId == 4)
-        {
-            string path = "Battle/FireJet";
-
-            Vector3 pos = new Vector3(msg.x, msg.y, msg.z);
-            Vector3 eulerAngles = new Vector3(msg.ex, msg.ey, msg.ez);
-            GameObject bullet = Instantiate(ResManger.LoadPrefab(path), pos, Quaternion.identity);
-            FireJetModel skillModel = bullet.GetComponent<FireJetModel>();
-            bullet.transform.forward = eulerAngles;
-            skillModel.playerId = msg.uid;
-
-            return;
-        }
-        if (msg.skillId == 5)
-        {
-            string path = "Battle/Gravitation";
-
-            Vector3 pos = new Vector3(msg.x, msg.y, msg.z);
-            Vector3 eulerAngles = new Vector3(msg.ex, msg.ey, msg.ez);
-
-
-            GameObject bullet = Instantiate(ResManger.LoadPrefab(path), pos, Quaternion.identity);
-            GravitationModel skillModel = bullet.GetComponent<GravitationModel>();
-            bullet.transform.forward = eulerAngles;
-            skillModel.playerId = msg.uid;
-
-
-            return;
-        }
-        if (msg.skillId == 6)
-        {
-            string path = "Battle/MagicShield";
-
-            Vector3 pos = new Vector3(msg.x, msg.y, msg.z);
-            Vector3 eulerAngles = new Vector3(msg.ex, msg.ey, msg.ez);
-
-
-
-            GameObject bullet = Instantiate(ResManger.LoadPrefab(path), pos, Quaternion.identity);
-            MagicShield skillModel = bullet.GetComponent<MagicShield>();
-            bullet.transform.forward = eulerAngles;
-            skillModel.playerId = msg.uid;
-
-            return;
-        }
-        if (msg.skillId == 7)
-        {
-            string path = "Battle/LightningTall";
-            Vector3 pos = new Vector3(msg.x, msg.y, msg.z);
-            GameObject bullet = Instantiate(ResManger.LoadPrefab(path), pos, Quaternion.identity);
-            LightningTallModel skillModel = bullet.GetComponent<LightningTallModel>();
-            skillModel.playerId = id;
-            return;
-        }
-        if (msg.skillId == 8)
-        {
-            string path = "Battle/MagicSphere";
-            Vector3 pos = new Vector3(msg.x, msg.y, msg.z);
-            GameObject bullet = Instantiate(ResManger.LoadPrefab(path), pos, Quaternion.identity);
-            MagicSphereModel skillModel = bullet.GetComponent<MagicSphereModel>();
-            skillModel.playerId = id;
-            return;
-        }
+        SkillManger.Instance.Handle(transform, msg.skillId, pos, eulerAngles, msg.uid);
     }
 
 }
