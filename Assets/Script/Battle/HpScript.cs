@@ -55,7 +55,7 @@ public class HpScript : MonoBehaviour
             Vector2 pos = RectTransformUtility.WorldToScreenPoint(Camera.main, tarPos);
             rectTrans.position = pos + offset;
             image.fillAmount = player.hp / maxValue;
-            hpValue.text = Convert.ToInt32(player.hp).ToString();
+            hpValue.text = Math.Ceiling(player.hp).ToString();
             if (player.hp == 0)
             {
                 Destroy(this.gameObject);

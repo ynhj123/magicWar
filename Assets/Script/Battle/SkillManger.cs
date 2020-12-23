@@ -17,11 +17,6 @@ public class SkillManger : MonoBehaviour
 
         get
         {
-            if (instance == null)
-            {
-                instance = new SkillManger();
-            }
-
             return instance;
         }
     }
