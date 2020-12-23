@@ -94,7 +94,7 @@ public class PlayerController : MonoBehaviour
                 skillId = 8;
             }
         }
-        else if (isShowSkillRange)
+        else if (player != null && isShowSkillRange)
         {
 
             //跟随鼠标
@@ -131,10 +131,13 @@ public class PlayerController : MonoBehaviour
             {
                 isShowSkillRange = false;
             }
+        }else if (player != null)
+        {
+            SkillRange.SetActive(isShowSkillRange);
+            SkillTip.SetActive(isShowSkillRange);
+            SkillTipA.SetActive(isShowSkillRange);
         }
-        SkillRange.SetActive(isShowSkillRange);
-        SkillTip.SetActive(isShowSkillRange);
-        SkillTipA.SetActive(isShowSkillRange);
+       
     }
 
     private void HandleSkill(Vector3 pos, Vector3 direct)
