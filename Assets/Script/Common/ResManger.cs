@@ -10,5 +10,8 @@ public class ResManger : MonoBehaviour
     {
         return Resources.Load<Sprite>(path);
     }
-
+    public static Texture2D LoadTexture2D(string path)
+    {
+        return Resources.Load<Texture2D>(path);
+    }
 }

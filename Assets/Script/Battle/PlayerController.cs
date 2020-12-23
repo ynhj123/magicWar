@@ -22,6 +22,16 @@ public class PlayerController : MonoBehaviour
     float SMCd = 8;
     float DMCd = 5;
     float FMCd = 16;
+
+    float maxQRange = 30;
+    float maxWRange = 20;
+    float maxERange = 10;
+    float maxRRange = 30;
+    float maxARange = 10;
+    float maxSRange = 5;
+    float maxDRange = 20;
+    float maxFRange = 20;
+
     bool isShowSkillRange = false;
 
     GameObject SkillController;
@@ -29,7 +39,6 @@ public class PlayerController : MonoBehaviour
     GameObject SkillTip;
     GameObject SkillTipA;
     public Player player;
-    float maxRange = 10;
     int skillId = 0;
     // Start is called before the first frame update
     void Start()
@@ -48,7 +57,7 @@ public class PlayerController : MonoBehaviour
 
         if (player != null && !isShowSkillRange)
         {
-
+            HideSkillRange();
             if (Input.GetMouseButtonDown(1))
             {
                 player.UpdateControl();
@@ -98,28 +107,9 @@ public class PlayerController : MonoBehaviour
         else if (player != null && isShowSkillRange)
         {
 
-            //跟随鼠标
-            //获取屏幕坐标
-            Vector3 mousepostion = Input.mousePosition;
-            //定义从屏幕
-            Ray ray = Camera.main.ScreenPointToRay(mousepostion);
-            RaycastHit hitInfo;
-            if (!Physics.Raycast(ray, out hitInfo))
-            {
-
-                return;
-
-            }
-            //获取鼠标在场景中坐标
-            Vector3 point = hitInfo.point;
-            Vector3 pos = new Vector3(point.x, 0, point.z);
-            Vector3 direction = pos - player.transform.position;
-            if (direction.sqrMagnitude > maxRange * maxRange)
-            {
-                pos = player.transform.position + direction.normalized * maxRange;
-            }
-            SkillTip.transform.position = pos;
-            SkillTipA.transform.LookAt(pos);
+            Vector3 pos = new Vector3();
+            Vector3 direction = new Vector3();
+            HandleRange(skillId,ref pos, ref direction);
             if (Input.GetMouseButtonDown(0))
             {
                 player.transform.LookAt(pos);
@@ -127,19 +117,27 @@ public class PlayerController : MonoBehaviour
                 HandleSkill(pos, direction);
                 isShowSkillRange = false;
                 skillId = 0;
+                HideSkillRange();
+                Cursor.SetCursor(ResManger.LoadTexture2D("Ui/mousePoint"), Vector2.zero, CursorMode.Auto);
+
             }
             if (Input.GetMouseButtonDown(1))
             {
                 isShowSkillRange = false;
+                HideSkillRange();
+                Cursor.SetCursor(ResManger.LoadTexture2D("Ui/mousePoint"), Vector2.zero, CursorMode.Auto);
+
             }
+
+
         }
-        if (player != null)
-        {
-            
-            SkillRange.SetActive(isShowSkillRange);
-            SkillTip.SetActive(isShowSkillRange);
-            SkillTipA.SetActive(isShowSkillRange);
-        }
+
+    }
+    void HideSkillRange()
+    {
+        SkillRange.SetActive(false);
+        SkillTip.SetActive(false);
+        SkillTipA.SetActive(false);
 
     }
 
@@ -156,6 +154,106 @@ public class PlayerController : MonoBehaviour
         NetManager.Send(skillMsg);//广播
         HandleCd(skillId);
         SkillManger.Instance.Handle(player.transform, skillId, pos, direct, player.id);
+    }
+
+    private void HandleRange(int skillId, ref Vector3 pos, ref Vector3 direction)
+    {
+        //跟随鼠标
+        //获取屏幕坐标
+        Vector3 mousepostion = Input.mousePosition;
+        //定义从屏幕
+        Ray ray = Camera.main.ScreenPointToRay(mousepostion);
+        RaycastHit hitInfo;
+        if (!Physics.Raycast(ray, out hitInfo))
+        {
+
+            return;
+
+        }
+        //获取鼠标在场景中坐标
+        Vector3 point = hitInfo.point;
+        pos = new Vector3(point.x, 0, point.z);
+        direction = pos - player.transform.position;
+        SkillRange.SetActive(true);
+        if (skillId == 1)
+        {
+            if (direction.sqrMagnitude > maxQRange * maxQRange)
+            {
+                pos = player.transform.position + direction.normalized * maxQRange;
+            }
+            SkillRange.transform.localScale = new Vector3(maxQRange, 0.01f, maxQRange);
+            SkillTipA.SetActive(true);
+            SkillTipA.transform.localScale = new Vector3(1, 1, 3);
+
+        }
+        if (skillId == 2)
+        {
+            if (direction.sqrMagnitude > maxWRange / 2 * maxWRange / 2)
+            {
+                pos = player.transform.position + direction.normalized * maxWRange / 2;
+            }
+            SkillRange.transform.localScale = new Vector3(maxWRange, 0.01f, maxWRange);
+            SkillTip.SetActive(true);
+            SkillTip.transform.localScale = new Vector3(5, 0.01f, 5);
+        }
+        if (skillId == 3)
+        {
+            if (direction.sqrMagnitude > maxERange * maxERange)
+            {
+                pos = player.transform.position + direction.normalized * maxERange;
+            }
+            SkillRange.transform.localScale = new Vector3(maxERange, 0.01f, maxERange);
+            Cursor.SetCursor(ResManger.LoadTexture2D("Ui/point"), Vector2.zero, CursorMode.Auto);
+        }
+        if (skillId == 4)
+        {
+            if (direction.sqrMagnitude > maxRRange * maxRRange)
+            {
+                pos = player.transform.position + direction.normalized * maxRRange;
+            }
+            SkillRange.transform.localScale = new Vector3(maxRRange, 0.01f, maxRRange);
+            SkillTipA.SetActive(true);
+            SkillTipA.transform.localScale = new Vector3(1, 1, 3);
+        }
+        if (skillId == 5)
+        {
+            if (direction.sqrMagnitude > maxARange/2 * maxARange/2)
+            {
+                pos = player.transform.position + direction.normalized * maxARange/2;
+            }
+            SkillRange.transform.localScale = new Vector3(maxARange, 0.01f, maxARange);
+            Cursor.SetCursor(ResManger.LoadTexture2D("Ui/point"), Vector2.zero, CursorMode.Auto);
+        }
+        if (skillId == 6)
+        {
+            if (direction.sqrMagnitude > maxSRange/2 * maxSRange/2)
+            {
+                pos = player.transform.position + direction.normalized * maxSRange/2;
+            }
+            SkillRange.transform.localScale = new Vector3(maxSRange, 0.01f, maxSRange);
+            Cursor.SetCursor(ResManger.LoadTexture2D("Ui/point"), Vector2.zero, CursorMode.Auto);
+        }
+        if (skillId == 7)
+        {
+            if (direction.sqrMagnitude > maxDRange/2 * maxDRange/2)
+            {
+                pos = player.transform.position + direction.normalized * maxDRange/2;
+            }
+            SkillRange.transform.localScale = new Vector3(maxDRange, 0.01f, maxDRange);
+            Cursor.SetCursor(ResManger.LoadTexture2D("Ui/point"), Vector2.zero, CursorMode.Auto);
+        }
+        if (skillId == 8)
+        {
+            if (direction.sqrMagnitude > maxFRange/2 * maxFRange/2)
+            {
+                pos = player.transform.position + direction.normalized * maxFRange/2;
+            }
+            SkillRange.transform.localScale = new Vector3(maxFRange, 0.01f, maxFRange);
+            SkillTip.SetActive(true);
+            SkillTip.transform.localScale = new Vector3(5, 0.01f, 5);
+        }
+        SkillTip.transform.position = pos;
+        SkillTipA.transform.LookAt(pos);
     }
 
     private void HandleCd(int skillId)
