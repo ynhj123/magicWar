@@ -18,14 +18,14 @@ public class MainController : MonoBehaviour
         NetManager.Connect("192.168.1.105", 8888);
         NetManager.AddMsgListener("EnterMsg", (msgBase) =>
         {
-            EnterMsg msg = (EnterMsg)msgBase;
-            if (msg.code == "200")
+            EnterMsg msg = ProtobufMapper.Deserialize<EnterMsg>(msgBase.content);
+            if (msg.Code == "200")
             {
                 SceneManager.LoadScene("RoomScene");
             }
             else
             {
-                PanelManger.Open<SystemTipPanel>(msg.msg);
+                PanelManger.Open<SystemTipPanel>(msg.Msg);
             }
         });
 
@@ -56,8 +56,8 @@ public class MainController : MonoBehaviour
     void HrefRoomList()
     {
         EnterMsg enterMsg = new EnterMsg();
-        enterMsg.nickname = user.Nickname;
-        enterMsg.token = user.Token;
+        enterMsg.Nickname = user.Nickname;
+        enterMsg.Token = user.Token;
         NetManager.Send(enterMsg);
         //SceneManager.LoadScene("RoomListScene");
     }

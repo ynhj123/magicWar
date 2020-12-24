@@ -50,7 +50,7 @@ public class RoomItemScript : MonoBehaviour
     {
         //SceneManager.LoadScene("RoomScene");
         EnterRoomMsg msg = new EnterRoomMsg();
-        msg.roomId = roomId.text;
+        msg.RoomId = roomId.text;
         NetManager.Send(msg);
     }
 

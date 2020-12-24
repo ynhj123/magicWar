@@ -45,8 +45,8 @@ public class SyncPlayer : BasePlayer
     public void SyncPos(SyncPlayerMsg msg)
     {
         //预测位置
-        Vector3 pos = new Vector3(msg.x, 0, msg.z);
-        Vector3 rot = new Vector3(0, msg.ey, 0);
+        Vector3 pos = new Vector3(msg.X, 0, msg.Z);
+        Vector3 rot = new Vector3(0, msg.Ey, 0);
         /*forecastPos = pos + 1f * (pos - lastPos);
         forecastRot = rot + 1f * (rot - lastRot);*/
         forecastPos = pos;  //跟随不预测
@@ -56,10 +56,10 @@ public class SyncPlayer : BasePlayer
         /*   lastPos = pos;
            lastRot = rot;*/
         // ReSetEndPoint(pos);
-        hp = msg.hp;
-        speed = msg.speed;
+        hp = (float)msg.Hp;
+        speed = (float)msg.Speed;
         forecastTime = Time.time;
-        frame = msg.frame;
+        frame = msg.Frame;
         //Debug.Log("Time="+Time.time+";receive:Id="+msg.uid + ":" + id + ":" + msg.x + ":" + msg.z + ":" + msg.frame);
 
     }
@@ -112,17 +112,17 @@ public class SyncPlayer : BasePlayer
     internal void SyncHit(HitMsg msg)
     {
         animator.Play("IsHurrt");
-        finillyHurrtPlyerId = msg.targetId;
+        finillyHurrtPlyerId = msg.TargetId;
 
     }
 
     //开火
     public void SyncFire(SkillMsg msg)
     {
-        Vector3 pos = new Vector3(msg.x, msg.y, msg.z);
-        Vector3 eulerAngles = new Vector3(msg.ex, msg.ey, msg.ez);
+        Vector3 pos = new Vector3(msg.X, msg.Y, msg.Z);
+        Vector3 eulerAngles = new Vector3(msg.Ex, msg.Ey, msg.Ez);
         /* GameObject bullet = Instantiate(ResManger.LoadPrefab(path), transform.position + transform.forward * 2 + new Vector3(0, 1, 0), Quaternion.identity);*/
-        SkillManger.Instance.Handle(transform, msg.skillId, pos, eulerAngles, msg.uid);
+        SkillManger.Instance.Handle(transform, msg.SkillId, pos, eulerAngles, msg.Uid);
     }
 
 }

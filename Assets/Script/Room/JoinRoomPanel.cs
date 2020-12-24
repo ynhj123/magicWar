@@ -30,7 +30,7 @@ public class JoinRoomPanel : BasePanel
         /*  PanelManger.Open<Buttons>();
           PanelManger.Close<LoginPanel>();*/
         EnterRoomMsg msg = new EnterRoomMsg();
-        msg.roomId = roomId.text;
+        msg.RoomId = roomId.text;
         NetManager.Send(msg);
         //SceneManager.LoadScene("RoomScene");
     }

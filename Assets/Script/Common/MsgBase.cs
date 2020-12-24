@@ -4,6 +4,16 @@ using UnityEngine;
 public class MsgBase
 {
     public string protoName = "null";
+    public byte[] content;
+    public MsgBase()
+    {
+
+    }
+    public MsgBase(string protoName, byte[] content)
+    {
+        this.protoName = protoName;
+        this.content = content;
+    }
     //编码
     public static byte[] Encode(MsgBase msgBase)
     {

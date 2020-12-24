@@ -33,15 +33,15 @@ public class LoadAsyncScene : MonoBehaviour
     private void OnLoadFinish(MsgBase msgBase)
     {
         Debug.Log("OnLoadFinish:" + nextSceneName);
-        LoadFinishMsg msg = (LoadFinishMsg)msgBase;
+        LoadFinishMsg msg = ProtobufMapper.Deserialize<LoadFinishMsg>(msgBase.content);
         BattleMain.playerDatas.Clear();
-        PlayerInfo[] players = msg.players;
+        PlayerInfo[] players = new PlayerInfo[msg.Players.Count];
+        msg.Players.CopyTo(players, 0);
+        
         for (int i = 0; i < players.Length; i++)
         {
-
             PlayerInfo playerInfo = players[i];
-            BattleMain.playerDatas.Add(playerInfo.uid, playerInfo);
-
+            BattleMain.playerDatas.Add(playerInfo.Uid, playerInfo);
         }
         async.allowSceneActivation = true;
     }

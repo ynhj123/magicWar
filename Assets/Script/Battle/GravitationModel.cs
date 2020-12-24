@@ -30,10 +30,10 @@ public class GravitationModel : SkillModel
             Vector3 direct = (this.transform.position + transform.forward * 3 - player.transform.position).normalized;
 
             HitMsg hitMsg = new HitMsg();
-            hitMsg.x = direct.x;
-            hitMsg.y = 0;
-            hitMsg.z = direct.z;
-            hitMsg.targetId = playerId;
+            hitMsg.X = direct.x;
+            hitMsg.Y = 0;
+            hitMsg.Z = direct.z;
+            hitMsg.TargetId = playerId;
             NetManager.Send(hitMsg);
             player.animator.Play("IsHurrt");
             player.hp -= 0.1f;

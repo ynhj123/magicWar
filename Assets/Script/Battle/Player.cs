@@ -33,12 +33,12 @@ public class Player : BasePlayer
         lastSendSyncTime = Time.time;
         //发送同步协议
         SyncPlayerMsg msg = new SyncPlayerMsg();
-        msg.x = transform.position.x;
-        msg.z = transform.position.z;
-        msg.ey = transform.eulerAngles.y;
-        msg.hp = hp;
-        msg.speed = speed;
-        msg.frame = frame++;
+        msg.X = transform.position.x;
+        msg.Z = transform.position.z;
+        msg.Ey = transform.eulerAngles.y;
+        msg.Hp = hp;
+        msg.Speed = speed;
+        msg.Frame = frame++;
         //Debug.Log("time=" + Time.time + "send=" + msg.x + ":" + msg.z + ":" + msg.frame);
 
         NetManager.Send(msg);
@@ -49,11 +49,11 @@ public class Player : BasePlayer
     private void OnDestroy()
     {
         SyncPlayerMsg msg = new SyncPlayerMsg();
-        msg.x = transform.position.x;
-        msg.z = transform.position.z;
-        msg.ey = transform.eulerAngles.y;
-        msg.hp = 0;
-        msg.speed = speed;
+        msg.X = transform.position.x;
+        msg.Z = transform.position.z;
+        msg.Ey = transform.eulerAngles.y;
+        msg.Hp = 0;
+        msg.Speed = speed;
 
         NetManager.Send(msg);
     }

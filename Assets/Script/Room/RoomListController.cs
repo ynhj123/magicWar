@@ -41,7 +41,7 @@ public class RoomListController : MonoBehaviour
             {
 
                 RoomInfo roomInfo = rooms[i];
-                roomItemScript.UpdateContent(roomInfo.id, roomInfo.count + "/" + roomInfo.maxCount, roomInfo.status);
+                roomItemScript.UpdateContent(roomInfo.Id, roomInfo.Count + "/" + roomInfo.MaxCount, roomInfo.Status);
                 roomItemScript.Show();
             }
             else
@@ -53,8 +53,8 @@ public class RoomListController : MonoBehaviour
     public void GetRoomList()
     {
         RoomListMsg roomListMsg = new RoomListMsg();
-        roomListMsg.curPage = curPage;
-        roomListMsg.pageSize = pageSize;
+        roomListMsg.CurPage = curPage;
+        roomListMsg.PageSize = pageSize;
         Debug.Log("GetRoomList");
         NetManager.Send(roomListMsg);
     }
@@ -109,46 +109,46 @@ public class RoomListController : MonoBehaviour
     private void OnEnterRoom(MsgBase msgBase)
     {
         Debug.Log("enterroom");
-        EnterRoomMsg msg = (EnterRoomMsg)msgBase;
+        EnterRoomMsg msg = ProtobufMapper.Deserialize<EnterRoomMsg>(msgBase.content);
         Debug.Log(msg);
-        if (msg.code == "200")
+        if (msg.Code == "200")
         {
-            PanelManger.Open<RoomPanel>(msg.roomId);
+            PanelManger.Open<RoomPanel>(msg.RoomId);
         }
         else
         {
-            PanelManger.Open<SystemTipPanel>(msg.msg);
+            PanelManger.Open<SystemTipPanel>(msg.Msg);
         }
     }
 
     private void OnRoomList(MsgBase msgBase)
     {
-        RoomListMsg msg = (RoomListMsg)msgBase;
+        RoomListMsg msg =  ProtobufMapper.Deserialize<RoomListMsg>(msgBase.content);
 
-        if (msg.code == "200")
+        if (msg.Code == "200")
         {
-            rooms = msg.rooms;
-            size = msg.size;
+            msg.Rooms.CopyTo(rooms,0);
+            size = msg.Size;
             FlushRoomList();
         }
 
         else
         {
-            PanelManger.Open<SystemTipPanel>(msg.msg);
+            PanelManger.Open<SystemTipPanel>(msg.Msg);
         }
 
     }
 
     private void OnCreateRoom(MsgBase msgBase)
     {
-        CreateRoomMsg msg = (CreateRoomMsg)msgBase;
-        if (msg.code == "200")
+        CreateRoomMsg msg = ProtobufMapper.Deserialize<CreateRoomMsg>(msgBase.content);
+        if (msg.Code == "200")
         {
-            PanelManger.Open<RoomPanel>(msg.roomId);
+            PanelManger.Open<RoomPanel>(msg.RoomId);
         }
         else
         {
-            PanelManger.Open<SystemTipPanel>(msg.msg);
+            PanelManger.Open<SystemTipPanel>(msg.Msg);
         }
     }
 

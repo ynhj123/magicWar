@@ -29,7 +29,7 @@ public class RoomPlayerScript : MonoBehaviour
     private void Onkick()
     {
         KickRoomMsg kickRoomMsg = new KickRoomMsg();
-        kickRoomMsg.uid = uid;
+        kickRoomMsg.Uid = uid;
         NetManager.Send(kickRoomMsg);
     }
 

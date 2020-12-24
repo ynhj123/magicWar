@@ -25,10 +25,10 @@ public class RangeFireModel : SkillModel
         {
             Vector3 direct = player.transform.position - this.transform.position;
             HitMsg hitMsg = new HitMsg();
-            hitMsg.x = direct.x;
-            hitMsg.y = 0;
-            hitMsg.z = direct.z;
-            hitMsg.targetId = playerId;
+            hitMsg.X = direct.x;
+            hitMsg.Z = direct.z;
+            hitMsg.Y = 0;
+            hitMsg.TargetId = playerId;
             NetManager.Send(hitMsg);
             player.animator.Play("IsHurrt");
             player.hp -= 10;

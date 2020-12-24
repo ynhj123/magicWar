@@ -36,8 +36,8 @@ public class HpScript : MonoBehaviour
             PlayerInfo playerInfo;
             if (playerDatas.TryGetValue(player.id, out playerInfo))
             {
-                Debug.Log(playerInfo.uid + "," + playerInfo.nickname);
-                nickName.text = playerInfo.nickname;
+                Debug.Log(playerInfo.Uid + "," + playerInfo.Nickname);
+                nickName.text = playerInfo.Nickname;
 
 
             }

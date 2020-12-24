@@ -15,9 +15,9 @@ public class PlayerScoreScript : MonoBehaviour
         killNum = this.transform.Find("KillNum").GetComponent<Text>();
         score = this.transform.Find("Score").GetComponent<Text>();
         icon.sprite = ResManger.LoadSprite("Ui/mainIcon");
-        nickname.text = player.nickname;
-        killNum.text = player.killNum.ToString();
-        score.text = (player.rank + 1).ToString();
+        nickname.text = player.Nickname;
+        killNum.text = player.KillNum.ToString();
+        score.text = (player.Rank + 1).ToString();
 
     }
 

@@ -35,8 +35,8 @@ public class RoomPanel : BasePanel
 
     private void OnStartMsg(MsgBase msgBase)
     {
-        StartMsg msg = (StartMsg)msgBase;
-        if (msg.code == "200")
+        StartMsg msg = ProtobufMapper.Deserialize<StartMsg>(msgBase.content);
+        if (msg.Code == "200")
         {
             Close();
             SceneManager.LoadScene("LoadScene");
@@ -45,28 +45,28 @@ public class RoomPanel : BasePanel
         }
         else
         {
-            PanelManger.Open<SystemTipPanel>(msg.msg);
+            PanelManger.Open<SystemTipPanel>(msg.Msg);
         }
     }
 
     private void OnSendChatMsg()
     {
         ChatRoomMsg chatRoomMsg = new ChatRoomMsg();
-        chatRoomMsg.content = sendContent.text;
+        chatRoomMsg.Content = sendContent.text;
         NetManager.Send(chatRoomMsg);
     }
 
     void OnGetRoomInfoMsg(MsgBase msgBase)
     {
-        GetRoomInfoMsg msg = (GetRoomInfoMsg)msgBase;
-        if (msg.code == "200")
+        GetRoomInfoMsg msg = ProtobufMapper.Deserialize<GetRoomInfoMsg>(msgBase.content);
+        if (msg.Code == "200")
         {
-            playerRooms = msg.players;
+            msg.Players.CopyTo(playerRooms,0);
             FlushView();
         }
         else
         {
-            PanelManger.Open<SystemTipPanel>(msg.msg);
+            PanelManger.Open<SystemTipPanel>(msg.Msg);
         }
     }
     public override void OnClose()
@@ -124,7 +124,7 @@ public class RoomPanel : BasePanel
             if (i < playerRooms.Length)
             {
                 PlayerRoom playerRoom = playerRooms[i];
-                roomPlayerScript.FlushView(i, playerRoom.nickname, playerRoom.roomStatus, playerRoom.uid);
+                roomPlayerScript.FlushView(i, playerRoom.Nickname, playerRoom.RoomStatus, playerRoom.Uid);
             }
             else
             {
@@ -136,7 +136,7 @@ public class RoomPanel : BasePanel
         {
             PlayerRoom playerRoom = playerRooms[i];
             //自己
-            if (playerRoom.uid == MainController.user.Uid)
+            if (playerRoom.Uid == MainController.user.Uid)
             {
                 mySelf = playerRoom;
                 //房主
@@ -153,7 +153,7 @@ public class RoomPanel : BasePanel
                 else
                 {
                     isOwn = false;
-                    if (playerRoom.roomStatus == 0)
+                    if (playerRoom.RoomStatus == 0)
                     {
                         HideStartBtn();
                         ShowReadyBtn();
@@ -235,7 +235,7 @@ public class RoomPanel : BasePanel
 
     private void UnreadyStart()
     {
-        if (mySelf.roomStatus == 1)
+        if (mySelf.RoomStatus == 1)
         {
             NetManager.Send(new UnreadyStartMsg());
         }
@@ -244,8 +244,8 @@ public class RoomPanel : BasePanel
     private void ReadyStart()
     {
         Debug.Log("readystart");
-        Debug.Log(mySelf.roomStatus);
-        if (mySelf.roomStatus == 0)
+        Debug.Log(mySelf.RoomStatus);
+        if (mySelf.RoomStatus == 0)
         {
             NetManager.Send(new ReadyStartMsg());
         }
@@ -261,8 +261,8 @@ public class RoomPanel : BasePanel
     }
     void OnLeaveRoomMsg(MsgBase msgBase)
     {
-        LeaveRoomMsg msg = (LeaveRoomMsg)msgBase;
-        if (msg.code == "200")
+        LeaveRoomMsg msg = ProtobufMapper.Deserialize<LeaveRoomMsg>(msgBase.content); ;
+        if (msg.Code == "200")
         {
             Close();
             RoomListController.instance.GetRoomList();
@@ -270,9 +270,9 @@ public class RoomPanel : BasePanel
     }
     void OnChatRoomMsg(MsgBase msgBase)
     {
-        ChatRoomMsg msg = (ChatRoomMsg)msgBase;
+        ChatRoomMsg msg = ProtobufMapper.Deserialize<ChatRoomMsg>(msgBase.content); ;
 
-        chatContent.text += GetPlayerRoomByUid(msg.fromId).nickname + ":" + msg.content + "\n";
+        chatContent.text += GetPlayerRoomByUid(msg.FromId).Nickname + ":" + msg.Content + "\n";
         scrollRect.verticalNormalizedPosition = 0;
         sendContent.text = "";
     }
@@ -280,7 +280,7 @@ public class RoomPanel : BasePanel
     {
         for (int i = 0; i < playerRooms.Length; i++)
         {
-            if (playerRooms[i].uid == uid)
+            if (playerRooms[i].Uid == uid)
             {
                 return playerRooms[i];
             }

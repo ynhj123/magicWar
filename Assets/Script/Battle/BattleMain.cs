@@ -30,7 +30,7 @@ public class BattleMain : MonoBehaviour
 
             //AddComponent
             BasePlayer player = null;
-            if (playerinfo.uid == MainController.user.Uid)
+            if (playerinfo.Uid == MainController.user.Uid)
             {
                 PlayerController playerController = GetComponent<PlayerController>();
                 player = playerController.player;
@@ -48,12 +48,12 @@ public class BattleMain : MonoBehaviour
 
             //属性
 
-            player.id = playerinfo.uid;
-            player.hp = playerinfo.hp;
+            player.id = playerinfo.Uid;
+            player.hp = (float)playerinfo.Hp;
             //player.speed = playerinfo.speed;
             //pos rotation
-            Vector3 pos = new Vector3(playerinfo.x, 0, playerinfo.z);
-            Vector3 rot = new Vector3(0, playerinfo.ey, 0);
+            Vector3 pos = new Vector3(playerinfo.X, 0, playerinfo.Z);
+            Vector3 rot = new Vector3(0, playerinfo.Ey, 0);
             player.transform.position = pos;
             player.transform.eulerAngles = rot;
             //init
@@ -64,8 +64,8 @@ public class BattleMain : MonoBehaviour
             hpScript.Init(player);
             //playerUis.Add(playerinfo.uid, hpScript);
             //列表
-            player.UpdateJointColor(playerinfo.degree);
-            AddPlayer(playerinfo.uid, player);
+            player.UpdateJointColor(playerinfo.Degree);
+            AddPlayer(playerinfo.Uid, player);
 
         }
         //GameObject
@@ -74,17 +74,19 @@ public class BattleMain : MonoBehaviour
 
     private void OnEnd(MsgBase msgBase)
     {
-        EndMsg msg = (EndMsg)msgBase;
-        PanelManger.Open<BattleResultPanel>(msg.playerInfos);
+        EndMsg msg = ProtobufMapper.Deserialize<EndMsg>(msgBase.content);
+        PlayerInfo[] playerInfos = new PlayerInfo[msg.Players.Count];
+        msg.Players.CopyTo(playerInfos, 0);
+        PanelManger.Open<BattleResultPanel>(playerInfos);
     }
 
     private void OnSynHit(MsgBase msgBase)
     {
-        HitMsg msg = (HitMsg)msgBase;
-        if (msg.uid != MainController.user.Uid && players.ContainsKey(msg.uid))
+        HitMsg msg = ProtobufMapper.Deserialize<HitMsg>(msgBase.content);
+        if (msg.Uid != MainController.user.Uid && players.ContainsKey(msg.Uid))
         {
             //Debug.Log(msg.uid + ":" + msg.x + "," +msg.z);
-            SyncPlayer basePlayer = (SyncPlayer)players[msg.uid];
+            SyncPlayer basePlayer = (SyncPlayer)players[msg.Uid];
             basePlayer.SyncHit(msg);
 
         }
@@ -92,12 +94,12 @@ public class BattleMain : MonoBehaviour
 
     void OnSynPlayer(MsgBase msgBase)
     {
-        SyncPlayerMsg msg = (SyncPlayerMsg)msgBase;
-        if (msg.uid != MainController.user.Uid && players.ContainsKey(msg.uid))
+        SyncPlayerMsg msg = ProtobufMapper.Deserialize<SyncPlayerMsg>(msgBase.content);
+        if (msg.Uid != MainController.user.Uid && players.ContainsKey(msg.Uid))
         {
             //Debug.Log(msg.uid + ":" + msg.x + "," +msg.z);
 
-            SyncPlayer basePlayer = (SyncPlayer)players[msg.uid];
+            SyncPlayer basePlayer = (SyncPlayer)players[msg.Uid];
             basePlayer.SyncPos(msg);
 
         }
@@ -105,11 +107,11 @@ public class BattleMain : MonoBehaviour
     }
     void OnSynSkill(MsgBase msgBase)
     {
-        SkillMsg msg = (SkillMsg)msgBase;
-        if (msg.uid != MainController.user.Uid && players.ContainsKey(msg.uid))
+        SkillMsg msg = ProtobufMapper.Deserialize<SkillMsg>(msgBase.content);
+        if (msg.Uid != MainController.user.Uid && players.ContainsKey(msg.Uid))
         {
             //Debug.Log(msg.uid + ":" + msg.x + "," +msg.z);
-            SyncPlayer basePlayer = (SyncPlayer)players[msg.uid];
+            SyncPlayer basePlayer = (SyncPlayer)players[msg.Uid];
             basePlayer.SyncFire(msg);
 
         }

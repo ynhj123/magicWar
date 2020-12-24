@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Google.Protobuf;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
@@ -212,7 +213,7 @@ public static class NetManager
     }
 
     //发送数据
-    public static void Send(MsgBase msg)
+    public static void Send(IMessage msg)
     {
         //状态判断
         if (socket == null || !socket.Connected)
@@ -227,18 +228,20 @@ public static class NetManager
         {
             return;
         }
+        
         //数据编码
-        byte[] nameBytes = MsgBase.EncodeName(msg);
-        byte[] bodyBytes = MsgBase.Encode(msg);
-        int len = nameBytes.Length + bodyBytes.Length;
-        byte[] sendBytes = new byte[2 + len];
+        int headLen = ProtobufMapper.GetInt(msg.GetType().Name);
+        byte[] bodyBytes = ProtobufMapper.Serialize(msg);
+        int len = bodyBytes.Length;
+        byte[] sendBytes = new byte[4 + len];
         //组装长度
         sendBytes[0] = (byte)(len % 256);
         sendBytes[1] = (byte)(len / 256);
+        sendBytes[2] = (byte)(headLen % 256);
+        sendBytes[3] = (byte)(headLen / 256);
         //组装名字
-        Array.Copy(nameBytes, 0, sendBytes, 2, nameBytes.Length);
         //组装消息体
-        Array.Copy(bodyBytes, 0, sendBytes, 2 + nameBytes.Length, bodyBytes.Length);
+        Array.Copy(bodyBytes, 0, sendBytes, 4, bodyBytes.Length);
         //写入队列
         ByteArray ba = new ByteArray(sendBytes);
         //Debug.Log(msg.protoName + ":" + ba.length + "," + bodyBytes.Length + "," + nameBytes.Length);
@@ -331,7 +334,7 @@ public static class NetManager
     public static void OnReceiveData()
     {
         //消息长度
-        if (readBuff.length <= 2)
+        if (readBuff.length <= 4)
         {
             return;
         }
@@ -343,17 +346,20 @@ public static class NetManager
             return;
         readBuff.readIdx += 2;
         //解析协议名
-        int nameCount = 0;
-        string protoName = MsgBase.DecodeName(readBuff.bytes, readBuff.readIdx, out nameCount);
+        Int16 nameLength = (Int16)((bytes[readIdx + 1] << 8) | bytes[readIdx]);
+        string protoName = ProtobufMapper.GetString(nameLength);
         if (protoName == "")
         {
             Debug.Log("OnReceiveData MsgBase.DecodeName fail");
             return;
         }
-        readBuff.readIdx += nameCount;
+        readBuff.readIdx += 2;
+
         //解析协议体
-        int bodyCount = bodyLength - nameCount;
-        MsgBase msgBase = MsgBase.Decode(protoName, readBuff.bytes, readBuff.readIdx, bodyCount);
+        int bodyCount = bodyLength - 2;
+        byte[] content = new byte[bodyCount];
+        Array.Copy(readBuff.bytes, readBuff.readIdx, content, 0, bodyCount);
+        MsgBase msgBase = new MsgBase(protoName, content);
         readBuff.readIdx += bodyCount;
         readBuff.CheckAndMoveBytes();
         //添加到消息队列
