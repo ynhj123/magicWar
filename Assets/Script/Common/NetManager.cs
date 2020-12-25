@@ -342,11 +342,11 @@ public static class NetManager
         int readIdx = readBuff.readIdx;
         byte[] bytes = readBuff.bytes;
         Int16 bodyLength = (Int16)((bytes[readIdx + 1] << 8) | bytes[readIdx]);
-        if (readBuff.length < bodyLength)
+        if (readBuff.length < bodyLength+4)
             return;
         readBuff.readIdx += 2;
         //解析协议名
-        Int16 nameLength = (Int16)((bytes[readBuff.readIdx + 1] << 8) | bytes[readBuff.readIdx]);
+        Int16 nameLength = (Int16)((bytes[readIdx + 3] << 8) | bytes[readIdx+2]);
         string protoName = ProtobufMapper.GetString(nameLength);
         if (protoName == "")
         {
@@ -360,6 +360,7 @@ public static class NetManager
         byte[] content = new byte[bodyCount];
         Array.Copy(readBuff.bytes, readBuff.readIdx, content, 0, bodyCount);
         MsgBase msgBase = new MsgBase(protoName, content);
+
         readBuff.readIdx += bodyCount;
         readBuff.CheckAndMoveBytes();
         //添加到消息队列

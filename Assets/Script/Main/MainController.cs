@@ -15,7 +15,7 @@ public class MainController : MonoBehaviour
         NetManager.AddEventListener(NetManager.NetEvent.ConnectSucc, OnConnectSucc);
         NetManager.AddEventListener(NetManager.NetEvent.ConnectFail, OnConnectFail);
         NetManager.AddEventListener(NetManager.NetEvent.Close, OnConnectClose);
-        NetManager.Connect("192.168.1.105", 8888);
+        NetManager.Connect("192.168.1.105", 8222);
         NetManager.AddMsgListener("EnterMsg", (msgBase) =>
         {
             EnterMsg msg = ProtobufMapper.Deserialize<EnterMsg>(msgBase.content);
