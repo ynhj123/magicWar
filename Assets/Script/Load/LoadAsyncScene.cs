@@ -37,7 +37,7 @@ public class LoadAsyncScene : MonoBehaviour
         BattleMain.playerDatas.Clear();
         PlayerInfo[] players = new PlayerInfo[msg.Players.Count];
         msg.Players.CopyTo(players, 0);
-        
+
         for (int i = 0; i < players.Length; i++)
         {
             PlayerInfo playerInfo = players[i];

@@ -61,7 +61,16 @@ public class RoomPanel : BasePanel
         GetRoomInfoMsg msg = ProtobufMapper.Deserialize<GetRoomInfoMsg>(msgBase.content);
         if (msg.Code == "200")
         {
-            msg.Players.CopyTo(playerRooms,0);
+            if(msg.Players == null)
+            {
+                playerRooms = new PlayerRoom[0];
+            }
+            else
+            {
+                playerRooms = new PlayerRoom[msg.Players.Count];
+                msg.Players.CopyTo(playerRooms, 0);
+
+            }
             FlushView();
         }
         else

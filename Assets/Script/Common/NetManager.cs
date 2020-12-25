@@ -228,7 +228,7 @@ public static class NetManager
         {
             return;
         }
-        
+
         //数据编码
         int headLen = ProtobufMapper.GetInt(msg.GetType().Name);
         byte[] bodyBytes = ProtobufMapper.Serialize(msg);
@@ -346,7 +346,7 @@ public static class NetManager
             return;
         readBuff.readIdx += 2;
         //解析协议名
-        Int16 nameLength = (Int16)((bytes[readIdx + 1] << 8) | bytes[readIdx]);
+        Int16 nameLength = (Int16)((bytes[readBuff.readIdx + 1] << 8) | bytes[readBuff.readIdx]);
         string protoName = ProtobufMapper.GetString(nameLength);
         if (protoName == "")
         {
@@ -356,7 +356,7 @@ public static class NetManager
         readBuff.readIdx += 2;
 
         //解析协议体
-        int bodyCount = bodyLength - 2;
+        int bodyCount = bodyLength;
         byte[] content = new byte[bodyCount];
         Array.Copy(readBuff.bytes, readBuff.readIdx, content, 0, bodyCount);
         MsgBase msgBase = new MsgBase(protoName, content);

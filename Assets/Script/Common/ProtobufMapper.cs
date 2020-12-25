@@ -8,6 +8,8 @@ public static class ProtobufMapper
     static Dictionary<short, string> intToString = new Dictionary<short, string>();
     static Dictionary<string, short> stringToInt = new Dictionary<string, short>();
 
+
+
     static ProtobufMapper()
     {
         intToString.Add(100, "MsgPing");
@@ -48,23 +50,32 @@ public static class ProtobufMapper
 
     public static byte[] Serialize(IMessage msg)
     {
-        using (MemoryStream rawOutput = new MemoryStream())
-        {
-            CodedOutputStream output = new CodedOutputStream(rawOutput);
-            output.WriteMessage(msg);
-            output.Flush();
-            byte[] result = rawOutput.ToArray();
 
-            return result;
+        if (msg == null)
+            return null;
+
+        using (MemoryStream ms = new MemoryStream())
+        {
+            msg.WriteTo(ms);
+            return ms.ToArray();
         }
     }
-    public static T Deserialize<T>(byte[] dataBytes) where T : IMessage, new()
+    public static T Deserialize<T>(byte[] dataBytes) where T : IMessage<T>, new()
     {
-        CodedInputStream stream = new CodedInputStream(dataBytes);
-        T msg = new T();
-        stream.ReadMessage(msg);
-        return msg;
+        if (dataBytes == null)
+            return default(T);
+
+        using (MemoryStream ms = new MemoryStream())
+        {
+            ms.Write(dataBytes, 0, dataBytes.Length);
+            ms.Seek(0, SeekOrigin.Begin);
+
+            MessageParser<T> parser = new MessageParser<T>(() => new T());
+            return parser.ParseFrom(ms);
+        }
+
     }
- 
+
+
 }
 

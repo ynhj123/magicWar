@@ -9,7 +9,7 @@ public class UiController : MonoBehaviour
         AudioManager.Instance.Play("Children");
         PanelManger.Init();
         PanelManger.Open<Buttons>();
-        Debug.Log(ProtobufMapper.GetString(101));
+     
     }
 
 

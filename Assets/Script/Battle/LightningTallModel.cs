@@ -34,7 +34,8 @@ public class LightningTallModel : SkillModel
             /*  Rigidbody rig = player.GetComponent<Rigidbody>();
               rig.velocity = direct * force;*/
             player.ResetPlayer(forPlayerTime);
-            player.isDebuff = true;
+            //bool orignDebuff = player.isDebuff;
+            //player.isDebuff = true;
             player.finillyHurrtPlyerId = playerId;
             hurrtPlayers.Add(player.id, player);
         }
@@ -43,10 +44,10 @@ public class LightningTallModel : SkillModel
     }
     private void OnDestroy()
     {
-        foreach (var item in hurrtPlayers)
+        /*foreach (var item in hurrtPlayers)
         {
             item.Value.isDebuff = false;
-        }
+        }*/
     }
 
 }

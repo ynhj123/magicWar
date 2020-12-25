@@ -123,11 +123,21 @@ public class RoomListController : MonoBehaviour
 
     private void OnRoomList(MsgBase msgBase)
     {
-        RoomListMsg msg =  ProtobufMapper.Deserialize<RoomListMsg>(msgBase.content);
-
+        RoomListMsg msg = ProtobufMapper.Deserialize<RoomListMsg>(msgBase.content);
+        Debug.Log(msg);
         if (msg.Code == "200")
         {
-            msg.Rooms.CopyTo(rooms,0);
+            if (msg.Rooms ==  null)
+            {
+                rooms = new RoomInfo[0];
+            }
+            else
+            {
+                rooms = new RoomInfo[msg.Rooms.Count];
+                msg.Rooms.CopyTo(rooms, 0);
+
+            }
+
             size = msg.Size;
             FlushRoomList();
         }
