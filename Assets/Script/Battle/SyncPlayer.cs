@@ -33,6 +33,7 @@ public class SyncPlayer : BasePlayer
         //更新位置
         //ForecastUpdate();
         CheckIsAlive();
+        JudgeParticleDebuff();
         //Debug.Log(id + ":" + myTransonfrom.position);
         //MoveUpdate();
     }

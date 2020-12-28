@@ -18,6 +18,7 @@ public class BasePlayer : MonoBehaviour
     public Animator animator;
     Transform bookTranform;
     SkinnedMeshRenderer bodyJointRener;
+    ParticleSystem particleSystem;
     // Start is called before the first frame update
     public virtual void Init(string skinPath)
     {
@@ -49,6 +50,7 @@ public class BasePlayer : MonoBehaviour
         endPoints = new List<Vector3>();
         bodyJointRener = transform
             .Find("ybot/Alpha_Joints").GetComponent<SkinnedMeshRenderer>();
+        particleSystem = transform.Find("PowerupGlow5").GetComponent<ParticleSystem>();
 
     }
 
@@ -337,11 +339,23 @@ public class BasePlayer : MonoBehaviour
         if (isDebuff)
         {
             hp -= Time.fixedDeltaTime;
+            particleSystem.gameObject.SetActive(true);
         }
-
-
-
-
+        else
+        {
+            particleSystem.gameObject.SetActive(false);
+        }
+    }
+    public void JudgeParticleDebuff()
+    {
+        if (isDebuff)
+        {
+            particleSystem.gameObject.SetActive(true);
+        }
+        else
+        {
+            particleSystem.gameObject.SetActive(false);
+        }
     }
     public void UpdateControl()
     {

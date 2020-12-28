@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ParticleEffectsLibrary : MonoBehaviour
@@ -44,6 +45,16 @@ public class ParticleEffectsLibrary : MonoBehaviour
 
     void Start()
     {
+        List<GameObject> list = ParticleEffectPrefabs.ToList();
+        list.RemoveAt(169);
+        ParticleEffectPrefabs = list.ToArray();
+        List<float> lists = ParticleEffectLifetimes.ToList();
+        lists.RemoveAt(169);
+        ParticleEffectLifetimes = lists.ToArray();
+        List<Vector3> lists1 = ParticleEffectSpawnOffsets.ToList();
+        lists1.RemoveAt(169);
+        ParticleEffectSpawnOffsets = lists1.ToArray();
+        TotalEffects = ParticleEffectPrefabs.Length;
     }
 
     public string GetCurrentPENameString()

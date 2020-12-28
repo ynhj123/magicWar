@@ -14,6 +14,7 @@ public class Player : BasePlayer
         //base.Update();
         MoveUpdate();
         JudgeMentDebuff();
+        JudgeParticleDebuff();
         CheckIsAlive();
 
     }
