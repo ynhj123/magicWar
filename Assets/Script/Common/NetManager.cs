@@ -171,8 +171,9 @@ public static class NetManager
             Socket socket = (Socket)ar.AsyncState;
             socket.EndConnect(ar);
             Debug.Log("Socket Connect Succ ");
-            FireEvent(NetEvent.ConnectSucc, "");
             isConnecting = false;
+            FireEvent(NetEvent.ConnectSucc, "");
+
             //开始接收
             socket.BeginReceive(readBuff.bytes, readBuff.writeIdx,
                                             readBuff.remain, 0, ReceiveCallback, socket);
@@ -215,6 +216,7 @@ public static class NetManager
     //发送数据
     public static void Send(IMessage msg)
     {
+        Debug.Log("first send");
         //状态判断
         if (socket == null || !socket.Connected)
         {

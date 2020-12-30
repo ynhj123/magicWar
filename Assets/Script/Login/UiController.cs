@@ -11,6 +11,10 @@ public class UiController : MonoBehaviour
         PanelManger.Open<Buttons>();
      
     }
+    private void Update()
+    {
+        NetManager.Update();
+    }
 
 
 }

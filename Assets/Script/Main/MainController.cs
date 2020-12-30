@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -6,60 +7,57 @@ public class MainController : MonoBehaviour
 {
     public static UserInfo user;
     public Button JoinRoomBtn;
+    Button OpenGoodsBtn;
+    Button OpenUserDetailBtn;
+    Button OpenSkillBtn;
+    Button OpenEquipBtn;
     // Start is called before the first frame update
     void Start()
     {
-        //网络协议监听
-
-        //网络事件监听
-        NetManager.AddEventListener(NetManager.NetEvent.ConnectSucc, OnConnectSucc);
-        NetManager.AddEventListener(NetManager.NetEvent.ConnectFail, OnConnectFail);
-        NetManager.AddEventListener(NetManager.NetEvent.Close, OnConnectClose);
-        NetManager.Connect("192.168.1.105", 8222);
-        NetManager.AddMsgListener("EnterMsg", (msgBase) =>
-        {
-            EnterMsg msg = ProtobufMapper.Deserialize<EnterMsg>(msgBase.content);
-            if (msg.Code == "200")
-            {
-                SceneManager.LoadScene("RoomScene");
-            }
-            else
-            {
-                PanelManger.Open<SystemTipPanel>(msg.Msg);
-            }
-        });
-
+        PanelManger.Init();
+        //按键
+        // JoinRoomBtn = transform.Find("Canvas/Top/JoinBtn").GetComponent<Button>();
         JoinRoomBtn.onClick.AddListener(HrefRoomList);
-        NetManager.AddMsgListener("MsgKick", OnMsgKick);
+
+        OpenGoodsBtn = transform.Find("Canvas/Top/StoreBtn").GetComponent<Button>();
+        OpenGoodsBtn.onClick.AddListener(OpenGoodsPanel);
+        OpenSkillBtn = transform.Find("Canvas/Top/SkillBtn").GetComponent<Button>();
+        OpenSkillBtn.onClick.AddListener(OpenSkillPanel);
+        OpenEquipBtn = transform.Find("Canvas/Top/EquipBtn").GetComponent<Button>();
+        OpenEquipBtn.onClick.AddListener(OpenEquipPanel);
+        
+
+        OpenUserDetailBtn = transform.Find("Canvas/Top/Header/UserDetailBtn").GetComponent<Button>();
+        OpenUserDetailBtn.onClick.AddListener(OpenUserDetailPanel);
+        
     }
 
-    private void OnConnectFail(string err)
+    private void OpenEquipPanel()
     {
-        Debug.Log("连接失败");
+        PanelManger.Open<EquipPanel>();
     }
 
-    private void OnConnectSucc(string err)
+
+    private void OpenSkillPanel()
     {
-        Debug.Log("连接成功");
+        PanelManger.Open<SkillPanel>();
     }
 
-    private void OnMsgKick(MsgBase msgBase)
+    private void OpenUserDetailPanel()
     {
-        Debug.Log("下线");
+        PanelManger.Open<UserDetailPanel>();
     }
 
-    private void OnConnectClose(string err)
+    private void OpenGoodsPanel()
     {
-        Debug.Log("close");
+        PanelManger.Open<GoodsPanel>();
     }
+
+    
 
     void HrefRoomList()
     {
-        EnterMsg enterMsg = new EnterMsg();
-        enterMsg.Nickname = user.Nickname;
-        enterMsg.Token = user.Token;
-        NetManager.Send(enterMsg);
-        //SceneManager.LoadScene("RoomListScene");
+         SceneManager.LoadScene("RoomScene");
     }
     private void Update()
     {

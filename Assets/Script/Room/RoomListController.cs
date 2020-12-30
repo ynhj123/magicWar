@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class RoomListController : MonoBehaviour
@@ -14,7 +16,7 @@ public class RoomListController : MonoBehaviour
     Button getLastBtn;  //获取上一页房间
     Button getNextBtn;  //获取下一页房间
     Button getRoomList; //刷新房间列表
-    Button quit; //退出
+    Button quitBtn; //退出
     RoomInfo[] rooms;
     List<RoomItemScript> roomItemScripts;
 
@@ -94,16 +96,24 @@ public class RoomListController : MonoBehaviour
         getLastBtn = transform.Find("Canvas/Buttom/PreviousPage").GetComponent<Button>();
         getNextBtn = transform.Find("Canvas/Buttom/NextPage").GetComponent<Button>();
         getRoomList = transform.Find("Canvas/Buttom/FlushPage").GetComponent<Button>();
+        quitBtn = transform.Find("Canvas/Buttom/QuitBtn").GetComponent<Button>();
+        
         createRoomBtn.onClick.AddListener(CreateRoom);
         getLastBtn.onClick.AddListener(GetLast);
         getNextBtn.onClick.AddListener(GetNext);
         getRoomList.onClick.AddListener(GetRoomList);
         joinRoomBtn.onClick.AddListener(ShowJoinRoom);
+        quitBtn.onClick.AddListener(Quit);
         NetManager.AddMsgListener("CreateRoomMsg", OnCreateRoom);
         NetManager.AddMsgListener("RoomListMsg", OnRoomList);
         NetManager.AddMsgListener("EnterRoomMsg", OnEnterRoom);
         //DontDestroyOnLoad(transform);
         GetRoomList();
+    }
+
+    private void Quit()
+    {
+        SceneManager.LoadScene("MainScene");
     }
 
     private void OnEnterRoom(MsgBase msgBase)
