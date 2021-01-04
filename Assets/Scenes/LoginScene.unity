@@ -202,7 +202,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c87fb2772289a745b3dfacbfd5c5ff6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseUrl: http://192.168.1.105:8202
+  baseUrl: http://magic.game.ynhj.ltd:8202
 --- !u!1 &943777625
 GameObject:
   m_ObjectHideFlags: 0

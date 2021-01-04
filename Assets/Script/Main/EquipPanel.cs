@@ -7,6 +7,7 @@ public class EquipPanel : BasePanel
 {
     Animator animator;
     Button closeBtn;
+
     public override void OnInit()
     {
         skinPath = "Panel/EquipPanel";

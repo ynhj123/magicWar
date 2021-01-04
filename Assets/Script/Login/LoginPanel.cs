@@ -47,7 +47,7 @@ public class LoginPanel : BasePanel
 
                 MainController.user = response;
                 MainController.user.Token = result;
-                NetManager.Connect("192.168.1.105", 8222);
+                NetManager.Connect("39.105.64.77", 8222);
 
             });
         });
