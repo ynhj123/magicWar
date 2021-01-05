@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -26,5 +27,15 @@ public class FileUtils
         T t = (T)bf.Deserialize(file);
         file.Close();
         return t;
+    }
+
+    public static string[] ReadLines(string path)
+    {
+        return File.ReadAllLines(path);
+    }
+
+    internal static void WriteLines(string path,string[] equips)
+    {
+        File.WriteAllLines(path, equips);
     }
 }

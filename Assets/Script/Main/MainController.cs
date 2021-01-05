@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -29,7 +30,39 @@ public class MainController : MonoBehaviour
 
         OpenUserDetailBtn = transform.Find("Canvas/Top/Header/UserDetailBtn").GetComponent<Button>();
         OpenUserDetailBtn.onClick.AddListener(OpenUserDetailPanel);
-        
+
+      
+    }
+
+    private void CreateEquipTestData()
+    {
+        string[] equips = new string[1830];
+        int id = 1;
+        for (int i = 0; i <= 999; i++)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append(id).Append("|");
+           
+            stringBuilder.Append("test" + id).Append("|");
+            stringBuilder.Append("Ui/equip0_" + i).Append("|");
+            stringBuilder.Append("des" + id).Append("|");
+            stringBuilder.Append('a').Append("|");
+            equips[id - 1] = stringBuilder.ToString();
+            id++;
+        }
+        for (int i = 0; i <= 829; i++)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.Append(id).Append("|");
+            stringBuilder.Append("test" + id).Append("|");
+            stringBuilder.Append("Ui/equip1_" + i).Append("|");
+            stringBuilder.Append("des" + id).Append("|");
+            stringBuilder.Append('b').Append("|");
+            equips[id - 1] = stringBuilder.ToString();
+            id++;
+
+        }
+        FileUtils.WriteLines(Application.streamingAssetsPath + "/equipData", equips);
     }
 
     private void OpenEquipPanel()

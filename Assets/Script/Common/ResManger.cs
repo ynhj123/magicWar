@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class ResManger : MonoBehaviour
 {
@@ -13,5 +14,10 @@ public class ResManger : MonoBehaviour
     public static Texture2D LoadTexture2D(string path)
     {
         return Resources.Load<Texture2D>(path);
+    }
+
+    public static Sprite[] LoadSprites(string path)
+    {
+        return Resources.LoadAll<Sprite>(path);
     }
 }

@@ -30,6 +30,7 @@ public class GameMain : MonoBehaviour
 
     private void Start()
     {
+        EquipManager.Instance().Init();
         //网络协议监听
 
         //网络事件监听

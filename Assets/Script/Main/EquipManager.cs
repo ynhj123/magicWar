@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class EquipManager : EquipManagerApi
@@ -11,15 +12,32 @@ public class EquipManager : EquipManagerApi
     private static EquipManager equipManager = new EquipManager();
     private EquipManager() { }
 
-    private static string equipFilePath = "";
-    private static string myEquipFilePath = "";
-    static Dictionary<int, EquipModel> equips = new Dictionary<int, EquipModel>();
+    private static string equipFilePath = Application.streamingAssetsPath + "/equipData";
+    private static string myEquipFilePath = Application.streamingAssetsPath + "/myEquipData";
+    static Dictionary<int, EquipModel>     equips = new Dictionary<int, EquipModel>();
     static Dictionary<int, MyEquipModel> myEquips = new Dictionary<int, MyEquipModel>();
 
     public void Init()
     {
-        equips   = FileUtils.Load<Dictionary<int, EquipModel>>(equipFilePath);
+        string[] equipStrings = FileUtils.ReadLines(equipFilePath);
+        equips.Clear();
+        foreach (var equipStr in equipStrings)
+        {
+            string[] equipStrs = equipStr.Split('|');
+            int id;
+            char type;
+            if(int.TryParse(equipStrs[0], out id) && char.TryParse(equipStrs[4], out type))
+            {
+                EquipModel model = new EquipModel(id, equipStrs[1], equipStrs[2], equipStrs[3], type);
+                equips.Add(id, model);
+
+            }
+        }
         myEquips = FileUtils.Load<Dictionary<int, MyEquipModel>>(myEquipFilePath);
+        if(myEquips == null)
+        {
+            myEquips = new Dictionary<int, MyEquipModel>();
+        }
     }
 
     public void Save()
@@ -49,16 +67,16 @@ public class EquipManager : EquipManagerApi
         if (!myEquips.ContainsKey(equipId))
         {
             return;
-        }    
+        }
+        MyEquipModel myEquipModel = myEquips[equipId];
+
+        if (myEquipModel.Num <= 1)
+        {
+            myEquips.Remove(equipId);
+        }
         else
         {
-            MyEquipModel myEquipModel = myEquips[equipId];
             myEquipModel.Num = myEquipModel.Num - 1;
-
-            if(myEquipModel.Num <= 0)
-            {
-                myEquips.Remove(equipId);
-            }
         }
     }
 
@@ -67,4 +85,22 @@ public class EquipManager : EquipManagerApi
         return myEquips.ContainsKey(equipId);
     }
 
+    public EquipDetailModel GetDetail(int equipId)
+    {
+        if (!equips.ContainsKey(equipId))
+        {
+            return null;
+        }
+        if (!myEquips.ContainsKey(equipId))
+        {
+            return null;
+        }
+        return new EquipDetailModel(equips[equipId], myEquips[equipId]);
+    }
+
+    public List<PageEquipModel> Page(int curPage, int pageSize)
+    {
+        return (from myEquip in myEquips.Values select new PageEquipModel(equips[myEquip.Id], myEquip)).ToList();
+       // return (from myEquip in myEquips.Values select new PageEquipModel(equips[myEquip.Id], myEquip)).Skip(curPage * pageSize).Take(pageSize).ToList();
+    }
 }
