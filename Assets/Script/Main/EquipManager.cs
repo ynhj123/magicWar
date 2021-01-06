@@ -98,9 +98,22 @@ public class EquipManager : EquipManagerApi
         return new EquipDetailModel(equips[equipId], myEquips[equipId]);
     }
 
-    public List<PageEquipModel> Page(int curPage, int pageSize)
+    public Page<PageEquipModel> Page(int curPage, int pageSize)
     {
-        return (from myEquip in myEquips.Values select new PageEquipModel(equips[myEquip.Id], myEquip)).ToList();
-       // return (from myEquip in myEquips.Values select new PageEquipModel(equips[myEquip.Id], myEquip)).Skip(curPage * pageSize).Take(pageSize).ToList();
+        //return (from myEquip in myEquips.Values select new PageEquipModel(equips[myEquip.Id], myEquip)).ToList();
+        return Page<PageEquipModel>.build()
+            .SetList(
+            (from myEquip in myEquips.Values select new PageEquipModel(equips[myEquip.Id], myEquip)).Skip(curPage * pageSize).Take(pageSize).ToList()
+            )
+            .SetCount(myEquips.Count);
+    }
+
+    public Page<PageEquipModel> ManyPage(int curPage, int pageSize, int num)
+    {
+        return Page<PageEquipModel>.build()
+            .SetList(
+            (from myEquip in myEquips.Values select new PageEquipModel(equips[myEquip.Id], myEquip)).Skip(curPage * pageSize).Take(pageSize * num).ToList()
+            )
+            .SetCount(myEquips.Count);
     }
 }

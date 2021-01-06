@@ -46,5 +46,14 @@ public interface EquipManagerApi: Api
     /// <param name="curPage"></param>
     /// <param name="pageSize"></param>
     /// <returns></returns>
-    List<PageEquipModel> Page(int curPage, int pageSize);
+    Page<PageEquipModel> Page(int curPage, int pageSize);
+
+    /// <summary>
+    /// 多页查询
+    /// </summary>
+    /// <param name="curPage">起始页</param>
+    /// <param name="pageSize">每页显示数量</param>
+    /// <param name="num">一共查几页</param>
+    /// <returns></returns>
+    Page<PageEquipModel> ManyPage(int curPage, int pageSize, int num);
 }

@@ -1,20 +1,34 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PackageCell : MonoBehaviour
 {
-    PageEquipModel equip;
+    public PageEquipModel equip;
     Button button;
     Image icon;
     Text num;
+    
 
     // Start is called before the first frame update
     void Start()
     {
         button = transform.Find("Button").GetComponent<Button>();
+        button.onClick.AddListener(Selected);
        
+    }
+
+    private void Selected()
+    {
+        if(equip == null)
+        {
+            return;
+        }
+        EquipPanel panel =  PanelManger.Get<EquipPanel>();
+        button.GetComponent<Image>().color = Color.green;
+        panel.selectedEquip(this);
     }
 
     public void FlushView(PageEquipModel equip)
@@ -23,6 +37,7 @@ public class PackageCell : MonoBehaviour
         num = transform.Find("Button/Num").GetComponent<Text>();
         if (equip == null)
         {
+            this.equip = null;
             icon.color = new Color(1, 1, 1, 0);
             num.color  = new Color(1, 1, 1, 0);
         }
@@ -31,7 +46,6 @@ public class PackageCell : MonoBehaviour
             
             this.equip = equip;
             icon.color = new Color(1, 1, 1, 1);
-            Debug.Log(equip.UiPath);
             string[] strings = equip.UiPath.Split('_');
             icon.overrideSprite = ResManger.LoadSprites(strings[0])[int.Parse(strings[1])];
             num.text = equip.Num.ToString();
@@ -40,5 +54,8 @@ public class PackageCell : MonoBehaviour
        
     }
 
-
+    public void CancelSelected()
+    {
+        button.GetComponent<Image>().color = Color.white;
+    }
 }

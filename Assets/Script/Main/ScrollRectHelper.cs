@@ -9,23 +9,29 @@ public class ScrollRectHelper : MonoBehaviour, IBeginDragHandler, IEndDragHandle
     private float smooting;                          //滑动速度
     private float normalSpeed = 3;
     private float highSpeed = 10;
+
     /// <summary>
     /// 每页显示的项目(Btn_1)
     /// </summary>
     private int pageCount = 1;
+
     /// <summary>
     /// content
     /// </summary>
     public GameObject Content;
+
     private ScrollRect sRect;
+
     /// <summary>
     ///  总页数
     /// </summary>
     private float pageIndex;
+
     /// <summary>
     /// 是否拖拽结束
     /// </summary>
     private bool isDrag = true;
+
     /// <summary>
     /// 总页数索引比列 0-1
     /// </summary>
@@ -34,23 +40,33 @@ public class ScrollRectHelper : MonoBehaviour, IBeginDragHandler, IEndDragHandle
     /// <summary>
     /// 滑动的目标位置
     /// </summary>
-    private float m_targetPos = 0;                                //
+    private float m_targetPos = 0;
+
+    /// <summary>
+    /// 初始位置索引
+    /// </summary>
+    private float beginIndex = 9f;
+
     /// <summary>
     /// 当前位置索引
     /// </summary>
     private float nowindex = 0;
+
     /// <summary>
     /// 开始索引的位置
     /// </summary>
     private float beginDragPos;
+
     /// <summary>
     /// 结束索引的位置
     /// </summary>
     private float endDragPos;
+
     /// <summary>
     /// 灵敏度
     /// </summary>
     private float sensitivity = 0.15f;
+
     /// <summary>
     /// 每页的数量
     /// </summary>
@@ -95,6 +111,7 @@ public class ScrollRectHelper : MonoBehaviour, IBeginDragHandler, IEndDragHandle
         isDrag = true;
         //记录拖拽的起点 
         beginDragPos = sRect.verticalNormalizedPosition;
+        Debug.Log("begin_index:"+ nowindex);
     }
 
     /// <summary>
@@ -129,19 +146,34 @@ public class ScrollRectHelper : MonoBehaviour, IBeginDragHandler, IEndDragHandle
         }
         m_targetPos = listPageValue[index];
         nowindex = index;
-        Debug.Log(m_targetPos + ":" + nowindex+":"+ sRect.verticalNormalizedPosition);
-        //if(nowindex == 0)
-        //{
-        //    m_targetPos = 1;
-        //    nowindex = 1;
-        //    sRect.verticalNormalizedPosition = 1;
-        //}
-        //else if (nowindex == 69)
-        //{
-        //    m_targetPos = 0;
-        //    nowindex = 0;
-        //    sRect.verticalNormalizedPosition = 0;
-        //}
+        Debug.Log("targetpos:" + m_targetPos + "-index:" + nowindex+ "-verticalNormalizedPosition:" + sRect.verticalNormalizedPosition+"-offset:"+offset);
+
+        if (nowindex <= 1)
+        {
+            //m_targetPos = 1;
+            //nowindex = 1;
+            //sRect.verticalNormalizedPosition = 1;
+            EquipPanel panel = PanelManger.Get<EquipPanel>();
+            if (panel.NextData())
+            {
+                //nowindex = 8;
+                //m_targetPos = 0.8f;
+                //sRect.verticalNormalizedPosition = 0.8f;
+            }
+        }
+        else if (nowindex >= 8)
+        {
+            //m_targetPos = 0;
+            //nowindex = 0;
+            //sRect.verticalNormalizedPosition = 0;
+            EquipPanel panel = PanelManger.Get<EquipPanel>();
+            if (panel.LastData())
+            {
+                //nowindex = 1;
+                //m_targetPos = 0.1f;
+                //sRect.verticalNormalizedPosition = 0.1f;
+            }
+        }
 
     }//horizontalNormalizedPosition 0-1 0表示左侧           vertical 0-1 0表示底部
 }

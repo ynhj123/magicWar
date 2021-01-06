@@ -40,6 +40,7 @@ public class PanelManger : MonoBehaviour
         panels.Add(name, panel);
         panel.OnShow(objects);
     }
+
     public static void Close(string name)
     {
         if (!panels.ContainsKey(name))
@@ -53,9 +54,20 @@ public class PanelManger : MonoBehaviour
         GameObject.Destroy(panel.skin);
         Component.Destroy(panel);
     }
+
     public static void Close<T>() where T : BasePanel
     {
         string name = typeof(T).ToString();
         Close(name);
+    }
+
+    public static T Get<T>() where T : BasePanel
+    {
+        string name = typeof(T).ToString();
+        if (!panels.ContainsKey(name))
+        {
+            return null;
+        }
+        return (T)panels[name];
     }
 }

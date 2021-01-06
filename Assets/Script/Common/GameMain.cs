@@ -65,8 +65,6 @@ public class GameMain : MonoBehaviour
     private void OnConnectSucc(string err)
     {
         Debug.Log("连接成功");
-        Debug.Log(err);
-        
         Enter();
     }
 
@@ -82,8 +80,6 @@ public class GameMain : MonoBehaviour
 
     public void Enter()
     {
-        Debug.Log("what happend");
-
         EnterMsg enterMsg = new EnterMsg();
         enterMsg.Nickname = MainController.user.Nickname;
         enterMsg.Token = MainController.user.Token;
