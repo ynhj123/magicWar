@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class ScrollRectHelper : MonoBehaviour, IBeginDragHandler, IEndDragHandler
 {
     private float smooting;                          //滑动速度
-    private float normalSpeed = 3;
+    private float normalSpeed = 5;
     private float highSpeed = 10;
 
     /// <summary>
@@ -65,7 +65,7 @@ public class ScrollRectHelper : MonoBehaviour, IBeginDragHandler, IEndDragHandle
     /// <summary>
     /// 灵敏度
     /// </summary>
-    private float sensitivity = 0.15f;
+    private float sensitivity = 0f;
 
     /// <summary>
     /// 每页的数量
@@ -87,7 +87,7 @@ public class ScrollRectHelper : MonoBehaviour, IBeginDragHandler, IEndDragHandle
     {
         Debug.Log(Content.transform.childCount);
         //总页数       总页数/每页显示的项目item（1） 
-        pageIndex = (Content.transform.childCount / pageCount) - 1;
+        pageIndex = (Content.transform.childCount / pageCount);
 
         if (Content != null && Content.transform.childCount != 0)
         {
@@ -100,7 +100,9 @@ public class ScrollRectHelper : MonoBehaviour, IBeginDragHandler, IEndDragHandle
     void Update()
     {
         if (!isDrag)
+        {
             sRect.verticalNormalizedPosition = Mathf.Lerp(sRect.verticalNormalizedPosition, m_targetPos, Time.deltaTime * smooting);
+        }
     }
 
     /// <summary>
@@ -108,9 +110,10 @@ public class ScrollRectHelper : MonoBehaviour, IBeginDragHandler, IEndDragHandle
     /// </summary>
     public void OnBeginDrag(PointerEventData eventData)
     {
-        isDrag = true;
+;       isDrag = true;
         //记录拖拽的起点 
         beginDragPos = sRect.verticalNormalizedPosition;
+        beginIndex = nowindex;
         Debug.Log("begin_index:"+ nowindex);
     }
 
@@ -119,10 +122,7 @@ public class ScrollRectHelper : MonoBehaviour, IBeginDragHandler, IEndDragHandle
     /// </summary>
     public void OnEndDrag(PointerEventData eventData)
     {
-        
-
         isDrag = false;
-
         //记录放开时的点
         endDragPos = sRect.verticalNormalizedPosition;
 
@@ -146,9 +146,9 @@ public class ScrollRectHelper : MonoBehaviour, IBeginDragHandler, IEndDragHandle
         }
         m_targetPos = listPageValue[index];
         nowindex = index;
-        Debug.Log("targetpos:" + m_targetPos + "-index:" + nowindex+ "-verticalNormalizedPosition:" + sRect.verticalNormalizedPosition+"-offset:"+offset);
-
-        if (nowindex <= 1)
+        Debug.Log("targetpos:" + m_targetPos + "-index:" + nowindex + "-offset:"+ offset);
+        Debug.Log("a=="+sRect.verticalNormalizedPosition);
+        if (nowindex < 5)
         {
             //m_targetPos = 1;
             //nowindex = 1;
@@ -156,12 +156,12 @@ public class ScrollRectHelper : MonoBehaviour, IBeginDragHandler, IEndDragHandle
             EquipPanel panel = PanelManger.Get<EquipPanel>();
             if (panel.NextData())
             {
-                //nowindex = 8;
-                //m_targetPos = 0.8f;
-                //sRect.verticalNormalizedPosition = 0.8f;
+                nowindex = 5;
+                m_targetPos = 0.5f;
+                sRect.verticalNormalizedPosition = 0.8f;
             }
         }
-        else if (nowindex >= 8)
+        else if (nowindex > 5)
         {
             //m_targetPos = 0;
             //nowindex = 0;
@@ -169,9 +169,9 @@ public class ScrollRectHelper : MonoBehaviour, IBeginDragHandler, IEndDragHandle
             EquipPanel panel = PanelManger.Get<EquipPanel>();
             if (panel.LastData())
             {
-                //nowindex = 1;
-                //m_targetPos = 0.1f;
-                //sRect.verticalNormalizedPosition = 0.1f;
+                nowindex = 5;
+                m_targetPos = 0.5f;
+                sRect.verticalNormalizedPosition = 0.2f;
             }
         }
 
