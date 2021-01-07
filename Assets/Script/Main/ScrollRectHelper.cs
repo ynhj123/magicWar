@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ScrollRectHelper : MonoBehaviour, IBeginDragHandler, IEndDragHandler
+public class ScrollRectHelper : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
 {
     private float smooting;                          //滑动速度
     private float normalSpeed = 5;
@@ -114,7 +114,7 @@ public class ScrollRectHelper : MonoBehaviour, IBeginDragHandler, IEndDragHandle
         //记录拖拽的起点 
         beginDragPos = sRect.verticalNormalizedPosition;
         beginIndex = nowindex;
-        Debug.Log("begin_index:"+ nowindex);
+        //Debug.Log("begin_index:"+ nowindex);
     }
 
     /// <summary>
@@ -150,30 +150,59 @@ public class ScrollRectHelper : MonoBehaviour, IBeginDragHandler, IEndDragHandle
         Debug.Log("a=="+sRect.verticalNormalizedPosition);
         if (nowindex < 5)
         {
-            //m_targetPos = 1;
-            //nowindex = 1;
-            //sRect.verticalNormalizedPosition = 1;
             EquipPanel panel = PanelManger.Get<EquipPanel>();
             if (panel.NextData())
             {
-                nowindex = 5;
                 m_targetPos = 0.5f;
-                sRect.verticalNormalizedPosition = 0.8f;
+                sRect.verticalNormalizedPosition = 1 - (5 - nowindex) * 0.1f;
+                nowindex = 5;
+            }
+            else
+            {
+                if (endDragPos < beginDragPos)
+                {
+                    nowindex = 0;
+                    m_targetPos = 0f;
+                }
+                else
+                {
+                    nowindex = 5;
+                    m_targetPos = 0.5f;
+                }
+                    
             }
         }
         else if (nowindex > 5)
-        {
-            //m_targetPos = 0;
-            //nowindex = 0;
-            //sRect.verticalNormalizedPosition = 0;
+        {        
             EquipPanel panel = PanelManger.Get<EquipPanel>();
             if (panel.LastData())
             {
-                nowindex = 5;
                 m_targetPos = 0.5f;
-                sRect.verticalNormalizedPosition = 0.2f;
+                sRect.verticalNormalizedPosition = 0 + (nowindex - 5) * 0.1f;
+                nowindex = 5;
+            }
+            else 
+            {
+                if (endDragPos > beginDragPos)
+                {
+                    nowindex = 10;
+                    m_targetPos = 1f;
+                }
+                else
+                {
+                    nowindex = 5;
+                    m_targetPos = 0.5f;
+                }                  
             }
         }
 
     }//horizontalNormalizedPosition 0-1 0表示左侧           vertical 0-1 0表示底部
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        float distance = sRect.verticalNormalizedPosition - beginDragPos;
+        float direct = distance > 0 ? 1 : -1;
+        distance = Mathf.Clamp(Mathf.Abs(distance), 0, 0.5f);
+        sRect.verticalNormalizedPosition = beginDragPos + distance * direct;
+    }
 }

@@ -138,7 +138,7 @@ public class EquipPanel : BasePanel
     //下一页
     public bool NextData()
     {
-        Debug.Log("allCount=" + maxCount);
+        //Debug.Log("allCount=" + maxCount);
         if (maxCount < pageSize * (curPage + PageNum))
         {
             return false;

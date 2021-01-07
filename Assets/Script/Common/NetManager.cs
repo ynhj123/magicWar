@@ -216,7 +216,6 @@ public static class NetManager
     //发送数据
     public static void Send(IMessage msg)
     {
-        Debug.Log("first send");
         //状态判断
         if (socket == null || !socket.Connected)
         {
