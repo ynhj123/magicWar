@@ -40,8 +40,6 @@ public class RoomPanel : BasePanel
         {
             Close();
             SceneManager.LoadScene("LoadScene");
-
-
         }
         else
         {

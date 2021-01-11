@@ -10,14 +10,22 @@ public class PackageCell : MonoBehaviour
     Button button;
     Image icon;
     Text num;
-    
+    Image buttonImg;
+    EquipPanel panel;
 
+    private void Awake()
+    {
+        icon = transform.Find("Button/Icon").GetComponent<Image>();
+        num = transform.Find("Button/Num").GetComponent<Text>();
+        button = transform.Find("Button").GetComponent<Button>();
+        buttonImg = button.GetComponent<Image>();
+        panel = PanelManger.Get<EquipPanel>();
+
+    }
     // Start is called before the first frame update
     void Start()
     {
-        button = transform.Find("Button").GetComponent<Button>();
-        button.onClick.AddListener(Selected);
-       
+        button.onClick.AddListener(Selected);  
     }
 
     private void Selected()
@@ -25,37 +33,36 @@ public class PackageCell : MonoBehaviour
         if(equip == null)
         {
             return;
-        }
-        EquipPanel panel =  PanelManger.Get<EquipPanel>();
-        button.GetComponent<Image>().color = Color.green;
+        }       
+        buttonImg.color = Color.green;
         panel.selectedEquip(this);
     }
 
     public void FlushView(PageEquipModel equip)
     {
-        icon = transform.Find("Button/Icon").GetComponent<Image>();
-        num = transform.Find("Button/Num").GetComponent<Text>();
+        
         if (equip == null)
         {
+            Color hide = Color.clear;
             this.equip = null;
-            icon.color = new Color(1, 1, 1, 0);
-            num.color  = new Color(1, 1, 1, 0);
+            icon.color = hide;
+            num.color  = hide;
         }
         else
         {
-            
+            Color show = Color.white;
             this.equip = equip;
-            icon.color = new Color(1, 1, 1, 1);
+            icon.color = show;
             string[] strings = equip.UiPath.Split('_');
             icon.overrideSprite = ResManger.LoadSprites(strings[0])[int.Parse(strings[1])];
             num.text = equip.Num.ToString();
-            num.color = new Color(1, 1, 1, 1);
+            num.color = show;
         }
        
     }
 
     public void CancelSelected()
     {
-        button.GetComponent<Image>().color = Color.white;
+        buttonImg.color = Color.white;
     }
 }

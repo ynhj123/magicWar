@@ -4,6 +4,24 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
+    Text qCodeTime;
+    Text wCodeTime;
+    Text eCodeTime;
+    Text rCodeTime;
+    Text aCodeTime;
+    Text sCodeTime;
+    Text dCodeTime;
+    Text fCodeTime;
+
+    Image qCodeImg;
+    Image wCodeImg;
+    Image eCodeImg;
+    Image rCodeImg;
+    Image aCodeImg;
+    Image sCodeImg;
+    Image dCodeImg;
+    Image fCodeImg;
+
 
     float QCd = 0;
     float WCd = 0;
@@ -39,16 +57,42 @@ public class PlayerController : MonoBehaviour
     GameObject SkillTip;
     GameObject SkillTipA;
     public Player player;
+
+    Texture2D mousePoint;
     int skillId = 0;
     // Start is called before the first frame update
     void Start()
     {
-        player.GetComponent<Player>();
         SkillController = GameObject.Find("/Root/Canvas/Controller/SkillController");
         SkillRange = player.transform.Find("SkillRange").gameObject;
         SkillTip = player.transform.Find("SkillTip").gameObject;
         SkillTipA = player.transform.Find("SkillTipAParent").gameObject;
         isShowSkillRange = false;
+        mousePoint = ResManger.LoadTexture2D("Ui/mousePoint");
+        Transform qCode = SkillController.transform.Find("QCode/Mask");
+        qCodeTime = qCode.Find("Text").GetComponent<Text>();
+        qCodeImg = qCode.GetComponent<Image>();
+        Transform wCode = SkillController.transform.Find("WCode/Mask");
+        wCodeTime = wCode.Find("Text").GetComponent<Text>();
+        wCodeImg = wCode.GetComponent<Image>();
+        Transform eCode = SkillController.transform.Find("ECode/Mask");
+        eCodeTime = eCode.Find("Text").GetComponent<Text>();
+        eCodeImg = eCode.GetComponent<Image>();
+        Transform rCode = SkillController.transform.Find("RCode/Mask");
+        rCodeTime = rCode.Find("Text").GetComponent<Text>();
+        rCodeImg = rCode.GetComponent<Image>();
+        Transform aCode = SkillController.transform.Find("ACode/Mask");
+        aCodeTime = aCode.Find("Text").GetComponent<Text>();
+        aCodeImg = aCode.GetComponent<Image>();
+        Transform sCode = SkillController.transform.Find("SCode/Mask");
+        sCodeTime = sCode.Find("Text").GetComponent<Text>();
+        sCodeImg = sCode.GetComponent<Image>();
+        Transform dCode = SkillController.transform.Find("DCode/Mask");
+        dCodeTime = dCode.Find("Text").GetComponent<Text>();
+        dCodeImg = dCode.GetComponent<Image>();
+        Transform fCode = SkillController.transform.Find("FCode/Mask");
+        fCodeTime = fCode.Find("Text").GetComponent<Text>();
+        fCodeImg = fCode.GetComponent<Image>();
     }
 
     // Update is called once per frame
@@ -118,14 +162,14 @@ public class PlayerController : MonoBehaviour
                 isShowSkillRange = false;
                 skillId = 0;
                 HideSkillRange();
-                Cursor.SetCursor(ResManger.LoadTexture2D("Ui/mousePoint"), Vector2.zero, CursorMode.Auto);
+                Cursor.SetCursor(mousePoint, Vector2.zero, CursorMode.Auto);
 
             }
             if (Input.GetMouseButtonDown(1))
             {
                 isShowSkillRange = false;
                 HideSkillRange();
-                Cursor.SetCursor(ResManger.LoadTexture2D("Ui/mousePoint"), Vector2.zero, CursorMode.Auto);
+                Cursor.SetCursor(mousePoint, Vector2.zero, CursorMode.Auto);
 
             }
 
@@ -203,7 +247,7 @@ public class PlayerController : MonoBehaviour
                 pos = player.transform.position + direction.normalized * maxERange;
             }
             SkillRange.transform.localScale = new Vector3(maxERange, 0.01f, maxERange);
-            Cursor.SetCursor(ResManger.LoadTexture2D("Ui/point"), Vector2.zero, CursorMode.Auto);
+            Cursor.SetCursor(mousePoint, Vector2.zero, CursorMode.Auto);
         }
         if (skillId == 4)
         {
@@ -222,7 +266,7 @@ public class PlayerController : MonoBehaviour
                 pos = player.transform.position + direction.normalized * maxARange / 2;
             }
             SkillRange.transform.localScale = new Vector3(maxARange, 0.01f, maxARange);
-            Cursor.SetCursor(ResManger.LoadTexture2D("Ui/point"), Vector2.zero, CursorMode.Auto);
+            Cursor.SetCursor(mousePoint, Vector2.zero, CursorMode.Auto);
         }
         if (skillId == 6)
         {
@@ -231,7 +275,7 @@ public class PlayerController : MonoBehaviour
                 pos = player.transform.position + direction.normalized * maxSRange / 2;
             }
             SkillRange.transform.localScale = new Vector3(maxSRange, 0.01f, maxSRange);
-            Cursor.SetCursor(ResManger.LoadTexture2D("Ui/point"), Vector2.zero, CursorMode.Auto);
+            Cursor.SetCursor(mousePoint, Vector2.zero, CursorMode.Auto);
         }
         if (skillId == 7)
         {
@@ -240,7 +284,7 @@ public class PlayerController : MonoBehaviour
                 pos = player.transform.position + direction.normalized * maxDRange / 2;
             }
             SkillRange.transform.localScale = new Vector3(maxDRange, 0.01f, maxDRange);
-            Cursor.SetCursor(ResManger.LoadTexture2D("Ui/point"), Vector2.zero, CursorMode.Auto);
+            Cursor.SetCursor(mousePoint, Vector2.zero, CursorMode.Auto);
         }
         if (skillId == 8)
         {
@@ -364,49 +408,41 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateSkillUi()
     {
-        Transform qCode = SkillController.transform.Find("QCode/Mask");
-        qCode.GetComponent<Image>().fillAmount = QCd / QMCd;
-        HandleCDView(qCode, QCd);
+        qCodeImg.fillAmount = QCd / QMCd;
+        HandleCDView(qCodeTime, QCd);
+       
+        wCodeImg.fillAmount = WCd / WMCd;
+        HandleCDView(wCodeTime, WCd);
+  
+        eCodeImg.fillAmount = ECd / EMCd;
+        HandleCDView(eCodeTime, ECd);
 
-        Transform wCode = SkillController.transform.Find("WCode/Mask");
-        wCode.GetComponent<Image>().fillAmount = WCd / WMCd;
-        HandleCDView(wCode, WCd);
+        rCodeImg.fillAmount = RCd / RMCd;
+        HandleCDView(rCodeTime, RCd);
 
-        Transform eCode = SkillController.transform.Find("ECode/Mask");
-        eCode.GetComponent<Image>().fillAmount = ECd / EMCd;
-        HandleCDView(eCode, ECd);
+        aCodeImg.fillAmount = ACd / AMCd;
+        HandleCDView(aCodeTime, ACd);
 
-        Transform rCode = SkillController.transform.Find("RCode/Mask");
-        rCode.GetComponent<Image>().fillAmount = RCd / RMCd;
-        HandleCDView(rCode, RCd);
+        sCodeImg.fillAmount = SCd / SMCd;
+        HandleCDView(sCodeTime, SCd);
 
-        Transform aCode = SkillController.transform.Find("ACode/Mask");
-        aCode.GetComponent<Image>().fillAmount = ACd / AMCd;
-        HandleCDView(aCode, ACd);
+        dCodeImg.fillAmount = DCd / DMCd;
+        HandleCDView(dCodeTime, DCd);
 
-        Transform sCode = SkillController.transform.Find("SCode/Mask");
-        sCode.GetComponent<Image>().fillAmount = SCd / SMCd;
-        HandleCDView(sCode, SCd);
-
-        Transform dCode = SkillController.transform.Find("DCode/Mask");
-        dCode.GetComponent<Image>().fillAmount = DCd / DMCd;
-        HandleCDView(dCode, DCd);
-
-        Transform fCode = SkillController.transform.Find("FCode/Mask");
-        fCode.GetComponent<Image>().fillAmount = FCd / FMCd;
-        HandleCDView(fCode, FCd);
+        fCodeImg.fillAmount = FCd / FMCd;
+        HandleCDView(fCodeTime, FCd);
     }
 
-    private void HandleCDView(Transform code, float cd)
+    private void HandleCDView(Text codeTime, float cd)
     {
         int cdVal = Convert.ToInt32(cd);
         if (cdVal == 0)
         {
-            code.Find("Text").GetComponent<Text>().text = "";
+            codeTime.text = "";
         }
         else
         {
-            code.Find("Text").GetComponent<Text>().text = cdVal.ToString() + "s";
+            codeTime.text = cdVal.ToString() + "s";
 
         }
     }

@@ -38,6 +38,8 @@ public class EquipManager : EquipManagerApi
         {
             myEquips = new Dictionary<int, MyEquipModel>();
         }
+       
+        myEquips = myEquips.Where(pair => equips.ContainsKey(pair.Key)).ToDictionary(key=> key.Key, val=> val.Value);
     }
 
     public void Save()

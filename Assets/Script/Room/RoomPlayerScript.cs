@@ -10,11 +10,12 @@ public class RoomPlayerScript : MonoBehaviour
     Button kick;
     Text ready;
     Text own;
-    // Start is called before the first frame update
-    private void Start()
+
+    private void Awake()
     {
         Init();
     }
+
     public void Init()
     {
 

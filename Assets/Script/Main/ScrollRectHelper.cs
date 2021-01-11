@@ -146,8 +146,8 @@ public class ScrollRectHelper : MonoBehaviour, IBeginDragHandler, IEndDragHandle
         }
         m_targetPos = listPageValue[index];
         nowindex = index;
-        Debug.Log("targetpos:" + m_targetPos + "-index:" + nowindex + "-offset:"+ offset);
-        Debug.Log("a=="+sRect.verticalNormalizedPosition);
+        //Debug.Log("targetpos:" + m_targetPos + "-index:" + nowindex + "-offset:"+ offset);
+        //Debug.Log("a=="+sRect.verticalNormalizedPosition);
         if (nowindex < 5)
         {
             EquipPanel panel = PanelManger.Get<EquipPanel>();
