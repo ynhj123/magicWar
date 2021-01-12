@@ -126,7 +126,7 @@ public class AiController : MonoBehaviour
 
         if (attchTime >= attackInterval)
         {
-            player.FireQSkill();
+            //player.FireQSkill();
             attchTime = 0;
         }
         else

@@ -13,6 +13,8 @@ public class BasePlayer : MonoBehaviour
     //float angluarSpeed = 100;
     public float hp = 100;
     public string finillyHurrtPlyerId = "";
+    public bool isDebuff = false;
+
 
     public Rigidbody rigidBody;
     public Animator animator;
@@ -38,229 +40,26 @@ public class BasePlayer : MonoBehaviour
         animator.SetIKPosition(AvatarIKGoal.LeftHand, bookTranform.position);
     }
 
-
-    public bool isDebuff = false;
-    // Start is called before the first frame update
-    public void Start()
+    private void Awake()
     {
         myTransonfrom = GetComponent<Transform>();
         animator = GetComponent<Animator>();
         bookTranform = transform
             .Find("ybot/mixamorig:Hips/mixamorig:Spine/mixamorig:Spine1/mixamorig:Spine2/mixamorig:LeftShoulder/mixamorig:LeftArm/mixamorig:LeftForeArm/mixamorig:LeftHand/WeaponSocket");
-        endPoints = new List<Vector3>();
         bodyJointRener = transform
             .Find("ybot/Alpha_Joints").GetComponent<SkinnedMeshRenderer>();
         particleSystem = transform.Find("PowerupGlow5").GetComponent<ParticleSystem>();
+        endPoints = new List<Vector3>();
 
     }
+
+    
 
     public void UpdateJointColor(int degree)
     {
-        transform
-            .Find("ybot/Alpha_Joints").GetComponent<SkinnedMeshRenderer>().material.color = Utils.SwitchColor(degree);
+        bodyJointRener.material.color = Utils.SwitchColor(degree);
     }
-    internal void FireRSkill()
-    {
-        Vector3 pos = transform.position + new Vector3(0, 1, 0) + transform.forward * 2;
-        string path = "Battle/FireJet";
-
-        SkillMsg skillMsg = new SkillMsg();
-        skillMsg.SkillId = 4;
-        skillMsg.X = pos.x;
-        skillMsg.Y = pos.y;
-        skillMsg.Z = pos.z;
-        skillMsg.Ex = transform.forward.x;
-        skillMsg.Ey = transform.forward.y;
-        skillMsg.Ez = transform.forward.z;
-        NetManager.Send(skillMsg);
-
-        GameObject bullet = Instantiate(ResManger.LoadPrefab(path), pos, Quaternion.identity);
-        FireJetModel skillModel = bullet.GetComponent<FireJetModel>();
-        bullet.transform.forward = transform.forward;
-        skillModel.playerId = id;
-    }
-
-    internal void FireASkill()
-    {
-        Vector3 pos = transform.position + new Vector3(0, 1, 0) + transform.forward * 2;
-        string path = "Battle/Gravitation";
-
-
-        SkillMsg skillMsg = new SkillMsg();
-        skillMsg.SkillId = 5;
-        skillMsg.X = pos.x;
-        skillMsg.Y = pos.y;
-        skillMsg.Z = pos.z;
-        skillMsg.Ex = transform.forward.x;
-        skillMsg.Ey = transform.forward.y;
-        skillMsg.Ez = transform.forward.z;
-        NetManager.Send(skillMsg);
-
-        GameObject bullet = Instantiate(ResManger.LoadPrefab(path), pos, Quaternion.identity);
-        GravitationModel skillModel = bullet.GetComponent<GravitationModel>();
-        bullet.transform.forward = transform.forward;
-        skillModel.playerId = id;
-    }
-
-    internal void FireSSkill()
-    {
-        Vector3 pos = transform.position + new Vector3(0, 1, 0) + transform.forward * 1;
-        string path = "Battle/MagicShield";
-
-
-        SkillMsg skillMsg = new SkillMsg();
-        skillMsg.SkillId = 6;
-        skillMsg.X = pos.x;
-        skillMsg.Y = pos.y;
-        skillMsg.Z = pos.z;
-        skillMsg.Ex = transform.right.x;
-        skillMsg.Ey = transform.right.y;
-        skillMsg.Ez = transform.right.z;
-        NetManager.Send(skillMsg);
-
-        GameObject bullet = Instantiate(ResManger.LoadPrefab(path), pos, Quaternion.identity);
-        MagicShield skillModel = bullet.GetComponent<MagicShield>();
-        bullet.transform.forward = transform.right;
-        skillModel.playerId = id;
-
-    }
-
-    internal void FireDSkill()
-    {
-        //获取屏幕坐标
-        Vector3 mousepostion = Input.mousePosition;
-        //定义从屏幕
-        Ray ray = Camera.main.ScreenPointToRay(mousepostion);
-        RaycastHit hitInfo;
-        if (!Physics.Raycast(ray, out hitInfo))
-        {
-
-            return;
-
-        }
-        //获取鼠标在场景中坐标
-        Vector3 point = hitInfo.point;
-        Vector3 pos = new Vector3(point.x, 0, point.z);
-        Vector3 forward = transform.forward;
-        //Skill skill = SkillManger.Instance.Get(key);
-
-        SkillMsg skillMsg = new SkillMsg();
-        skillMsg.SkillId = 7;
-
-        skillMsg.X = pos.x;
-        skillMsg.Y = pos.y;
-        skillMsg.Z = pos.z;
-
-        NetManager.Send(skillMsg);
-        string path = "Battle/LightningTall";
-        GameObject bullet = Instantiate(ResManger.LoadPrefab(path), pos, Quaternion.identity);
-        // bullet.transform.up = forward;
-        LightningTallModel skillModel = bullet.GetComponent<LightningTallModel>();
-        skillModel.playerId = id;
-    }
-
-    internal void FireFSkill()
-    {
-        //获取屏幕坐标
-        Vector3 mousepostion = Input.mousePosition;
-        //定义从屏幕
-        Ray ray = Camera.main.ScreenPointToRay(mousepostion);
-        RaycastHit hitInfo;
-        if (!Physics.Raycast(ray, out hitInfo))
-        {
-
-            return;
-
-        }
-        //获取鼠标在场景中坐标
-        Vector3 point = hitInfo.point;
-        //Skill skill = SkillManger.Instance.Get(key);
-        Vector3 pos = new Vector3(point.x, 1, point.z);
-        string path = "Battle/MagicSphere";
-
-        SkillMsg skillMsg = new SkillMsg();
-        skillMsg.SkillId = 8;
-        skillMsg.X = pos.x;
-        skillMsg.Y = pos.y;
-        skillMsg.Z = pos.z;
-
-        NetManager.Send(skillMsg);
-
-        GameObject bullet = Instantiate(ResManger.LoadPrefab(path), pos, Quaternion.identity);
-        MagicSphereModel skillModel = bullet.GetComponent<MagicSphereModel>();
-        skillModel.playerId = id;
-    }
-    public void FireQSkill()
-    {
-
-        //Skill skill = SkillManger.Instance.Get(key);
-        /*Vector3 pos = transform.position + transform.forward * 2 + new Vector3(0, 1, 0);
-        
-
-        string path = "Battle/FireBall";
-        GameObject bullet = Instantiate(ResManger.LoadPrefab(path), pos, Quaternion.identity);
-        bullet.transform.up = forward;
-        FireBallModel skillModel = bullet.GetComponent<FireBallModel>();
-        skillModel.playerId = id;*/
-
-    }
-    public void FireESkill()
-    {
-        //Skill skill = SkillManger.Instance.Get(key);
-        endPoints.Clear();
-        string path = "Battle/Flash";
-        Vector3 vector3 = new Vector3(transform.position.x, 1, transform.position.z);
-        GameObject bullet = Instantiate(ResManger.LoadPrefab(path), vector3, Quaternion.identity);
-        Vector3 pos = transform.position + transform.forward * 5;
-        Vector3 eulerAngles = transform.eulerAngles;
-        SkillMsg skillMsg = new SkillMsg();
-        skillMsg.X = pos.x;
-        skillMsg.Y = pos.y;
-        skillMsg.Z = pos.z;
-
-        skillMsg.Ex = eulerAngles.x;
-        skillMsg.Ey = eulerAngles.y;
-        skillMsg.Ez = eulerAngles.z;
-        skillMsg.SkillId = 3;
-        NetManager.Send(skillMsg);
-        transform.position = pos;
-        transform.eulerAngles = eulerAngles;
-    }
-    public void FireWSkill()
-    {
-        //获取屏幕坐标
-        Vector3 mousepostion = Input.mousePosition;
-        //定义从屏幕
-        Ray ray = Camera.main.ScreenPointToRay(mousepostion);
-        RaycastHit hitInfo;
-        if (!Physics.Raycast(ray, out hitInfo))
-        {
-
-            return;
-
-        }
-        //获取鼠标在场景中坐标
-        Vector3 point = hitInfo.point;
-        //Skill skill = SkillManger.Instance.Get(key);
-        Vector3 pos = new Vector3(point.x, 5, point.z);
-        SkillMsg skillMsg = new SkillMsg();
-        skillMsg.SkillId = 2;
-
-        skillMsg.X = pos.x;
-        skillMsg.Y = pos.y;
-        skillMsg.Z = pos.z;
-        Vector3 forward = transform.forward;
-        skillMsg.Ex = forward.x;
-        skillMsg.Ey = forward.y;
-        skillMsg.Ez = forward.z;
-        NetManager.Send(skillMsg);
-        string path = "Battle/RangeFireBall";
-        GameObject bullet = Instantiate(ResManger.LoadPrefab(path), pos, Quaternion.identity);
-        // bullet.transform.up = forward;
-        RangeFireModel skillModel = bullet.GetComponent<RangeFireModel>();
-        skillModel.playerId = id;
-
-    }
+  
 
     // Update is called once per frame
     public virtual void Update()
@@ -296,7 +95,6 @@ public class BasePlayer : MonoBehaviour
                 {
                     speed = 5;
                 }
-
                 myTransonfrom.LookAt(endPoints[0]);
                 myTransonfrom.position += next;
 
@@ -305,7 +103,6 @@ public class BasePlayer : MonoBehaviour
             {
                 endPoints.RemoveAt(0);
             }
-
         }
         else
         {
@@ -316,6 +113,7 @@ public class BasePlayer : MonoBehaviour
     }
 
     public bool IsAlive => hp > 0;
+
     public void CheckIsAlive()
     {
         if (hp <= 0)
@@ -346,6 +144,7 @@ public class BasePlayer : MonoBehaviour
             particleSystem.gameObject.SetActive(false);
         }
     }
+
     public void JudgeParticleDebuff()
     {
         if (isDebuff)
@@ -357,6 +156,7 @@ public class BasePlayer : MonoBehaviour
             particleSystem.gameObject.SetActive(false);
         }
     }
+
     public void UpdateControl()
     {
 
@@ -404,7 +204,5 @@ public class BasePlayer : MonoBehaviour
         yield return new WaitForSeconds(forTime);
         Rigidbody rig = GetComponent<Rigidbody>();
         rig.velocity = Vector3.zero;
-
-
     }
 }
