@@ -79,6 +79,11 @@ public class EquipPanel : BasePanel
     private void HandleScollBarChange(float value)
     {
         float direct = value - beginScrollVal;
+        if(Math.Abs(direct) < intervalScroll)
+        {
+            scrollbar.value = beginScrollVal;
+            return;
+        }
         if(direct > 0)
         {
             //下翻
