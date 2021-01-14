@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ScrollRectHelper : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
+public class ScrollRectHelper : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler, IScrollHandler
 {
     private float smooting;                          //滑动速度
     private float normalSpeed = 5;
@@ -72,6 +72,8 @@ public class ScrollRectHelper : MonoBehaviour, IBeginDragHandler, IEndDragHandle
     /// </summary>
     private int onePageCount = 6;
 
+    EquipPanel panel;
+
     void Awake()
     {
         //获取组件
@@ -80,6 +82,12 @@ public class ScrollRectHelper : MonoBehaviour, IBeginDragHandler, IEndDragHandle
         ListPageValueInit();
         //滑度
         smooting = normalSpeed;
+
+    }
+    private void Start()
+    {
+        sRect.verticalNormalizedPosition = 0.5f;
+        panel = PanelManger.Get<EquipPanel>();
     }
 
     //每页比例
@@ -150,7 +158,8 @@ public class ScrollRectHelper : MonoBehaviour, IBeginDragHandler, IEndDragHandle
         //Debug.Log("a=="+sRect.verticalNormalizedPosition);
         if (nowindex < 5)
         {
-            EquipPanel panel = PanelManger.Get<EquipPanel>();
+           
+            //Debug.Log(panel.NextData());
             if (panel.NextData())
             {
                 m_targetPos = 0.5f;
@@ -159,22 +168,16 @@ public class ScrollRectHelper : MonoBehaviour, IBeginDragHandler, IEndDragHandle
             }
             else
             {
-                if (endDragPos < beginDragPos)
-                {
-                    nowindex = 0;
-                    m_targetPos = 0f;
-                }
-                else
-                {
-                    nowindex = 5;
-                    m_targetPos = 0.5f;
-                }
+                nowindex = 5;
+                m_targetPos = 0.5f;
+                
                     
             }
         }
         else if (nowindex > 5)
         {        
             EquipPanel panel = PanelManger.Get<EquipPanel>();
+            //Debug.Log(panel.LastData());
             if (panel.LastData())
             {
                 m_targetPos = 0.5f;
@@ -183,16 +186,8 @@ public class ScrollRectHelper : MonoBehaviour, IBeginDragHandler, IEndDragHandle
             }
             else 
             {
-                if (endDragPos > beginDragPos)
-                {
-                    nowindex = 10;
-                    m_targetPos = 1f;
-                }
-                else
-                {
-                    nowindex = 5;
-                    m_targetPos = 0.5f;
-                }                  
+                nowindex = 5;
+                m_targetPos = 0.5f;
             }
         }
 
@@ -200,9 +195,38 @@ public class ScrollRectHelper : MonoBehaviour, IBeginDragHandler, IEndDragHandle
 
     public void OnDrag(PointerEventData eventData)
     {
+       
+        //sRect.verticalNormalizedPosition = beginDragPos;
         float distance = sRect.verticalNormalizedPosition - beginDragPos;
         float direct = distance > 0 ? 1 : -1;
-        distance = Mathf.Clamp(Mathf.Abs(distance), 0, 0.5f);
-        sRect.verticalNormalizedPosition = beginDragPos + distance * direct;
+        if (panel.curPage == -1 && direct > 0)
+        {
+            sRect.verticalNormalizedPosition = beginDragPos;
+        }
+        else if (panel.curPage == (panel.maxPage) && direct < 0)
+        {
+            sRect.verticalNormalizedPosition = beginDragPos;
+        }
+        else
+        {
+            distance = Mathf.Clamp(Mathf.Abs(distance), 0, 0.5f);
+            sRect.verticalNormalizedPosition = beginDragPos + distance * direct;
+        }
+        
+    }
+
+    public void OnScroll(PointerEventData eventData)
+    {
+        if(sRect.verticalNormalizedPosition > 0.5)
+        {
+            //上翻
+            panel.LastData();
+        }
+        else
+        {
+            //下翻
+            panel.NextData();
+        }
+        sRect.verticalNormalizedPosition = 0.5f;
     }
 }

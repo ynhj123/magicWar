@@ -27,6 +27,10 @@ public class TipPanel : MonoBehaviour
     public void Show(int id)
     {
         EquipDetailModel equipDetailModel = managerApi.GetDetail(id);
+        if(equipDetailModel == null)
+        {
+            return;
+        }
         title.text = equipDetailModel.Name;
         des.text = equipDetailModel.Des;
         canvasGroup.alpha = 1;

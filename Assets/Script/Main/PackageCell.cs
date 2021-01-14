@@ -14,7 +14,6 @@ public class PackageCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     Image buttonImg;
     TipPanel tipPanel;
     RectTransform rectTransform;
-    Vector3 leftDownPoint;
 
     private void Awake()
     {
@@ -31,7 +30,6 @@ public class PackageCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     void Start()
     {
         button.onClick.AddListener(Selected);
-        leftDownPoint = new Vector3(transform.position.x - rectTransform.rect.width/2 - 15, transform.position.y - rectTransform.rect.height/2 + 15, transform.position.z);
     }
 
     private void Selected()
@@ -78,13 +76,11 @@ public class PackageCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Debug.Log(transform.position);
-        Debug.Log(rectTransform.rect);
         tmpColor = buttonImg.color; 
         buttonImg.color = Color.gray;
         if (this.equip != null)
         {
-            tipPanel.transform.position = leftDownPoint;
+            tipPanel.transform.position = new Vector3(transform.position.x - rectTransform.rect.width / 2 - 15, transform.position.y - rectTransform.rect.height / 2 + 15, transform.position.z); ;
             tipPanel.Show(equip.Id);
            
         }
@@ -93,7 +89,6 @@ public class PackageCell : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        Debug.Log(tmpColor);
         buttonImg.color = tmpColor;
         tipPanel.Hide();
     }
